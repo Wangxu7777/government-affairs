@@ -1,0 +1,26 @@
+html,
+body,
+#app,input,b {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-style:normal;
+  outline: none;
+}
+p{
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+input,select,button{
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+.box-card{
+  margin-top: 15px;
+}
+
