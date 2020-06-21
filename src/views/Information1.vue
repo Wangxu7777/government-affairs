@@ -1,32 +1,30 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="小型工地施工信息单" left-arrow />
+    <van-nav-bar
+      id="reset"
+      title="小型工地施工信息单"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <p>工程施工信息</p>
-    <van-form>
+    <van-form validate-first @submit="onSubmit">
       <van-field
-        v-model="gongchengming"
+        v-model="shigongData.prj_name"
         name="工程名称"
         label="工程名称"
         placeholder="工程名称"
         :rules="[{ required: true, message: '请填写工程名称' }]"
       />
       <van-field
-        v-model="jianshedi"
+        v-model="shigongData.prj_addr"
         name="建设地址"
         label="建设地址"
         placeholder="建设地址"
         :rules="[{ required: true, message: '请填写建设地址' }]"
       />
       <van-field
-        v-model="jianshedanwei"
-        name="建设单位"
-        label="建设单位"
-        placeholder="建设单位"
-        :rules="[{ required: true, message: '请填写建设单位' }]"
-      />
-      <van-field
-        v-model="gongchengleixing"
+        v-model="shigongData.prj_type"
         name="工程类型"
         label="工程类型"
         placeholder="工程类型"
@@ -34,33 +32,39 @@
       />
 
       <van-field
-        v-model="gongchengmianji"
+        v-model="shigongData.prj_area"
         name="工程面积"
         label="工程面积"
         placeholder="工程面积"
         :rules="[{ required: true, message: '请填写工程面积' }]"
       />
       <van-field
-        v-model="hetongzaojia"
+        v-model="shigongData.prj_price"
         name="合同造价"
         label="合同造价"
         placeholder="合同造价"
         :rules="[{ required: true, message: '请填写合同造价' }]"
       />
       <van-field
-        v-model="shigongdanwei"
+        v-model="shigongData.demand_com"
+        name="建设单位"
+        label="建设单位"
+        placeholder="建设单位"
+      />
+      <van-field
+        v-model="shigongData.construction_com"
         name="施工单位"
         label="施工单位"
         placeholder="施工单位"
       />
       <van-field
-        v-model="jianlidanwei"
+        v-model="shigongData.supervison_com"
         name="监理单位"
         label="监理单位"
         placeholder="监理单位"
       />
       <van-field
-        v-model="shejidanwei"
+        v-model="shigongData.design_rom"
         name="设计单位"
         label="设计单位"
         placeholder="设计单位"
@@ -69,7 +73,7 @@
         readonly
         clickable
         name="calendar"
-        :value="kaigongriqi"
+        :value="shigongData.start_date"
         label="开工日期"
         placeholder="点击选择日期"
         @click="showCalendar = true"
@@ -79,44 +83,46 @@
         readonly
         clickable
         name="calendar"
-        :value="jungongriqi"
-        label="开工日期"
+        :value="shigongData.completion_date"
+        label="竣工日期"
         placeholder="点击选择日期"
         @click="showCalendar1 = true"
       />
       <van-calendar v-model="showCalendar1" @confirm="onConfirm1" />
       <p>监督单位信息</p>
       <van-field
-        v-model="jianduming"
+        v-model="shigongData.fbi_name"
         name="名称"
         label="名称"
         placeholder="名称"
-        :rules="[{ required: true, message: '请填写名称' }]"
       />
       <van-field
-        v-model="jiandudianhua"
+        v-model="shigongData.fbi_phone"
         name="监督电话"
         label="监督电话"
         placeholder="监督电话"
-        :rules="[{ required: true, message: '请填写监督电话' }]"
       />
       <p>项目负责任人信息</p>
       <van-field
-        v-model="fuzerenming"
+        v-model="shigongData.prj_person_name"
         name="姓名"
         label="姓名"
         placeholder="姓名"
-        :rules="[{ required: true, message: '请填写姓名' }]"
       />
       <van-field
-        v-model="fuzerenshejidanwei"
-        name="设计单位"
-        label="设计单位"
-        placeholder="设计单位"
-        :rules="[{ required: true, message: '请填写设计单位' }]"
+        v-model="shigongData.prj_person_phone"
+        name="设计单位电话"
+        label="设计单位电话"
+        placeholder="设计单位电话"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">
+        <van-button
+          @click="xiayibu"
+          round
+          block
+          type="info"
+          native-type="submit"
+        >
           下一步
         </van-button>
       </div>
@@ -131,33 +137,46 @@ export default {
   data() {
     //这里存放数据
     return {
-      gongchengming: "",
-      jianshedi: "",
-      jianshedanwei: "",
-      gongchengleixing: "",
-      gongchengmianji: "",
-      hetongzaojia: "",
-      shigongdanwei: "",
-      jianlidanwei: "",
-      shejidanwei: "",
-      kaigongriqi: "",
-      jungongriqi: "",
+      shigongData: {
+        prj_name: "",
+        prj_addr: "",
+        prj_type: "",
+        prj_area: "",
+        prj_price: "",
+        demand_com: "",
+        construction_com: "",
+        supervison_com: "",
+        design_rom: "",
+        start_date: "",
+        completion_date: "",
+        fbi_name: "",
+        fbi_phone: "",
+        prj_person_name: "",
+        prj_person_phone: ""
+      },
+
       showCalendar: false,
-      showCalendar1: false,
-      jianduming: "",
-      jiandudianhua: "",
-      fuzerenming: "",
-      fuzerenshejidanwei: ""
+      showCalendar1: false
     };
   },
   //方法集合
   methods: {
+    onSubmit() {
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({ name: "Information2" });
+    },
+    xiayibu() {},
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     onConfirm(date) {
-      this.kaigongriqi = `${date.getMonth() + 1}/${date.getDate()}`;
+      this.shigongData.start_date = `${date.getFullYear()}/${date.getMonth() +
+        1}/${date.getDate()}`;
       this.showCalendar = false;
     },
     onConfirm1(date) {
-      this.jungongriqi = `${date.getMonth() + 1}/${date.getDate()}`;
+      this.shigongData.completion_date = `${date.getFullYear()}/${date.getMonth() +
+        1}/${date.getDate()}`;
       this.showCalendar1 = false;
     }
   },

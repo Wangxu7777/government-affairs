@@ -1,131 +1,123 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="完整工程施工信息单" left-arrow />
+    <van-nav-bar
+      id="reset"
+      title="完整工程施工信息单"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <p>工程施工信息</p>
     <div class="biaoti">
       <icon-svg class="icn_box" icon-class="shenhe" />
-      <span>已受理，待审核</span>
+      <span v-if="this.prj_state == ''">已受理，待审核</span>
+      <span v-if="this.prj_state == '0'">已受理，审核通过</span>
+      <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
+      <span v-if="this.prj_state == '1'">正在移交</span>
     </div>
     <van-cell-group>
-      <van-field label="工程名称" value="输入框只读" readonly />
-      <van-field label="工程地址" value="输入框只读" readonly />
-      <van-field label="建设单位" value="输入框只读" readonly />
-      <van-field label="施工单位" value="输入框只读" readonly />
-      <van-field label="监理单位" value="输入框只读" readonly />
-      <van-field label="设计单位" value="输入框只读" readonly />
-      <van-field label="开工日期" value="输入框只读" readonly />
-      <van-field label="竣工日期" value="输入框只读" readonly />
+      <van-field label="工程名称" :value="prj_name" readonly />
+      <van-field label="工程地址" :value="prj_addr" readonly />
+      <van-field label="建设单位" :value="demand_com" readonly />
+      <van-field label="施工单位" :value="construction_com" readonly />
+      <van-field label="监理单位" :value="supervison_com" readonly />
+      <van-field label="设计单位" :value="design_rom" readonly />
+      <van-field label="开工日期" :value="start_date" readonly />
+      <van-field label="竣工日期" :value="completion_date" readonly />
     </van-cell-group>
     <p>监督单位信息</p>
     <van-cell-group>
-      <van-field label="单位名称" value="输入框只读" readonly />
-      <van-field label="监督电话" value="输入框只读" readonly />
+      <van-field label="单位名称" :value="fbi_name" readonly />
+      <van-field label="监督电话" :value="fbi_phone" readonly />
     </van-cell-group>
     <p>负责人信息</p>
     <van-cell-group>
-      <van-field label="姓名" value="输入框只读" readonly />
-      <van-field label="联系方式" value="输入框只读" readonly />
+      <van-field label="姓名" :value="prj_person_name" readonly />
+      <van-field label="联系方式" :value="prj_person_phone" readonly />
     </van-cell-group>
     <p>工程文件</p>
     <van-row class="buju" gutter="20">
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_property" />
         </div>
 
         <p class="wenjianming">产权证</p>
       </van-col>
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img1">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_lease_contract" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">租赁合同</p>
       </van-col>
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img2">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_con_contract" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">施工合同</p>
       </van-col>
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img3">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_license" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">施工单位营业执照</p>
       </van-col>
     </van-row>
     <van-row class="buju" gutter="20">
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img4">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_certifications" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">施工单位资质证书</p>
       </van-col>
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img5">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_manager_cert" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">项目经理证书</p>
       </van-col>
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img6">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_safe_cert" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">安全员证书</p>
       </van-col>
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img7">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image
+            width="100%"
+            height="100%"
+            :src="prj_manager_appiontment"
+          />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">项目经理任命文件</p>
       </van-col>
     </van-row>
     <van-row class="buju" gutter="20">
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img8">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_safe_appiontment" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">安全员任命文件</p>
       </van-col>
-      <van-col span="6">
+      <van-col span="6" @click="show_before_img9">
         <div class="beijin">
-          <div class="wenjian_box">
-            <icon-svg class="icn_box1" icon-class="wenjianyisong" />
-          </div>
+          <van-image width="100%" height="100%" :src="prj_design_cert" />
         </div>
 
-        <p class="wenjianming">产权证</p>
+        <p class="wenjianming">设计单位资质文件</p>
       </van-col>
     </van-row>
     <div style="margin: 16px;">
-      <van-button round block type="info" native-type="submit">
+      <van-button @click="shouye" round block type="info" native-type="submit">
         返回首页
       </van-button>
     </div>
@@ -133,16 +125,178 @@
 </template>
 
 <script>
+import { ImagePreview } from "vant";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      prj_name: "",
+      prj_addr: "",
+      prj_type: "",
+      prj_area: "",
+      prj_price: "",
+      demand_com: "",
+      construction_com: "",
+      supervison_com: "",
+      design_rom: "",
+      start_date: "",
+      completion_date: "",
+      fbi_name: "",
+      fbi_phone: "",
+      prj_person_name: "",
+      prj_person_phone: "",
+      prj_property: "",
+      prj_lease_contract: "",
+      prj_con_contract: "",
+      prj_license: "",
+      prj_certifications: "",
+      prj_manager_cert: "",
+      prj_safe_cert: "",
+      prj_manager_appiontment: "",
+      prj_safe_appiontment: "",
+      prj_design_cert: "",
+      prj_assist_org: "",
+      shigongData: {
+        prj_name: ""
+      },
+      shigongData1: {},
+      shigongData2: {},
+      prj_state: ""
+    };
   },
   //方法集合
-  methods: {},
-  created() {}
+  methods: {
+    show_before_img() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_property],
+        closeable: true
+      });
+    },
+    show_before_img1() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_lease_contract],
+        closeable: true
+      });
+    },
+    show_before_img2() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_con_contract],
+        closeable: true
+      });
+    },
+    show_before_img3() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_license],
+        closeable: true
+      });
+    },
+    show_before_img4() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_certifications],
+        closeable: true
+      });
+    },
+    show_before_img5() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_manager_cert],
+        closeable: true
+      });
+    },
+    show_before_img6() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_safe_cert],
+        closeable: true
+      });
+    },
+    show_before_img7() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_manager_appiontment],
+        closeable: true
+      });
+    },
+    show_before_img8() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_safe_appiontment],
+        closeable: true
+      });
+    },
+    show_before_img9() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_design_cert],
+        closeable: true
+      });
+    },
+    shouye() {
+      this.$router.push({ name: "Index" });
+    },
+    async content() {
+      const shigongData = localStorage.getItem("shigongData");
+      this.shigongData1 = JSON.parse(shigongData);
+      this.shigongData.prj_name = this.shigongData1.prj_name;
+      console.log(this.shigongData);
+      var { data: dt } = await this.$http.get("wx/getGongdi_info", {
+        params: this.shigongData
+      });
+
+      this.prj_state = dt.prj_state;
+      this.prj_name = dt.prj_name;
+      this.prj_addr = dt.prj_addr;
+      this.prj_type = dt.prj_type;
+      this.prj_area = dt.prj_area;
+      this.prj_price = dt.prj_price;
+      this.demand_com = dt.demand_com;
+      this.construction_com = dt.construction_com;
+      this.supervison_com = dt.supervison_com;
+      this.design_rom = dt.design_rom;
+      this.start_date = dt.start_date;
+      this.completion_date = dt.completion_date;
+      this.fbi_name = dt.fbi_name;
+      this.fbi_phone = dt.fbi_phone;
+      this.prj_person_name = dt.prj_person_name;
+      this.prj_person_phone = dt.prj_person_phone;
+      if (dt.prj_lease_contract) {
+        this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
+      }
+      if (dt.prj_lease_contract) {
+        this.prj_lease_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_lease_contract}`;
+      }
+      if (dt.prj_con_contract) {
+        this.prj_con_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_con_contract}`;
+      }
+      if (dt.prj_license) {
+        this.prj_license = `http://111.229.190.8:8000/gongdi/file/${dt.prj_license}`;
+      }
+      if (dt.prj_certifications) {
+        this.prj_certifications = `http://111.229.190.8:8000/gongdi/file/${dt.prj_certifications}`;
+      }
+      if (dt.prj_manager_cert) {
+        this.prj_manager_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_cert}`;
+      }
+      if (dt.prj_safe_cert) {
+        this.prj_safe_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_cert}`;
+      }
+      if (dt.prj_manager_appiontment) {
+        this.prj_manager_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_appiontment}`;
+      }
+      if (dt.prj_safe_appiontment) {
+        this.prj_safe_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_appiontment}`;
+      }
+      if (dt.prj_design_cert) {
+        this.prj_design_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_design_cert}`;
+      }
+      if (dt.prj_assist_org) {
+        this.prj_assist_org = `http://111.229.190.8:8000/gongdi/file/${dt.prj_assist_org}`;
+      }
+    },
+    onClickLeft() {
+      this.$router.go(-1);
+    }
+  },
+  created() {
+    this.content();
+  }
 };
 </script>
 <style lang="less" scoped>

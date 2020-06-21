@@ -14,6 +14,10 @@ import ViewCertificate from "./views/ViewCertificate.vue";
 import TransferOrder from "./views/TransferOrder.vue";
 import ViewTransferOrder from "./views/ViewTransferOrder.vue";
 import receive from "./views/receive.vue";
+import ProjectList from "./views/ProjectList.vue";
+import success1 from "./views/success1.vue";
+import success2 from "./views/success2.vue";
+import shiyan from "./views/shiyan.vue";
 
 Vue.use(Router);
 var router = new Router({
@@ -41,6 +45,16 @@ var router = new Router({
       path: "/success",
       name: "success",
       component: success
+    },
+    {
+      path: "/success1",
+      name: "success1",
+      component: success1
+    },
+    {
+      path: "/success2",
+      name: "success2",
+      component: success2
     },
     {
       path: "/accept",
@@ -91,6 +105,16 @@ var router = new Router({
       path: "/receive",
       name: "receive",
       component: receive
+    },
+    {
+      path: "/projectList",
+      name: "ProjectList",
+      component: ProjectList
+    },
+    {
+      path: "/shiyan",
+      name: "shiyan",
+      component: shiyan
     }
   ]
 });

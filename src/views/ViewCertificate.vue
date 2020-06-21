@@ -16,28 +16,74 @@
       </van-row>
     </div> -->
     <van-cell-group>
-      <van-cell title="产权证" icon="orders-o" />
-      <van-cell title="租赁合同" icon="orders-o" />
-      <van-cell title="施工单位营业执照" icon="orders-o" />
-      <van-cell title="施工单位资质证书" icon="orders-o" />
-      <van-cell title="项目经理证书" icon="orders-o" />
-      <van-cell title="安全员证书" icon="orders-o" />
-      <van-cell title="项目经理任命文件" icon="orders-o" />
-      <van-cell title="安全员任命书" icon="orders-o" />
-      <van-cell title="设计单位资质文件" icon="orders-o" />
+      <van-cell @click="show_before_img" title="产权证" icon="orders-o" />
+      <van-cell @click="show_before_img1" title="租赁合同" icon="orders-o" />
+      <van-cell @click="show_before_img2" title="施工合同" icon="orders-o" />
+      <van-cell
+        @click="show_before_img3"
+        title="施工单位营业执照"
+        icon="orders-o"
+      />
+      <van-cell
+        @click="show_before_img4"
+        title="施工单位资质证书"
+        icon="orders-o"
+      />
+      <van-cell
+        @click="show_before_img5"
+        title="项目经理证书"
+        icon="orders-o"
+      />
+      <van-cell @click="show_before_img6" title="安全员证书" icon="orders-o" />
+      <van-cell
+        @click="show_before_img7"
+        title="项目经理任命文件"
+        icon="orders-o"
+      />
+      <van-cell
+        @click="show_before_img8"
+        title="安全员任命书"
+        icon="orders-o"
+      />
+      <van-cell
+        @click="show_before_img9"
+        title="设计单位资质文件"
+        icon="orders-o"
+      />
     </van-cell-group>
     <div style="margin: 16px;margin-bottom: 0;">
-      <van-button class="btn1" round block type="info" native-type="submit">
+      <van-button
+        @click="weitongguo"
+        class="btn1"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         受理审核未通过
       </van-button>
     </div>
-    <div style="margin: 10px;">
-      <van-button class="btn2" round block type="info" native-type="submit">
+    <div style="margin: 16px;">
+      <van-button
+        @click="tongguo"
+        class="btn2"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         受理审核通过
       </van-button>
     </div>
-    <div style="margin: 10px;">
-      <van-button class="btn3" round block type="info" native-type="submit">
+    <div style="margin: 16px;">
+      <van-button
+        @click="feixiaoxing"
+        class="btn3"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         非小型工程
       </van-button>
     </div>
@@ -45,6 +91,8 @@
 </template>
 
 <script>
+import { ImagePreview } from "vant";
+
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -56,16 +104,176 @@ export default {
       images: [
         "https://img.yzcdn.cn/vant/apple-1.jpg",
         "https://img.yzcdn.cn/vant/apple-2.jpg"
-      ]
+      ],
+      prj_property: "",
+      prj_lease_contract: "",
+      prj_con_contract: "",
+      prj_license: "",
+      prj_certifications: "",
+      prj_manager_cert: "",
+      prj_safe_cert: "",
+      prj_manager_appiontment: "",
+      prj_safe_appiontment: "",
+      prj_design_cert: "",
+      prj_assist_org: "",
+      shigongData: {
+        prj_name: ""
+      },
+      shigongData1: {}
     };
   },
   //方法集合
   methods: {
+    async feixiaoxing() {
+      this.shigongData1.prj_state = "1";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData1
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.$router.push({ name: "success2" });
+    },
+    async tongguo() {
+      this.shigongData1.prj_state = "0";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData1
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.$router.push({ name: "success2" });
+    },
+    async weitongguo() {
+      this.shigongData1.prj_state = "-1";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData1
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.$router.push({ name: "success2" });
+    },
+    show_before_img() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_property],
+        closeable: true
+      });
+    },
+    show_before_img1() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_lease_contract],
+        closeable: true
+      });
+    },
+    show_before_img2() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_con_contract],
+        closeable: true
+      });
+    },
+    show_before_img3() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_license],
+        closeable: true
+      });
+    },
+    show_before_img4() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_certifications],
+        closeable: true
+      });
+    },
+    show_before_img5() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_manager_cert],
+        closeable: true
+      });
+    },
+    show_before_img6() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_safe_cert],
+        closeable: true
+      });
+    },
+    show_before_img7() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_manager_appiontment],
+        closeable: true
+      });
+    },
+    show_before_img8() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_safe_appiontment],
+        closeable: true
+      });
+    },
+    show_before_img9() {
+      this.instance_before = ImagePreview({
+        images: [this.prj_design_cert],
+        closeable: true
+      });
+    },
+    async content() {
+      const shigongData = localStorage.getItem("shigongData");
+      this.shigongData1 = JSON.parse(shigongData);
+      this.shigongData.prj_name = this.shigongData1.prj_name;
+      console.log(this.shigongData);
+      var { data: dt } = await this.$http.get("wx/getGongdi_info", {
+        params: this.shigongData
+      });
+      console.log(dt);
+
+      if (dt.prj_lease_contract) {
+        this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
+      }
+      if (dt.prj_lease_contract) {
+        this.prj_lease_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_lease_contract}`;
+      }
+      if (dt.prj_con_contract) {
+        this.prj_con_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_con_contract}`;
+      }
+      if (dt.prj_license) {
+        this.prj_license = `http://111.229.190.8:8000/gongdi/file/${dt.prj_license}`;
+      }
+      if (dt.prj_certifications) {
+        this.prj_certifications = `http://111.229.190.8:8000/gongdi/file/${dt.prj_certifications}`;
+      }
+      if (dt.prj_manager_cert) {
+        this.prj_manager_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_cert}`;
+      }
+      if (dt.prj_safe_cert) {
+        this.prj_safe_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_cert}`;
+      }
+      if (dt.prj_manager_appiontment) {
+        this.prj_manager_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_appiontment}`;
+      }
+      if (dt.prj_safe_appiontment) {
+        this.prj_safe_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_appiontment}`;
+      }
+      if (dt.prj_design_cert) {
+        this.prj_design_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_design_cert}`;
+      }
+      if (dt.prj_assist_org) {
+        this.prj_assist_org = `http://111.229.190.8:8000/gongdi/file/${dt.prj_assist_org}`;
+      }
+    },
     onChange(index) {
       this.index = index;
     }
   },
-  created() {}
+  created() {
+    this.content();
+  }
 };
 </script>
 <style lang="less" scoped>

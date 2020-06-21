@@ -12,6 +12,17 @@
         为进一步加强限额以下小型建设工程管理，对发现的疑似小型工程，请根据提示如实填写相关信息。
       </p>
       <van-form validate-first @submit="onSubmit">
+        <van-field
+          style="margin-top: 30px;"
+          v-model="gongchengData.prj_name"
+          name="工程名称"
+          label="工程名称"
+          placeholder="输入工程名称"
+          :rules="[
+            { required: true, message: '输入工程名称' },
+            { validator, message: '最多可输入16字符' }
+          ]"
+        />
         <!-- <van-row class="xuanze_box" type="flex" justify="space-around">
           <van-col class="tubiao">
             <van-field
@@ -69,7 +80,7 @@
           readonly
           clickable
           label="工程类型"
-          :value="value"
+          :value="gongchengData.prj_type"
           placeholder="选择工程类型"
           @click="showPicker = true"
           :rules="[{ required: true, message: '请选择工程类型' }]"
@@ -88,7 +99,7 @@
           readonly
           clickable
           label="发现单位"
-          :value="value1"
+          :value="gongchengData.prj_depart"
           placeholder="选择发现单位"
           @click="showPicker1 = true"
           :rules="[{ required: true, message: '请选择发现单位' }]"
@@ -112,7 +123,7 @@
         />
         <van-field
           class="dizhi"
-          v-model="gongchengdizhi"
+          v-model="gongchengData.prj_addr"
           name="工程地址"
           label="工程地址"
           placeholder="输入工程地址"
@@ -125,7 +136,7 @@
           readonly
           clickable
           label="工程所属网络"
-          :value="value2"
+          :value="gongchengData.prj_grid"
           placeholder="工程所属网络"
           @click="showPicker2 = true"
           :rules="[{ required: true, message: '请选择工程所属网络' }]"
@@ -156,11 +167,24 @@
         <div class="shangchuan_box">
           <van-field name="uploader" label="照片上传" class="shangchuan">
             <template #input>
-              <van-uploader v-model="uploader" multiple :max-count="1">
+              <van-uploader
+                :after-read="afterRead"
+                v-model="uploader"
+                multiple
+                :max-count="6"
+              >
                 <icon-svg class="touxiang" icon-class="tupianshangchuan" />
               </van-uploader>
             </template>
           </van-field>
+          <!-- <form
+            action="http://111.229.190.8/upload/addimg/"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <input multiple type="file" name="a" />
+            <input type="submit" value="提交" />
+          </form> -->
         </div>
         <div style="margin: 16px;">
           <van-button
@@ -180,17 +204,35 @@
 </template>
 
 <script>
+import axios from "axios";
+// import { ContactList } from "vant";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
     return {
-      uploader: [{ url: "https://img.yzcdn.cn/vant/leaf.jpg" }],
-      value: "",
+      gongchengData: {
+        prj_name: "",
+        prj_type: "",
+        prj_depart: "",
+        prj_grid: "",
+        lng: 0,
+        lat: 0,
+        prj_addr: "",
+        picture: "",
+        picture1: "",
+        picture2: "",
+        picture3: "",
+        picture4: "",
+        picture5: "",
+        userid: "15810457862"
+      },
+      uploader: [],
+
       showPicker: false,
       columns: ["沿街面小型工程", "楼宇内小型工程"],
-      value1: "",
+
       showPicker1: false,
       columns1: [
         "街道网格中心",
@@ -199,26 +241,20 @@ export default {
         "楼宇物业",
         "请输入"
       ],
-      value2: "",
+
       showPicker2: false,
       columns2: ["工程所属网格", "0701", "0702", "0703"],
       faxiandanwei: "",
       shoudong: true,
       shoudong1: false,
-      gongchengdizhi: "",
-      center: { lng: 0, lat: 0 },
+      center: { lng: 116.40387397, lat: 39.91488908 },
       zoom: 3,
-      // 这个是选择某个点的提醒以及搜索附近的东西的依据
-      maptitle: "",
-      // 这个是搜索下的东西
-      location: "",
-      // 这个是选择搜索列表中数据的title以及经纬度
-      locationdata: {
-        title: "",
-        center: ""
-      },
+
       geolocation: "",
-      biaoji: false
+      biaoji: false,
+      token: "",
+      imgurl: "",
+      postData: []
     };
   },
   //   watch: {
@@ -230,12 +266,47 @@ export default {
   //   },
   //方法集合
   methods: {
+    validator(val) {
+      console.log(val.length);
+
+      return val.length < 16;
+
+      // return /1\d{10}/.test(val);
+    },
+    afterRead(file) {
+      // console.log(file.file);
+
+      let param = new FormData(); // 创建form对象
+      //区分单文件上传还是多文件
+      if (file instanceof Array && file.length) {
+        for (let i = 0; i < file.length; i++) {
+          param.append("files", file[i].file);
+        }
+      } else {
+        param.append("file", file.file); // 通过append向form对象添加数据
+      }
+      // param.append("file", file.file); // 通过append向form对象添加数据
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      axios
+        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .then(response => {
+          this.postData.push(response.data.data.result); //上传一张之后压入这个数组
+
+          console.log(this.postData);
+          this.gongchengData.picture = response.data.data.result;
+
+          // console.log(this.gongchengData);
+        });
+    },
+
     submit() {},
     onClickLeft() {
       this.$router.go(-1);
     },
     onConfirm(value) {
-      this.value = value;
+      this.gongchengData.prj_type = value;
       this.showPicker = false;
     },
     onConfirm1(value) {
@@ -243,35 +314,114 @@ export default {
         this.shoudong = false;
         this.shoudong1 = true;
       }
-      this.value1 = value;
+      this.gongchengData.prj_depart = value;
       this.showPicker1 = false;
     },
     onConfirm2(value) {
-      this.value2 = value;
+      this.gongchengData.prj_grid = value;
       this.showPicker2 = false;
     },
     async onSubmit() {
-      var { data: dt } = await this.$http.post("sendMsg", this);
-      console.log(dt);
+      //设置请求头
+      // let config = {
+      //   headers: {
+      //     "Content-Type": "application/x-www-form-urlencoded"
+      //   }
+      // };
+      this.gongchengData.picture = this.postData[0];
+      this.gongchengData.picture1 = this.postData[1];
+      this.gongchengData.picture2 = this.postData[2];
+      this.gongchengData.picture3 = this.postData[3];
+      this.gongchengData.picture4 = this.postData[4];
+      this.gongchengData.picture5 = this.postData[5];
+      this.gongchengData.lng = this.gongchengData.lng.toString();
+      this.gongchengData.lat = this.gongchengData.lat.toString();
+
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi",
+        this.gongchengData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      localStorage.setItem("gongchengData", JSON.stringify(this.gongchengData));
+      this.$router.push({ name: "success" });
     },
     handler({ BMap, map }) {
       map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
       map.enableContinuousZoom(); //启用地图惯性拖拽，默认禁用
       var geolocation = new BMap.Geolocation();
+      var geoc = new BMap.Geocoder();
       geolocation.getCurrentPosition(
         r => {
           var mk = new BMap.Marker(r.point);
           map.addOverlay(mk);
           map.panTo(r.point);
-          console.log("您的位置：" + r.point.lng + "," + r.point.lat);
+          this.gongchengData.lng = r.point.lng;
+          this.gongchengData.lat = r.point.lat;
+          geoc.getLocation(r.point, rs => {
+            // var addComp = rs.addressComponents;
+            // console.log(rs);
+            //   this.gongchengdizhi =
+            //     addComp.province +
+            //     ", " +
+            //     addComp.city +
+            //     ", " +
+            //     addComp.district +
+            //     ", " +
+            //     addComp.street +
+            //     ", " +
+            //     addComp.streetNumber;
+            this.gongchengData.prj_addr = rs.address;
+          });
         },
         { enableHighAccuracy: true }
       );
 
       this.zoom = 15;
+
+      map.addEventListener("click", e => {
+        map.clearOverlays();
+        var point = new BMap.Point(e.point.lng, e.point.lat);
+        // points.push(new BMap.Point(e.point.lng, e.point.lat));
+        this.gongchengData.lng = e.point.lng;
+        this.gongchengData.lat = e.point.lat;
+        geoc.getLocation(point, rs => {
+          // var addComp = rs.addressComponents;
+          // console.log(rs);
+          //   this.gongchengdizhi =
+          //     addComp.province +
+          //     ", " +
+          //     addComp.city +
+          //     ", " +
+          //     addComp.district +
+          //     ", " +
+          //     addComp.street +
+          //     ", " +
+          //     addComp.streetNumber;
+          this.gongchengData.prj_addr = rs.address;
+        });
+
+        var marker = new BMap.Marker(point);
+        //给覆盖物添加右键菜单
+        var removeMarker = function() {
+          map.clearOverlays();
+        };
+        //创建右键菜单
+        var markerMenu = new BMap.ContextMenu();
+        markerMenu.addItem(
+          new BMap.MenuItem("删除", removeMarker.bind(marker))
+        );
+        map.addOverlay(marker);
+        marker.addContextMenu(markerMenu);
+      });
     }
   },
-  created() {},
+  created() {
+    // this.tokenData();
+  },
   beforeCreate() {
     document
       .querySelector("body")

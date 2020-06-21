@@ -16,7 +16,7 @@ import axios from "axios";
 // axios.defaults.withCredentials = true;
 
 axios.defaults.baseURL = "http://111.229.190.8/";
-// axios.defaults.baseURL = "http://192.168.10.61:8080/order/";
-
+// axios.defaults.baseURL = "http://111.229.190.8:8000/gongdi/";
+// axios.defaults.baseURL = "http://localhost:12315/order/";
 // axios.defaults.baseURL = userIP;
 export default axios;

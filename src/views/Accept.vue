@@ -6,48 +6,63 @@
       小型工程发现上报
     </van-notice-bar>
     <van-cell-group>
-      <van-field label="工程发现单位" value="输入框只读" readonly />
-      <van-field label="工程类型" value="输入框只读" readonly />
-      <van-field label="地址信息" value="输入框只读" readonly />
+      <van-field label="工程名称" :value="prj_name" readonly />
+      <van-field label="工程发现单位" :value="prj_depart" readonly />
+      <van-field label="工程类型" :value="prj_type" readonly />
+      <van-field label="地址信息" :value="prj_addr" readonly />
     </van-cell-group>
     <div class="tupian">
       <h5>工程照片</h5>
-      <van-row gutter="20" class="zhaop">
-        <van-col span="12">
+      <van-grid :column-num="2" square :gutter="10">
+        <van-grid-item text="工程照片">
           <van-image
+            @click="show_before_img"
             width="100%"
             height="100%"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="picture"
           />
-          <p>xx施工工程照片</p>
-        </van-col>
-        <van-col span="12">
+        </van-grid-item>
+        <van-grid-item text="工程照片">
           <van-image
+            @click="show_before_img"
             width="100%"
             height="100%"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="picture1"
           />
-          <p>xx施工工程照片</p>
-        </van-col>
-      </van-row>
-      <van-row gutter="20" class="zhaop">
-        <van-col span="12">
+        </van-grid-item>
+        <van-grid-item text="工程照片">
           <van-image
+            @click="show_before_img"
             width="100%"
             height="100%"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="picture2"
           />
-          <p>xx施工工程照片</p>
-        </van-col>
-        <van-col span="12">
+        </van-grid-item>
+        <van-grid-item text="工程照片">
           <van-image
+            @click="show_before_img"
             width="100%"
             height="100%"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="picture3"
           />
-          <p>xx施工工程照片</p>
-        </van-col>
-      </van-row>
+        </van-grid-item>
+        <van-grid-item text="工程照片">
+          <van-image
+            @click="show_before_img"
+            width="100%"
+            height="100%"
+            :src="picture4"
+          />
+        </van-grid-item>
+        <van-grid-item text="工程照片">
+          <van-image
+            @click="show_before_img"
+            width="100%"
+            height="100%"
+            :src="picture5"
+          />
+        </van-grid-item>
+      </van-grid>
     </div>
     <div style="margin: 16px;">
       <van-button
@@ -62,7 +77,14 @@
       </van-button>
     </div>
     <div style="margin: 16px;">
-      <van-button round block type="warning" native-type="submit" size="large">
+      <van-button
+        @click="shouli"
+        round
+        block
+        type="warning"
+        native-type="submit"
+        size="large"
+      >
         确认受理
       </van-button>
     </div>
@@ -81,22 +103,105 @@
 </template>
 
 <script>
+import { ImagePreview } from "vant";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
     return {
-      show: false
+      show: false,
+      prj_name: "",
+      prj_depart: "",
+      prj_type: "",
+      prj_grid: "",
+      prj_addr: "",
+      picture: "",
+      picture1: "",
+      picture2: "",
+      picture3: "",
+      picture4: "",
+      picture5: "",
+      gongchengData: {
+        prj_name: ""
+      },
+      shouliData: {}
     };
   },
   //方法集合
   methods: {
-    no_shouli() {
+    show_before_img() {
+      this.instance_before = ImagePreview({
+        images: [
+          this.picture,
+          this.picture1,
+          this.picture2,
+          this.picture3,
+          this.picture4,
+          this.picture5
+        ],
+        closeable: true
+      });
+    },
+    async shouli() {
+      this.shouliData.prj_state = "0";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi",
+        this.shouliData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "受理失败"
+        });
+      }
+      this.$router.push({ name: "Information1" });
+    },
+    async no_shouli() {
       this.show = true;
+      this.shouliData.prj_state = "-1";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi",
+        this.shouliData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+    },
+    async content() {
+      const gongchengData = localStorage.getItem("gongchengData");
+      this.shouliData = JSON.parse(gongchengData);
+      this.gongchengData.prj_name = this.shouliData.prj_name;
+      var { data: dt } = await this.$http.get("wx/getGongdi", {
+        params: this.gongchengData
+      });
+      this.prj_depart = dt.prj_depart;
+      this.prj_name = dt.prj_name;
+      this.prj_addr = dt.prj_addr;
+      this.prj_grid = dt.prj_grid;
+      this.prj_type = dt.prj_type;
+      this.picture = `http://111.229.190.8:8000/gongdi/file/${dt.picture}`;
+      if (this.picture1) {
+        this.picture1 = `http://111.229.190.8:8000/gongdi/file/${dt.picture1}`;
+      }
+      if (this.picture2) {
+        this.picture2 = `http://111.229.190.8:8000/gongdi/file/${dt.picture2}`;
+      }
+      if (this.picture3) {
+        this.picture3 = `http://111.229.190.8:8000/gongdi/file/${dt.picture3}`;
+      }
+      if (dt.picture4) {
+        this.picture4 = `http://111.229.190.8:8000/gongdi/file/${dt.picture4}`;
+      }
+      if (dt.picture5) {
+        this.picture5 = `http://111.229.190.8:8000/gongdi/file/${dt.picture5}`;
+      }
     }
   },
-  created() {}
+  created() {
+    this.content();
+  }
 };
 </script>
 <style lang="less" scoped>

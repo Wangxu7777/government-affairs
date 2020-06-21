@@ -7,7 +7,8 @@
         <icon-svg class="touxiang" icon-class="chenggong" />
       </div>
       <h1 class="text">提交成功</h1>
-      <p class="text">您可以在我的中查询工程单详情或处置进程</p>
+      <p class="text">等待后续审核</p>
+      <p class="text1">您可以在我的中查询工程单详情或查看处置进程</p>
       <div style="margin: 16px;margin-top: 130px">
         <van-button
           @click="xiangqin"
@@ -18,7 +19,7 @@
           native-type="submit"
           size="large"
         >
-          查看工程基本信息卡
+          查看施工信息单
         </van-button>
       </div>
       <div style="margin: 16px;">
@@ -49,7 +50,7 @@ export default {
   //方法集合
   methods: {
     xiangqin() {
-      this.$router.push({ name: "ProjectReporting" });
+      this.$router.push({ name: "Details" });
     },
     shouye() {
       this.$router.push({ name: "Index" });
@@ -102,6 +103,10 @@ export default {
   }
   .text {
     text-align: center;
+  }
+  .text1 {
+    text-align: center;
+    font-size: 12px;
   }
   .btn1 {
     background: linear-gradient(
