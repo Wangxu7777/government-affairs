@@ -132,14 +132,6 @@
               </van-uploader>
             </template>
           </van-field>
-          <!-- <form
-            action="http://111.229.190.8/upload/addimg/"
-            method="POST"
-            enctype="multipart/form-data"
-          >
-            <input multiple type="file" name="a" />
-            <input type="submit" value="提交" />
-          </form> -->
         </div>
         <div style="margin: 16px;">
           <van-button

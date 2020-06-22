@@ -19,7 +19,10 @@ import success1 from "./views/success1.vue";
 import success2 from "./views/success2.vue";
 import success3 from "./views/success3.vue";
 import success4 from "./views/success4.vue";
+import success5 from "./views/success5.vue";
 import TransferForm from "./views/TransferForm.vue";
+import Supervise from "./views/Supervise.vue";
+import TestResult from "./views/TestResult.vue";
 
 import shiyan from "./views/shiyan.vue";
 
@@ -69,6 +72,11 @@ var router = new Router({
       path: "/success4",
       name: "success4",
       component: success4
+    },
+    {
+      path: "/success5",
+      name: "success5",
+      component: success5
     },
     {
       path: "/accept",
@@ -129,6 +137,16 @@ var router = new Router({
       path: "/transferForm",
       name: "TransferForm",
       component: TransferForm
+    },
+    {
+      path: "/supervise",
+      name: "Supervise",
+      component: Supervise
+    },
+    {
+      path: "/testResult",
+      name: "TestResult",
+      component: TestResult
     },
     {
       path: "/shiyan",
