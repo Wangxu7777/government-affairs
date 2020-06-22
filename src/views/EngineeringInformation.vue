@@ -23,58 +23,7 @@
             { validator, message: '最多可输入16字符' }
           ]"
         />
-        <!-- <van-row class="xuanze_box" type="flex" justify="space-around">
-          <van-col class="tubiao">
-            <van-field
-              class="xuanzeqi"
-              readonly
-              clickable
-              label="工程类型"
-              :value="value"
-              placeholder="选择工程类型"
-              @click="showPicker = true"
-              :rules="[{ required: true, message: '请选择工程类型' }]"
-            />
-            <van-popup v-model="showPicker" round position="bottom">
-              <van-picker
-                show-toolbar
-                :columns="columns"
-                @cancel="showPicker = false"
-                @confirm="onConfirm"
-              />
-            </van-popup>
-          </van-col>
-          <van-col class="tubiao">
-            <van-field
-              class="xuanzeqi"
-              v-if="this.shoudong"
-              readonly
-              clickable
-              label="发现单位"
-              :value="value1"
-              placeholder="选择发现单位"
-              @click="showPicker1 = true"
-              :rules="[{ required: true, message: '请选择发现单位' }]"
-            />
-            <van-popup v-model="showPicker1" round position="bottom">
-              <van-picker
-                show-toolbar
-                :columns="columns1"
-                @cancel="showPicker1 = false"
-                @confirm="onConfirm1"
-              />
-            </van-popup>
-            <van-field
-              v-if="this.shoudong1"
-              ref="danweixuankbox"
-              v-model="faxiandanwei"
-              name="发现单位"
-              label="发现单位"
-              placeholder="选择发现单位"
-              :rules="[{ required: true, message: '请填写发现单位' }]"
-            />
-          </van-col>
-        </van-row> -->
+
         <van-field
           class="xuanzeqi"
           readonly
@@ -157,6 +106,12 @@
             :zoom="zoom"
             @ready="handler"
           >
+            <bm-local-search
+              :panel="false"
+              :keyword="gongchengData.prj_addr"
+              :auto-viewport="true"
+              :selectFirstResult="true"
+            ></bm-local-search>
             <bm-geolocation
               anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
               :showAddressBar="true"
@@ -205,7 +160,7 @@
 
 <script>
 import axios from "axios";
-// import { ContactList } from "vant";
+
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -243,18 +198,35 @@ export default {
       ],
 
       showPicker2: false,
-      columns2: ["工程所属网格", "0701", "0702", "0703"],
+      columns2: ["0701", "0702", "0703"],
       faxiandanwei: "",
       shoudong: true,
       shoudong1: false,
-      center: { lng: 116.40387397, lat: 39.91488908 },
+      center: { lng: 121.492666, lat: 31.220984 },
       zoom: 3,
 
       geolocation: "",
       biaoji: false,
       token: "",
       imgurl: "",
-      postData: []
+      postData: [],
+      fasongData: {
+        touser: "15810457862",
+        toparty: "293",
+        msgtype: "news",
+        agentid: "1000081",
+        // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
+        news: {
+          articles: [
+            {
+              title: "政务微信流程测试",
+              description: "政务微信流程",
+              url: "",
+              picurl: "http://47.104.29.235:8080/flower.jpeg"
+            }
+          ]
+        }
+      }
     };
   },
   //   watch: {
@@ -342,6 +314,16 @@ export default {
         this.gongchengData
       );
       if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/accept?prj_name=${this.gongchengData.prj_name}`;
+      // this.fasongData.new.articles[0].url =
+      //   "http://47.104.29.235:8080/flower.jpeg";
+      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+
+      if (dt1.data.errcode != 0) {
         return this.$toast.fail({
           message: "提交失败"
         });

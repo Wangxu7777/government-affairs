@@ -89,7 +89,14 @@
       </van-button>
     </div>
     <div style="margin: 16px;">
-      <van-button round block type="primary" native-type="submit" size="large">
+      <van-button
+        @click="yiban"
+        round
+        block
+        type="primary"
+        native-type="submit"
+        size="large"
+      >
         一般工程
       </van-button>
     </div>
@@ -125,11 +132,44 @@ export default {
       gongchengData: {
         prj_name: ""
       },
-      shouliData: {}
+      shouliData: {},
+      fasongData: {
+        touser: "15810457862",
+        toparty: "293",
+        msgtype: "news",
+        agentid: "1000081",
+        // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
+        news: {
+          articles: [
+            {
+              title: "政务微信流程测试",
+              description: "政务微信流程",
+              url: "",
+              picurl: "http://47.104.29.235:8080/flower.jpeg"
+            }
+          ]
+        }
+      }
     };
   },
   //方法集合
   methods: {
+    async yiban() {
+      this.shouliData.prj_state = "1";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi",
+        this.shouliData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.$toast.success({
+        message: "一般工程"
+      });
+      this.$router.push({ name: "Index" });
+    },
     show_before_img() {
       this.instance_before = ImagePreview({
         images: [
@@ -151,13 +191,12 @@ export default {
       );
       if (dt != 0) {
         return this.$toast.fail({
-          message: "受理失败"
+          message: "提交失败"
         });
       }
       this.$router.push({ name: "Information1" });
     },
     async no_shouli() {
-      this.show = true;
       this.shouliData.prj_state = "-1";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi",
@@ -168,14 +207,29 @@ export default {
           message: "提交失败"
         });
       }
+      this.$toast.success({
+        message: "非小型工程拒绝受理"
+      });
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferForm?prj_name=${this.gongchengData.prj_name}`;
+      // this.fasongData.new.articles[0].url =
+      //   "http://47.104.29.235:8080/flower.jpeg";
+      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+
+      if (dt1.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
     },
     async content() {
-      const gongchengData = localStorage.getItem("gongchengData");
-      this.shouliData = JSON.parse(gongchengData);
-      this.gongchengData.prj_name = this.shouliData.prj_name;
+      // const gongchengData = localStorage.getItem("gongchengData");
+      // this.shouliData = JSON.parse(gongchengData);
+      // this.gongchengData.prj_name = this.shouliData.prj_name;
+      this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
       });
+      this.shouliData = dt;
       this.prj_depart = dt.prj_depart;
       this.prj_name = dt.prj_name;
       this.prj_addr = dt.prj_addr;

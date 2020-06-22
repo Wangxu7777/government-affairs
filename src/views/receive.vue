@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="查看小型工程移送单" left-arrow />
+    <van-nav-bar id="reset" title="街办移交建管委" left-arrow />
     <p>非小型建设工程移送单</p>
     <div class="biaoti">
       <icon-svg class="icn_box" icon-class="wenjianyisong" />

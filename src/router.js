@@ -17,6 +17,10 @@ import receive from "./views/receive.vue";
 import ProjectList from "./views/ProjectList.vue";
 import success1 from "./views/success1.vue";
 import success2 from "./views/success2.vue";
+import success3 from "./views/success3.vue";
+import success4 from "./views/success4.vue";
+import TransferForm from "./views/TransferForm.vue";
+
 import shiyan from "./views/shiyan.vue";
 
 Vue.use(Router);
@@ -55,6 +59,16 @@ var router = new Router({
       path: "/success2",
       name: "success2",
       component: success2
+    },
+    {
+      path: "/success3",
+      name: "success3",
+      component: success3
+    },
+    {
+      path: "/success4",
+      name: "success4",
+      component: success4
     },
     {
       path: "/accept",
@@ -110,6 +124,11 @@ var router = new Router({
       path: "/projectList",
       name: "ProjectList",
       component: ProjectList
+    },
+    {
+      path: "/transferForm",
+      name: "TransferForm",
+      component: TransferForm
     },
     {
       path: "/shiyan",
