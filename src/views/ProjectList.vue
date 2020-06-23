@@ -64,6 +64,7 @@
       @load="onLoad"
     >
       <van-cell
+        @click="see"
         v-for="(item, index) in this.list"
         :key="index"
         :title="item.data.prj_name"
@@ -86,16 +87,71 @@ export default {
       radio: "",
       list: [],
       loading: false,
-      finished: false
+      finished: false,
+      timeout: null,
+      sousuoData: {
+        prj_name: ""
+      }
     };
   },
+  watch: {
+    value(curVal) {
+      // this.loading = true;
+      // 实现input连续输入，只发一次请求
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.sousuoList(curVal);
+      }, 1000);
+    }
+  },
   methods: {
-    // async content() {
-    //   var { data: dt } = await this.$http.get(
-    //     "wx/getGongdi_info_AllBySortDate"
-    //   );
-    //   console.log(dt);
-    // },
+    see(e) {
+      var w = e.currentTarget.innerText;
+      var a = w.trim().split("\n");
+      this.$router.push({
+        path: "/details",
+        query: {
+          prj_name: a[0]
+        }
+      });
+      console.log(a[0]);
+    },
+    async sousuoList(curVal) {
+      this.sousuoData.prj_name = curVal;
+      var { data: dt } = await this.$http.get("wx/getGongdi_info_ByName", {
+        params: this.sousuoData
+      });
+      this.list = dt;
+      this.list.forEach(e => {
+        if (e.data.prj_state == "-1") {
+          e.data.prj_state = "未受理";
+        }
+        if (e.data.prj_state == "0") {
+          e.data.prj_state = "已受理";
+        }
+        if (e.data.prj_state == "1") {
+          e.data.prj_state = "非小型工程 已移送";
+        }
+        if (e.data.prj_state == "2") {
+          e.data.prj_state = "不同意移交";
+        }
+        if (e.data.prj_state == "3") {
+          e.data.prj_state = "同意移交";
+        }
+        if (e.data.prj_state == "4") {
+          e.data.prj_state = "不同意接收";
+        }
+        if (e.data.prj_state == "5") {
+          e.data.prj_state = "同意接收";
+        }
+        if (e.data.prj_state == "6") {
+          e.data.prj_state = "督察不合格";
+        }
+        if (e.data.prj_state == "7") {
+          e.data.prj_state = "已督察";
+        }
+      });
+    },
     onConfirm() {},
     async onLoad() {
       // 异步更新数据

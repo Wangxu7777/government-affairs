@@ -116,11 +116,6 @@
         <p class="wenjianming">设计单位资质文件</p>
       </van-col>
     </van-row>
-    <div v-if="this.prj_state == '0'" style="margin: 16px;">
-      <van-button @click="jiludan" round block type="info" native-type="submit">
-        填写工程检查记录单
-      </van-button>
-    </div>
     <div style="margin: 16px;">
       <van-button @click="shouye" round block type="info" native-type="submit">
         返回首页
@@ -173,14 +168,6 @@ export default {
   },
   //方法集合
   methods: {
-    jiludan() {
-      this.$router.push({
-        path: "/supervise",
-        query: {
-          prj_name: this.prj_name
-        }
-      });
-    },
     show_before_img() {
       this.instance_before = ImagePreview({
         images: [this.prj_property],

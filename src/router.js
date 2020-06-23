@@ -9,6 +9,7 @@ import Information1 from "./views/Information1.vue";
 import Information2 from "./views/Information2.vue";
 import Details from "./views/Details.vue";
 import Details1 from "./views/Details1.vue";
+import Details2 from "./views/Details2.vue";
 import Synergy from "./views/Synergy.vue";
 import ViewCertificate from "./views/ViewCertificate.vue";
 import TransferOrder from "./views/TransferOrder.vue";
@@ -97,6 +98,11 @@ var router = new Router({
       path: "/details1",
       name: "Details1",
       component: Details1
+    },
+    {
+      path: "/details2",
+      name: "Details2",
+      component: Details2
     },
     {
       path: "/information2",
