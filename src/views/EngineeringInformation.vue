@@ -167,12 +167,7 @@ export default {
         lng: 0,
         lat: 0,
         prj_addr: "",
-        picture: "",
-        picture1: "",
-        picture2: "",
-        picture3: "",
-        picture4: "",
-        picture5: "",
+        picture: [],
         userid: "15810457862"
       },
       uploader: [],
@@ -256,10 +251,9 @@ export default {
       axios
         .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
         .then(response => {
-          this.postData.push(response.data.data.result); //上传一张之后压入这个数组
+          this.gongchengData.picture.push(response.data.data.result); //上传一张之后压入这个数组
 
-          console.log(this.postData);
-          this.gongchengData.picture = response.data.data.result;
+          // this.gongchengData.picture = response.data.data.result;
 
           // console.log(this.gongchengData);
         });
@@ -292,12 +286,7 @@ export default {
       //     "Content-Type": "application/x-www-form-urlencoded"
       //   }
       // };
-      this.gongchengData.picture = this.postData[0];
-      this.gongchengData.picture1 = this.postData[1];
-      this.gongchengData.picture2 = this.postData[2];
-      this.gongchengData.picture3 = this.postData[3];
-      this.gongchengData.picture4 = this.postData[4];
-      this.gongchengData.picture5 = this.postData[5];
+
       this.gongchengData.lng = this.gongchengData.lng.toString();
       this.gongchengData.lat = this.gongchengData.lat.toString();
 

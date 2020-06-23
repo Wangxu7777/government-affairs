@@ -3,36 +3,52 @@
     <van-nav-bar id="reset" title="小型建设工程监督检查记录单" />
     <p>工程基本信息</p>
     <van-cell-group>
-      <van-field label="工程名称" value="输入框只读" readonly />
-      <van-field label="工程地址" value="输入框只读" readonly />
-      <van-field label="建设单位" value="输入框只读" readonly />
-      <van-field label="施工单位" value="输入框只读" readonly />
-      <van-field label="监理单位" value="输入框只读" readonly />
-      <van-field label="设计单位" value="输入框只读" readonly />
-      <van-field label="联系人姓名" value="输入框只读" readonly />
-      <van-field label="联系人电话" value="输入框只读" readonly />
-      <van-field label="工程面积" value="输入框只读" readonly />
-      <van-field label="合同造价" value="输入框只读" readonly />
-      <van-field label="基本违法,违规情况" value="输入框只读" readonly />
+      <van-field label="工程名称" :value="shigongData.prj_name" readonly />
+      <van-field label="工程地址" :value="shigongData.prj_addr" readonly />
+      <van-field label="建设单位" :value="shigongData.demand_com" readonly />
+      <van-field
+        label="施工单位"
+        :value="shigongData.construction_com"
+        readonly
+      />
+      <van-field
+        label="监理单位"
+        :value="shigongData.supervison_com"
+        readonly
+      />
+      <van-field label="设计单位" :value="shigongData.design_rom" readonly />
+      <van-field label="联系人姓名" :value="shigongData.fbi_name" readonly />
+      <van-field label="联系人电话" :value="shigongData.fbi_phone" readonly />
+      <van-field label="工程面积" :value="shigongData.prj_area" readonly />
+      <van-field
+        label="合同造价"
+        :value="shigongData.contract_price"
+        readonly
+      />
+      <van-field
+        label="基本违法,违规情况"
+        :value="shigongData.prj_check"
+        readonly
+      />
     </van-cell-group>
     <p>监督检查记录</p>
     <van-form validate-first @submit="onSubmit">
       <van-field
-        v-model="shigongData.prj_name"
+        v-model="shigongData.check_depart"
         name="监督检查部门"
         label="监督检查部门"
         placeholder="监督检查部门"
         :rules="[{ required: true, message: '请填写监督检查部门' }]"
       />
       <van-field
-        v-model="shigongData.prj_addr"
+        v-model="shigongData.check_person"
         name="检察人员"
         label="检察人员"
         placeholder="检察人员"
         :rules="[{ required: true, message: 'xxx号xxx路' }]"
       />
       <van-field
-        v-model="shigongData.demand_com"
+        v-model="shigongData.check_content"
         name="建设单位"
         label="建设单位"
         placeholder="建设单位"
@@ -40,7 +56,7 @@
 
       <van-cell-group>
         <van-field
-          v-model="shigongData.prj_addr"
+          v-model="shigongData.check_question"
           label="检查内容"
           type="textarea"
           placeholder="检查内容"
@@ -52,7 +68,7 @@
         readonly
         clickable
         name="picker"
-        :value="value"
+        :value="shigongData.check_question"
         label="存在问题"
         placeholder="点击选择存在问题"
         @click="showPicker = true"
@@ -67,7 +83,7 @@
       </van-popup>
       <van-cell-group>
         <van-field
-          v-model="shigongData.prj_addr"
+          v-model="shigongData.check_question_desp"
           type="textarea"
           placeholder="问题详情"
           autosize
@@ -76,7 +92,10 @@
       <h5>整改情况</h5>
       <van-field name="radio">
         <template #input>
-          <van-radio-group v-model="radio" direction="horizontal">
+          <van-radio-group
+            v-model="shigongData.change_state"
+            direction="horizontal"
+          >
             <van-radio name="限期">限期</van-radio>
             <van-radio name="当场">当场</van-radio>
           </van-radio-group>
@@ -84,7 +103,7 @@
       </van-field>
       <van-cell-group>
         <van-field
-          v-model="shigongData.prj_addr"
+          v-model="shigongData.change_desp"
           type="textarea"
           placeholder="整改详情"
           autosize
@@ -141,21 +160,26 @@ export default {
       shigongData: {
         prj_name: "",
         prj_addr: "",
-        prj_type: "",
         prj_area: "",
         prj_price: "",
         demand_com: "",
         construction_com: "",
         supervison_com: "",
         design_rom: "",
-        start_date: "",
-        completion_date: "",
         fbi_name: "",
         fbi_phone: "",
-        prj_person_name: "",
-        prj_person_phone: ""
+        prj_check: "",
+        contract_price: "",
+        prj_state: "",
+        check_depart: "",
+        check_person: "",
+        check_content: "",
+        check_question: "",
+        check_question_desp: "",
+        change_state: "限期",
+        change_desp: "",
+        change_pictures: []
       },
-      value: "",
       columns: [
         "未设置施工告示牌",
         "施工单位不具备相关资质",
@@ -167,14 +191,64 @@ export default {
         "其他"
       ],
       showPicker: false,
-      radio: "限期"
+
+      gongchengData: {
+        prj_name: ""
+      }
     };
   },
+  created() {
+    this.content();
+  },
   methods: {
-    hege() {
+    async content() {
+      // const gongchengData = localStorage.getItem("gongchengData");
+      // this.shouliData = JSON.parse(gongchengData);
+      // this.gongchengData.prj_name = this.shouliData.prj_name;
+      console.log(this.gongchengData.prj_name);
+      this.gongchengData.prj_name = this.$route.query.prj_name;
+      var { data: dt } = await this.$http.get("wx/getGongdi_info", {
+        params: this.gongchengData
+      });
+
+      this.shigongData.prj_state = dt.prj_state;
+      this.shigongData.prj_name = dt.prj_name;
+      this.shigongData.prj_addr = dt.prj_addr;
+      this.shigongData.prj_area = dt.prj_area;
+      this.shigongData.prj_price = dt.prj_price;
+      this.shigongData.demand_com = dt.demand_com;
+      this.shigongData.construction_com = dt.construction_com;
+      this.shigongData.supervison_com = dt.supervison_com;
+      this.shigongData.design_rom = dt.design_rom;
+      this.shigongData.fbi_name = dt.fbi_name;
+      this.shigongData.fbi_phone = dt.fbi_phone;
+      this.shigongData.contract_price = dt.contract_price;
+      this.shigongData.prj_check = dt.prj_check;
+    },
+    async hege() {
+      this.shigongData.prj_state = "7";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
       this.$router.push({ name: "success5" });
     },
-    buhege() {
+    async buhege() {
+      this.shigongData.prj_state = "6";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
       this.$router.push({ name: "success5" });
     },
     afterRead(file) {
@@ -196,10 +270,7 @@ export default {
       axios
         .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
         .then(response => {
-          this.postData.push(response.data.data.result); //上传一张之后压入这个数组
-
-          console.log(this.postData);
-          this.gongchengData.picture = response.data.data.result;
+          this.shigongData.postData.push(response.data.data.result); //上传一张之后压入这个数组
 
           // console.log(this.gongchengData);
         });

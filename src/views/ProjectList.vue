@@ -63,10 +63,15 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <van-cell v-for="item in list" :key="item" :title="item" label="描述信息">
+      <van-cell
+        v-for="(item, index) in this.list"
+        :key="index"
+        :title="item.data.prj_name"
+        :label="item.data.prj_addr"
+      >
         <div class="neirong3">
-          <p>2018年9月</p>
-          <p>已受理</p>
+          <p>{{ item.data.start_date }}</p>
+          <p>{{ item.data.prj_state }}</p>
         </div>
       </van-cell>
     </van-list>
@@ -85,24 +90,58 @@ export default {
     };
   },
   methods: {
+    // async content() {
+    //   var { data: dt } = await this.$http.get(
+    //     "wx/getGongdi_info_AllBySortDate"
+    //   );
+    //   console.log(dt);
+    // },
     onConfirm() {},
-    onLoad() {
+    async onLoad() {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1);
-        }
+      var { data: dt } = await this.$http.get(
+        "wx/getGongdi_info_AllBySortDate"
+      );
 
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true;
+      this.list = dt;
+      this.list.forEach(e => {
+        if (e.data.prj_state == "-1") {
+          e.data.prj_state = "未受理";
         }
-      }, 1000);
+        if (e.data.prj_state == "0") {
+          e.data.prj_state = "已受理";
+        }
+        if (e.data.prj_state == "1") {
+          e.data.prj_state = "非小型工程 已移送";
+        }
+        if (e.data.prj_state == "2") {
+          e.data.prj_state = "不同意移交";
+        }
+        if (e.data.prj_state == "3") {
+          e.data.prj_state = "同意移交";
+        }
+        if (e.data.prj_state == "4") {
+          e.data.prj_state = "不同意接收";
+        }
+        if (e.data.prj_state == "5") {
+          e.data.prj_state = "同意接收";
+        }
+        if (e.data.prj_state == "6") {
+          e.data.prj_state = "督察不合格";
+        }
+        if (e.data.prj_state == "7") {
+          e.data.prj_state = "已督察";
+        }
+      });
+      console.log(this.list);
+      // 加载状态结束
+      this.loading = false;
+      this.finished = true;
     }
+  },
+  created() {
+    // this.content();
   }
 };
 </script>

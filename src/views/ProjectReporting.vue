@@ -132,22 +132,17 @@ export default {
       this.prj_addr = dt.prj_addr;
       this.prj_grid = dt.prj_grid;
       this.prj_type = dt.prj_type;
-      this.picture = `http://111.229.190.8:8000/gongdi/file/${dt.picture}`;
-      if (dt.picture1) {
-        this.picture1 = `http://111.229.190.8:8000/gongdi/file/${dt.picture1}`;
-      }
-      if (dt.picture2) {
-        this.picture2 = `http://111.229.190.8:8000/gongdi/file/${dt.picture2}`;
-      }
-      if (dt.picture3) {
-        this.picture3 = `http://111.229.190.8:8000/gongdi/file/${dt.picture3}`;
-      }
-      if (dt.picture4) {
-        this.picture4 = `http://111.229.190.8:8000/gongdi/file/${dt.picture4}`;
-      }
-      if (dt.picture5) {
-        this.picture5 = `http://111.229.190.8:8000/gongdi/file/${dt.picture5}`;
-      }
+      this.picture = `http://111.229.190.8:8000/gongdi/file/${dt.picture[0]}`;
+
+      this.picture1 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[1]}`;
+
+      this.picture2 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[2]}`;
+
+      this.picture3 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[3]}`;
+
+      this.picture4 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[4]}`;
+
+      this.picture5 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[5]}`;
     },
     xiugai() {
       this.$router.push({ name: "EngineeringInformation" });

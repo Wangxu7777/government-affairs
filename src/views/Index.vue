@@ -24,7 +24,7 @@
               <span>工程发现受理</span>
             </div>
           </van-col>
-          <van-col class="tubiao">
+          <van-col class="tubiao" @click="ducha">
             <div class="title2">
               <icon-svg class="icn_box" icon-class="ducha" />
             </div>
@@ -69,6 +69,9 @@ export default {
   methods: {
     faxianye() {
       this.$router.push({ name: "EngineeringInformation" });
+    },
+    ducha() {
+      this.$router.push({ name: "ProjectList" });
     }
   },
   created() {}

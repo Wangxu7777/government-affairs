@@ -5,26 +5,56 @@
     <p>非小型建设工程移送单</p>
 
     <van-cell-group>
-      <van-field label="工程名称" value="输入框只读" readonly />
-      <van-field label="工程地址" value="输入框只读" readonly />
-      <van-field label="建设单位" value="输入框只读" readonly />
-      <van-field label="施工单位" value="输入框只读" readonly />
-      <van-field label="监理单位" value="输入框只读" readonly />
-      <van-field label="设计单位" value="输入框只读" readonly />
-      <van-field label="联系人姓名" value="输入框只读" readonly />
-      <van-field label="联系人电话" value="输入框只读" readonly />
-      <van-field label="工程面积" value="输入框只读" readonly />
-      <van-field label="合同造价" value="输入框只读" readonly />
-      <van-field label="基本违法,违规情况" value="输入框只读" readonly />
+      <van-field label="工程名称" :value="shigongData.prj_name" readonly />
+      <van-field label="工程地址" :value="shigongData.prj_addr" readonly />
+      <van-field label="建设单位" :value="shigongData.demand_com" readonly />
+      <van-field
+        label="施工单位"
+        :value="shigongData.construction_com"
+        readonly
+      />
+      <van-field
+        label="监理单位"
+        :value="shigongData.supervison_com"
+        readonly
+      />
+      <van-field label="设计单位" :value="shigongData.design_rom" readonly />
+      <van-field label="联系人姓名" :value="shigongData.fbi_name" readonly />
+      <van-field label="联系人电话" :value="shigongData.fbi_phone" readonly />
+      <van-field label="工程面积" :value="shigongData.prj_area" readonly />
+      <van-field
+        label="合同造价"
+        :value="shigongData.contract_price"
+        readonly
+      />
+      <van-field
+        label="基本违法,违规情况"
+        :value="shigongData.prj_check"
+        readonly
+      />
     </van-cell-group>
 
     <div style="margin: 16px;">
-      <van-button class="btn1" round block type="info" native-type="submit">
+      <van-button
+        @click="butongyi"
+        class="btn1"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         不同意移送
       </van-button>
     </div>
     <div style="margin: 16px;">
-      <van-button class="btn2" round block type="info" native-type="submit">
+      <van-button
+        @click="tongyi"
+        class="btn2"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         同意移送
       </van-button>
     </div>
@@ -37,10 +67,118 @@ export default {
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      shigongData: {
+        prj_name: "",
+        prj_addr: "",
+        prj_area: "",
+        prj_price: "",
+        demand_com: "",
+        construction_com: "",
+        supervison_com: "",
+        design_rom: "",
+        fbi_name: "",
+        fbi_phone: "",
+        prj_check: "",
+        contract_price: "",
+        prj_state: ""
+      },
+
+      gongchengData: {
+        prj_name: ""
+      },
+      fasongData: {
+        touser: "15810457862",
+        toparty: "293",
+        msgtype: "news",
+        agentid: "1000081",
+        // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
+        news: {
+          articles: [
+            {
+              title: "政务微信流程测试",
+              description: "政务微信流程",
+              url: "",
+              picurl: "http://47.104.29.235:8080/flower.jpeg"
+            }
+          ]
+        }
+      }
+    };
   },
   //方法集合
-  methods: {},
+  methods: {
+    async tongyi() {
+      this.shigongData.prj_state = "3";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/receive?prj_name=${this.gongchengData.prj_name}`;
+      // this.fasongData.new.articles[0].url =
+      //   "http://47.104.29.235:8080/flower.jpeg";
+      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+
+      if (dt1.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({ name: "success4" });
+    },
+    async butongyi() {
+      this.shigongData.prj_state = "2";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
+      // this.fasongData.new.articles[0].url =
+      //   "http://47.104.29.235:8080/flower.jpeg";
+      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+
+      if (dt1.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({ name: "success4" });
+    },
+    async content() {
+      // const gongchengData = localStorage.getItem("gongchengData");
+      // this.shouliData = JSON.parse(gongchengData);
+      // this.gongchengData.prj_name = this.shouliData.prj_name;
+      this.gongchengData.prj_name = this.$route.query.prj_name;
+      var { data: dt } = await this.$http.get("wx/getGongdi_info", {
+        params: this.gongchengData
+      });
+      this.shigongData.prj_state = dt.prj_state;
+      this.shigongData.prj_name = dt.prj_name;
+      this.shigongData.prj_addr = dt.prj_addr;
+      this.shigongData.prj_area = dt.prj_area;
+      this.shigongData.prj_price = dt.prj_price;
+      this.shigongData.demand_com = dt.demand_com;
+      this.shigongData.construction_com = dt.construction_com;
+      this.shigongData.supervison_com = dt.supervison_com;
+      this.shigongData.design_rom = dt.design_rom;
+      this.shigongData.fbi_name = dt.fbi_name;
+      this.shigongData.fbi_phone = dt.fbi_phone;
+      this.shigongData.contract_price = dt.contract_price;
+      this.shigongData.prj_check = dt.prj_check;
+    }
+  },
   created() {}
 };
 </script>

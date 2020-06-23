@@ -5,26 +5,39 @@
     <p>非小型建设工程移送单</p>
     <div class="biaoti">
       <icon-svg class="icn_box" icon-class="chuanshuliebiao" />
-      <span>正在移交</span>
-      <icon-svg class="icn_box" icon-class="querenduigougouhao" />
-      <icon-svg class="icn_box" icon-class="cuohao" />
+      <span v-if="this.prj_state == '-1' || this.prj_state == '1'"
+        >正在移交</span
+      >
+      <span v-if="this.prj_state == '2'">移交失败</span>
+      <span v-if="this.prj_state == '5'">已被成功接收</span>
+      <span v-if="this.prj_state == '4'">拒接接收</span>
+      <icon-svg
+        v-if="this.prj_state == '3' || this.prj_state == '5'"
+        class="icn_box"
+        icon-class="querenduigougouhao"
+      />
+      <icon-svg
+        v-if="this.prj_state == '4' || this.prj_state == '2'"
+        class="icn_box"
+        icon-class="cuohao"
+      />
     </div>
     <van-cell-group>
-      <van-field label="工程名称" value="输入框只读" readonly />
-      <van-field label="工程地址" value="输入框只读" readonly />
-      <van-field label="建设单位" value="输入框只读" readonly />
-      <van-field label="施工单位" value="输入框只读" readonly />
-      <van-field label="监理单位" value="输入框只读" readonly />
-      <van-field label="设计单位" value="输入框只读" readonly />
-      <van-field label="联系人姓名" value="输入框只读" readonly />
-      <van-field label="联系人电话" value="输入框只读" readonly />
-      <van-field label="工程面积" value="输入框只读" readonly />
-      <van-field label="合同造价" value="输入框只读" readonly />
-      <van-field label="基本违法,违规情况" value="输入框只读" readonly />
+      <van-field label="工程名称" :value="prj_name" readonly />
+      <van-field label="工程地址" :value="prj_addr" readonly />
+      <van-field label="建设单位" :value="demand_com" readonly />
+      <van-field label="施工单位" :value="construction_com" readonly />
+      <van-field label="监理单位" :value="supervison_com" readonly />
+      <van-field label="设计单位" :value="design_rom" readonly />
+      <van-field label="联系人姓名" :value="fbi_name" readonly />
+      <van-field label="联系人电话" :value="fbi_phone" readonly />
+      <van-field label="工程面积" :value="prj_area" readonly />
+      <van-field label="合同造价" :value="contract_price" readonly />
+      <van-field label="基本违法,违规情况" :value="prj_check" readonly />
     </van-cell-group>
 
     <div style="margin: 16px;">
-      <van-button round block type="info" native-type="submit">
+      <van-button @click="shouye" round block type="info" native-type="submit">
         返回首页
       </van-button>
     </div>
@@ -37,11 +50,62 @@ export default {
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      prj_name: "",
+      prj_addr: "",
+      prj_area: "",
+      prj_price: "",
+      demand_com: "",
+      construction_com: "",
+      supervison_com: "",
+      design_rom: "",
+      fbi_name: "",
+      fbi_phone: "",
+      prj_check: "",
+      contract_price: "",
+      prj_state: "",
+      shigongData: {
+        prj_name: ""
+      },
+      shigongData1: {}
+    };
   },
   //方法集合
-  methods: {},
-  created() {}
+  methods: {
+    shouye() {
+      this.$router.push({ name: "Index" });
+    },
+    async content() {
+      const shigongData = localStorage.getItem("shigongData");
+      if (shigongData) {
+        this.shigongData1 = JSON.parse(shigongData);
+        this.shigongData.prj_name = this.shigongData1.prj_name;
+      } else {
+        this.shigongData.prj_name = this.$route.query.prj_name;
+      }
+      console.log(this.shigongData);
+      var { data: dt } = await this.$http.get("wx/getGongdi_info", {
+        params: this.shigongData
+      });
+
+      this.prj_state = dt.prj_state;
+      this.prj_name = dt.prj_name;
+      this.prj_addr = dt.prj_addr;
+      this.prj_area = dt.prj_area;
+      this.prj_price = dt.prj_price;
+      this.demand_com = dt.demand_com;
+      this.construction_com = dt.construction_com;
+      this.supervison_com = dt.supervison_com;
+      this.design_rom = dt.design_rom;
+      this.fbi_name = dt.fbi_name;
+      this.fbi_phone = dt.fbi_phone;
+      this.contract_price = dt.contract_price;
+      this.prj_check = dt.prj_check;
+    }
+  },
+  created() {
+    this.content();
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -4,18 +4,17 @@
     <p>工程信息</p>
     <van-form validate-first @submit="onSubmit">
       <van-field
+        readonly
         v-model="shigongData.prj_name"
         name="工程名称"
         label="工程名称"
         placeholder="工程名称"
-        :rules="[{ required: true, message: '请填写工程名称' }]"
       />
       <van-field
         v-model="shigongData.prj_addr"
         name="工程地址"
         label="工程地址"
         placeholder="工程地址"
-        :rules="[{ required: true, message: '请填写工程地址' }]"
       />
       <van-field
         v-model="shigongData.demand_com"
@@ -58,28 +57,27 @@
       />
 
       <van-field
-        v-model="shigongData.prj_person_name"
+        v-model="shigongData.prj_area"
         name="工程面积"
         label="工程面积"
         placeholder="工程面积"
       />
 
       <van-field
-        v-model="shigongData.prj_price"
+        v-model="shigongData.contract_price"
         name="合同造价"
         label="合同造价"
         placeholder="合同造价"
-        :rules="[{ required: true, message: '请填写合同造价' }]"
       />
       <van-field
-        v-model="shigongData.prj_person_phone"
+        v-model="shigongData.prj_check"
         name="基本违法、违规情况"
         label="基本违法、违规情况"
         placeholder="基本违法、违规情况"
       />
       <div style="margin: 16px;">
         <van-button
-          @click="xiayibu"
+          @click="yijiao"
           round
           block
           type="info"
@@ -102,37 +100,89 @@ export default {
       shigongData: {
         prj_name: "",
         prj_addr: "",
-        prj_type: "",
         prj_area: "",
         prj_price: "",
         demand_com: "",
         construction_com: "",
         supervison_com: "",
         design_rom: "",
-        start_date: "",
-        completion_date: "",
         fbi_name: "",
         fbi_phone: "",
-        prj_person_name: "",
-        prj_person_phone: ""
+        prj_check: "",
+        contract_price: "",
+        prj_state: ""
       },
 
       showCalendar: false,
-      showCalendar1: false
+      showCalendar1: false,
+      gongchengData: {
+        prj_name: ""
+      },
+      fasongData: {
+        touser: "15810457862",
+        toparty: "293",
+        msgtype: "news",
+        agentid: "1000081",
+        // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
+        news: {
+          articles: [
+            {
+              title: "政务微信流程测试",
+              description: "政务微信流程",
+              url: "",
+              picurl: "http://47.104.29.235:8080/flower.jpeg"
+            }
+          ]
+        }
+      }
     };
   },
   //方法集合
   methods: {
+    async content() {
+      this.gongchengData.prj_name = this.$route.query.prj_name;
+      var { data: dt } = await this.$http.get("wx/getGongdi", {
+        params: this.gongchengData
+      });
+      console.log(dt);
+      this.shigongData.prj_name = this.gongchengData.prj_name;
+      this.shigongData.prj_name = dt.prj_addr;
+    },
+    async yijiao() {
+      this.shigongData.prj_state = "1";
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData
+      );
+      if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferOrder?prj_name=${this.shigongData.prj_name}`;
+      // this.fasongData.new.articles[0].url =
+      //   "http://47.104.29.235:8080/flower.jpeg";
+      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+
+      if (dt1.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      localStorage.setItem("gongchengData", JSON.stringify(this.gongchengData));
+      this.$router.push({ name: "success4" });
+    },
     onSubmit() {
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success3" });
     },
-    xiayibu() {},
     onClickLeft() {
       this.$router.go(-1);
     }
   },
-  created() {},
+  created() {
+    this.content();
+  },
   beforeCreate() {
     document
       .querySelector("body")
