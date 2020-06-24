@@ -206,8 +206,8 @@ export default {
         news: {
           articles: [
             {
-              title: "政务微信流程测试",
-              description: "政务微信流程",
+              title: "发现小型工程，待受理",
+              description: "发现小型工程，待受理",
               url: "",
               picurl: "http://47.104.29.235:8080/flower.jpeg"
             }

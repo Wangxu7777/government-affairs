@@ -47,16 +47,10 @@
         placeholder="检察人员"
         :rules="[{ required: true, message: 'xxx号xxx路' }]"
       />
-      <van-field
-        v-model="shigongData.check_content"
-        name="建设单位"
-        label="建设单位"
-        placeholder="建设单位"
-      />
 
       <van-cell-group>
         <van-field
-          v-model="shigongData.check_question"
+          v-model="shigongData.check_content"
           label="检查内容"
           type="textarea"
           placeholder="检查内容"
@@ -178,7 +172,23 @@ export default {
         check_question_desp: "",
         change_state: "限期",
         change_desp: "",
-        change_pictures: []
+        change_pictures: [],
+        prj_property: "",
+        prj_lease_contract: "",
+        prj_con_contract: "",
+        prj_license: "",
+        prj_certifications: "",
+        prj_manager_cert: "",
+        prj_safe_cert: "",
+        prj_manager_appiontment: "",
+        prj_safe_appiontment: "",
+        prj_design_cert: "",
+        completion_date: "",
+        prj_assist_org: "",
+        prj_person_name: "",
+        prj_person_phone: "",
+        prj_type: "",
+        start_date: ""
       },
       columns: [
         "未设置施工告示牌",
@@ -205,7 +215,6 @@ export default {
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;
-      console.log(this.gongchengData.prj_name);
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.gongchengData
@@ -224,6 +233,44 @@ export default {
       this.shigongData.fbi_phone = dt.fbi_phone;
       this.shigongData.contract_price = dt.contract_price;
       this.shigongData.prj_check = dt.prj_check;
+      this.shigongData.completion_date = dt.completion_date;
+      this.shigongData.prj_assist_org = dt.prj_assist_org;
+      this.shigongData.prj_person_name = dt.prj_person_name;
+      this.shigongData.prj_person_phone = dt.prj_person_phone;
+      this.shigongData.prj_type = dt.prj_type;
+      this.shigongData.start_date = dt.start_date;
+      this.shigongData.completion_date = dt.completion_date;
+      this.shigongData.completion_date = dt.completion_date;
+      if (dt.prj_property) {
+        this.prj_property = dt.prj_property;
+      }
+      if (dt.prj_lease_contract) {
+        this.prj_lease_contract = dt.prj_lease_contract;
+      }
+      if (dt.prj_con_contract) {
+        this.prj_con_contract = dt.prj_con_contract;
+      }
+      if (dt.prj_license) {
+        this.prj_license = dt.prj_license;
+      }
+      if (dt.prj_certifications) {
+        this.prj_certifications = dt.prj_certifications;
+      }
+      if (dt.prj_manager_cert) {
+        this.prj_manager_cert = dt.prj_manager_cert;
+      }
+      if (dt.prj_safe_cert) {
+        this.prj_safe_cert = dt.prj_safe_cert;
+      }
+      if (dt.prj_manager_appiontment) {
+        this.prj_manager_appiontment = dt.prj_manager_appiontment;
+      }
+      if (dt.prj_safe_appiontment) {
+        this.prj_safe_appiontment = dt.prj_safe_appiontment;
+      }
+      if (dt.prj_design_cert) {
+        this.prj_design_cert = dt.prj_design_cert;
+      }
     },
     async hege() {
       this.shigongData.prj_state = "7";
@@ -236,6 +283,7 @@ export default {
           message: "提交失败"
         });
       }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success5" });
     },
     async buhege() {
@@ -249,6 +297,7 @@ export default {
           message: "提交失败"
         });
       }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success5" });
     },
     afterRead(file) {
@@ -270,7 +319,7 @@ export default {
       axios
         .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
         .then(response => {
-          this.shigongData.postData.push(response.data.data.result); //上传一张之后压入这个数组
+          this.shigongData.change_pictures.push(response.data.data.result); //上传一张之后压入这个数组
 
           // console.log(this.gongchengData);
         });
@@ -278,7 +327,7 @@ export default {
     tijiao() {},
     onSubmit() {},
     onConfirm(value) {
-      this.value = value;
+      this.shigongData.check_question = value;
       this.showPicker = false;
     }
   }

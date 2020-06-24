@@ -10,10 +10,16 @@
     <p>工程施工信息</p>
     <div class="biaoti">
       <icon-svg class="icn_box" icon-class="shenhe" />
-      <span v-if="this.prj_state == ''">已受理，待审核</span>
+      <span v-if="this.prj_state == '-2'">已受理，待审核</span>
       <span v-if="this.prj_state == '0'">已受理，审核通过</span>
       <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
       <span v-if="this.prj_state == '1'">正在移交</span>
+      <span v-if="this.prj_state == '2'">不同意移交</span>
+      <span v-if="this.prj_state == '3'">同意移交</span>
+      <span v-if="this.prj_state == '4'">不同意接收</span>
+      <span v-if="this.prj_state == '5'">同意接收</span>
+      <span v-if="this.prj_state == '7'">检查合格</span>
+      <span v-if="this.prj_state == '6'">检查不合格</span>
     </div>
     <van-cell-group>
       <van-field label="工程名称" :value="prj_name" readonly />
@@ -122,7 +128,14 @@
       </van-button>
     </div>
     <div style="margin: 16px;">
-      <van-button @click="shouye" round block type="info" native-type="submit">
+      <van-button
+        class="shouye"
+        @click="shouye"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         返回首页
       </van-button>
     </div>
@@ -246,8 +259,13 @@ export default {
     },
     async content() {
       const shigongData = localStorage.getItem("shigongData");
-      this.shigongData1 = JSON.parse(shigongData);
-      this.shigongData.prj_name = this.shigongData1.prj_name;
+      if (shigongData) {
+        this.shigongData1 = JSON.parse(shigongData);
+        this.shigongData.prj_name = this.shigongData1.prj_name;
+      } else {
+        this.shigongData.prj_name = this.$route.query.prj_name;
+      }
+
       console.log(this.shigongData);
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData
@@ -387,7 +405,7 @@ p {
   background-color: #fff;
   text-align: center;
 }
-.van-button {
+.shouye {
   background: linear-gradient(
     -90deg,
     rgba(253, 204, 2, 1) 0%,

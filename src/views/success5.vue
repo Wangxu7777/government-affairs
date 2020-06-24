@@ -19,7 +19,7 @@
           native-type="submit"
           size="large"
         >
-          查看小型工程移送单
+          查看小型工程记录单
         </van-button>
       </div>
       <div style="margin: 16px;">
@@ -50,7 +50,7 @@ export default {
   //方法集合
   methods: {
     xiangqin() {
-      this.$router.push({ name: "ViewTransferOrder" });
+      this.$router.push({ name: "Details2" });
     },
     shouye() {
       this.$router.push({ name: "Index" });

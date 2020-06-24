@@ -111,9 +111,9 @@
       />
       <van-field
         v-model="shigongData.prj_person_phone"
-        name="设计单位电话"
-        label="设计单位电话"
-        placeholder="设计单位电话"
+        name="负责人电话"
+        label="负责人电话"
+        placeholder="负责人电话"
       />
       <div style="margin: 16px;">
         <van-button
@@ -156,11 +156,23 @@ export default {
       },
 
       showCalendar: false,
-      showCalendar1: false
+      showCalendar1: false,
+      gongchengData: {
+        prj_name: ""
+      }
     };
   },
   //方法集合
   methods: {
+    async content() {
+      this.gongchengData.prj_name = this.$route.query.prj_name;
+      var { data: dt } = await this.$http.get("wx/getGongdi", {
+        params: this.gongchengData
+      });
+      console.log(dt);
+      this.shigongData.prj_name = this.gongchengData.prj_name;
+      this.shigongData.prj_addr = dt.prj_addr;
+    },
     onSubmit() {
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "Information2" });

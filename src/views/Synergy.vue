@@ -92,6 +92,7 @@ export default {
       this.$router.go(-1);
     },
     async tijiao() {
+      this.shigongData.prj_state = "-2";
       this.shigongData.prj_assist_org = this.result.toString();
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
@@ -102,6 +103,7 @@ export default {
           message: "提交失败"
         });
       }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success1" });
     },
     RouterData() {

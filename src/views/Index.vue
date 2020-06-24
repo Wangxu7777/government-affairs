@@ -42,7 +42,7 @@
               <span>工程竣工</span>
             </div>
           </van-col>
-          <van-col class="tubiao">
+          <van-col class="tubiao" @click="chaxun">
             <div class="title4">
               <icon-svg class="icn_box" icon-class="chaxun1" />
             </div>
@@ -67,6 +67,9 @@ export default {
   },
   //方法集合
   methods: {
+    chaxun() {
+      this.$router.push({ name: "ProjectList" });
+    },
     faxianye() {
       this.$router.push({ name: "EngineeringInformation" });
     },

@@ -146,7 +146,7 @@ export default {
       });
       console.log(dt);
       this.shigongData.prj_name = this.gongchengData.prj_name;
-      this.shigongData.prj_name = dt.prj_addr;
+      this.shigongData.prj_addr = dt.prj_addr;
     },
     async yijiao() {
       this.shigongData.prj_state = "1";
@@ -159,6 +159,8 @@ export default {
           message: "提交失败"
         });
       }
+      this.fasongData.news.articles[0].title = `小型工程移送`;
+      this.fasongData.news.articles[0].description = `小型工程移送`;
       this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferOrder?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
@@ -169,12 +171,12 @@ export default {
           message: "提交失败"
         });
       }
-      localStorage.setItem("gongchengData", JSON.stringify(this.gongchengData));
-      this.$router.push({ name: "success4" });
-    },
-    onSubmit() {
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success3" });
+    },
+    onSubmit() {
+      // localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      // this.$router.push({ name: "success3" });
     },
     onClickLeft() {
       this.$router.go(-1);

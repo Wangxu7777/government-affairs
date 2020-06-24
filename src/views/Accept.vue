@@ -166,7 +166,7 @@ export default {
         });
       }
       this.$toast.success({
-        message: "一般工程"
+        message: "一般工程 已拒绝受理"
       });
       this.$router.push({ name: "Index" });
     },
@@ -194,7 +194,13 @@ export default {
           message: "提交失败"
         });
       }
-      this.$router.push({ name: "Information1" });
+
+      this.$router.push({
+        path: "/information1",
+        query: {
+          prj_name: this.prj_name
+        }
+      });
     },
     async no_shouli() {
       this.shouliData.prj_state = "-1";
@@ -210,6 +216,8 @@ export default {
       this.$toast.success({
         message: "非小型工程拒绝受理"
       });
+      this.fasongData.news.articles[0].title = `小型工程未受理`;
+      this.fasongData.news.articles[0].description = `小型工程未受理`;
       this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferForm?prj_name=${this.gongchengData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
@@ -235,17 +243,42 @@ export default {
       this.prj_addr = dt.prj_addr;
       this.prj_grid = dt.prj_grid;
       this.prj_type = dt.prj_type;
-      this.picture = `http://111.229.190.8:8000/gongdi/file/${dt.picture[0]}`;
+      var imgArr = dt.picture.trim().split(",");
+      if (imgArr.length == 1) {
+        this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
+      }
+      if (imgArr.length == 2) {
+        this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
+        this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
+      }
 
-      this.picture1 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[1]}`;
+      if (imgArr.length == 3) {
+        this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
+        this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
+        this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
+      }
 
-      this.picture2 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[2]}`;
-
-      this.picture3 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[3]}`;
-
-      this.picture4 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[4]}`;
-
-      this.picture5 = `http://111.229.190.8:8000/gongdi/file/${dt.picture[5]}`;
+      if (imgArr.length == 4) {
+        this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
+        this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
+        this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
+        this.picture3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
+      }
+      if (imgArr.length == 5) {
+        this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
+        this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
+        this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
+        this.picture3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
+        this.picture4 = `http://111.229.190.8:8000/gongdi/file/${imgArr[4]}`;
+      }
+      if (imgArr.length == 6) {
+        this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
+        this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
+        this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
+        this.picture3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
+        this.picture4 = `http://111.229.190.8:8000/gongdi/file/${imgArr[4]}`;
+        this.picture5 = `http://111.229.190.8:8000/gongdi/file/${imgArr[5]}`;
+      }
     }
   },
   created() {

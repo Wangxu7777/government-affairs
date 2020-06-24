@@ -3,17 +3,14 @@
   <div>
     <van-nav-bar
       id="reset"
-      title="完整工程施工信息单"
+      title="小型工程检查记录单"
       left-arrow
       @click-left="onClickLeft"
     />
-    <p>工程施工信息</p>
     <div class="biaoti">
-      <icon-svg class="icn_box" icon-class="shenhe" />
-      <span v-if="this.prj_state == ''">已受理，待审核</span>
-      <span v-if="this.prj_state == '0'">已受理，审核通过</span>
-      <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
-      <span v-if="this.prj_state == '1'">正在移交</span>
+      <span class="hege" v-if="this.prj_state == '7'">检查合格</span>
+      <span class="buhege" v-if="this.prj_state == '6'">检查不合格</span>
+      <span>本次审查已完成</span>
     </div>
     <van-cell-group>
       <van-field label="工程名称" :value="prj_name" readonly />
@@ -22,100 +19,36 @@
       <van-field label="施工单位" :value="construction_com" readonly />
       <van-field label="监理单位" :value="supervison_com" readonly />
       <van-field label="设计单位" :value="design_rom" readonly />
-      <van-field label="开工日期" :value="start_date" readonly />
-      <van-field label="竣工日期" :value="completion_date" readonly />
+      <van-field label="项目负责人" :value="prj_person_name" readonly />
+      <van-field label="负责人电话" :value="prj_person_phone" readonly />
     </van-cell-group>
-    <p>监督单位信息</p>
+
+    <p>监督检查记录</p>
     <van-cell-group>
-      <van-field label="单位名称" :value="fbi_name" readonly />
-      <van-field label="监督电话" :value="fbi_phone" readonly />
+      <van-field label="监督检查部门" :value="check_depart" readonly />
+      <van-field label="检察人员" :value="check_person" readonly />
+      <van-field
+        label="检查内容"
+        v-model="check_content"
+        type="textarea"
+        autosize
+        readonly
+      />
+      <van-field
+        label="存在问题"
+        v-model="check_question"
+        type="textarea"
+        autosize
+        readonly
+      />
+      <van-field
+        label="整改情况"
+        v-model="change_desp"
+        type="textarea"
+        autosize
+        readonly
+      />
     </van-cell-group>
-    <p>负责人信息</p>
-    <van-cell-group>
-      <van-field label="姓名" :value="prj_person_name" readonly />
-      <van-field label="联系方式" :value="prj_person_phone" readonly />
-    </van-cell-group>
-    <p>工程文件</p>
-    <van-row class="buju" gutter="20">
-      <van-col span="6" @click="show_before_img">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_property" />
-        </div>
-
-        <p class="wenjianming">产权证</p>
-      </van-col>
-      <van-col span="6" @click="show_before_img1">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_lease_contract" />
-        </div>
-
-        <p class="wenjianming">租赁合同</p>
-      </van-col>
-      <van-col span="6" @click="show_before_img2">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_con_contract" />
-        </div>
-
-        <p class="wenjianming">施工合同</p>
-      </van-col>
-      <van-col span="6" @click="show_before_img3">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_license" />
-        </div>
-
-        <p class="wenjianming">施工单位营业执照</p>
-      </van-col>
-    </van-row>
-    <van-row class="buju" gutter="20">
-      <van-col span="6" @click="show_before_img4">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_certifications" />
-        </div>
-
-        <p class="wenjianming">施工单位资质证书</p>
-      </van-col>
-      <van-col span="6" @click="show_before_img5">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_manager_cert" />
-        </div>
-
-        <p class="wenjianming">项目经理证书</p>
-      </van-col>
-      <van-col span="6" @click="show_before_img6">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_safe_cert" />
-        </div>
-
-        <p class="wenjianming">安全员证书</p>
-      </van-col>
-      <van-col span="6" @click="show_before_img7">
-        <div class="beijin">
-          <van-image
-            width="100%"
-            height="100%"
-            :src="prj_manager_appiontment"
-          />
-        </div>
-
-        <p class="wenjianming">项目经理任命文件</p>
-      </van-col>
-    </van-row>
-    <van-row class="buju" gutter="20">
-      <van-col span="6" @click="show_before_img8">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_safe_appiontment" />
-        </div>
-
-        <p class="wenjianming">安全员任命文件</p>
-      </van-col>
-      <van-col span="6" @click="show_before_img9">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_design_cert" />
-        </div>
-
-        <p class="wenjianming">设计单位资质文件</p>
-      </van-col>
-    </van-row>
     <div style="margin: 16px;">
       <van-button @click="shouye" round block type="info" native-type="submit">
         返回首页
@@ -132,6 +65,12 @@ export default {
   data() {
     //这里存放数据
     return {
+      check_depart: "",
+      check_person: "",
+      check_content: "",
+      check_question: "",
+      change_desp: "",
+
       prj_name: "",
       prj_addr: "",
       prj_type: "",
@@ -168,6 +107,14 @@ export default {
   },
   //方法集合
   methods: {
+    jiludan() {
+      this.$router.push({
+        path: "/supervise",
+        query: {
+          prj_name: this.prj_name
+        }
+      });
+    },
     show_before_img() {
       this.instance_before = ImagePreview({
         images: [this.prj_property],
@@ -233,9 +180,13 @@ export default {
     },
     async content() {
       const shigongData = localStorage.getItem("shigongData");
-      this.shigongData1 = JSON.parse(shigongData);
-      this.shigongData.prj_name = this.shigongData1.prj_name;
-      console.log(this.shigongData);
+      if (shigongData) {
+        this.shigongData1 = JSON.parse(shigongData);
+        this.shigongData.prj_name = this.shigongData1.prj_name;
+      } else {
+        this.shigongData.prj_name = this.$route.query.prj_name;
+      }
+
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData
       });
@@ -256,6 +207,12 @@ export default {
       this.fbi_phone = dt.fbi_phone;
       this.prj_person_name = dt.prj_person_name;
       this.prj_person_phone = dt.prj_person_phone;
+      this.check_depart = dt.check_depart;
+      this.check_person = dt.check_person;
+      this.check_content = dt.check_content;
+      this.check_question = dt.check_question;
+      this.change_desp = dt.change_desp;
+
       if (dt.prj_lease_contract) {
         this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
       }
@@ -335,6 +292,34 @@ p {
   span {
     font-size: 36px;
     color: rgba(52, 52, 52, 1);
+  }
+  .hege {
+    display: inline-block;
+    width: 170px;
+    height: 60px;
+    font-size: 26px;
+    background: linear-gradient(
+      -90deg,
+      rgba(109, 223, 88, 1),
+      rgba(127, 234, 97, 1)
+    );
+    text-align: center;
+    line-height: 60px;
+    margin-right: 10px;
+  }
+  .buhege {
+    display: inline-block;
+    width: 170px;
+    height: 60px;
+    font-size: 26px;
+    background: linear-gradient(
+      -90deg,
+      rgba(245, 63, 51, 1),
+      rgba(252, 87, 76, 1)
+    );
+    text-align: center;
+    line-height: 60px;
+    margin-right: 10px;
   }
 }
 .buju {

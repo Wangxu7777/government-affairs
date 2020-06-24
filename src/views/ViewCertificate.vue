@@ -152,7 +152,9 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/transferForm`;
+      this.fasongData.news.articles[0].title = `非小型工程，请移交`;
+      this.fasongData.news.articles[0].description = `非小型工程，请移交`;
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/transferForm?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -162,6 +164,7 @@ export default {
           message: "提交失败"
         });
       }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
       this.$router.push({ name: "success2" });
     },
     async tongguo() {
@@ -175,7 +178,9 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details?prj_name=${this.gongchengData.prj_name}`;
+      this.fasongData.news.articles[0].title = `小型工程受理审核通过`;
+      this.fasongData.news.articles[0].description = `小型工程受理审核通过`;
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -185,6 +190,7 @@ export default {
           message: "提交失败"
         });
       }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
       this.$router.push({ name: "success2" });
     },
     async weitongguo() {
@@ -198,7 +204,9 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/information1?prj_name=${this.gongchengData.prj_name}`;
+      this.fasongData.news.articles[0].title = `小型工地受理审核，未通过。`;
+      this.fasongData.news.articles[0].description = `小型工地受理审核，未通过。`;
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/information1?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -208,6 +216,7 @@ export default {
           message: "提交失败"
         });
       }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
       this.$router.push({ name: "success2" });
     },
     show_before_img() {
@@ -272,13 +281,16 @@ export default {
     },
     async content() {
       const shigongData = localStorage.getItem("shigongData");
-      this.shigongData1 = JSON.parse(shigongData);
-      this.shigongData.prj_name = this.shigongData1.prj_name;
-      console.log(this.shigongData);
+      if (shigongData) {
+        this.shigongData1 = JSON.parse(shigongData);
+        this.shigongData.prj_name = this.shigongData1.prj_name;
+      } else {
+        this.shigongData.prj_name = this.$route.query.prj_name;
+      }
+
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData
       });
-      console.log(dt);
 
       if (dt.prj_lease_contract) {
         this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;

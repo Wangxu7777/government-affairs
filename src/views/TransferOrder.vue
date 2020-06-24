@@ -87,6 +87,7 @@ export default {
       gongchengData: {
         prj_name: ""
       },
+      shigongData1: {},
       fasongData: {
         touser: "15810457862",
         toparty: "293",
@@ -112,13 +113,15 @@ export default {
       this.shigongData.prj_state = "3";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
-        this.shigongData
+        this.shigongData1
       );
       if (dt != 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
+      this.fasongData.news.articles[0].title = `小型工程移送`;
+      this.fasongData.news.articles[0].description = `小型工程移送`;
       this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/receive?prj_name=${this.gongchengData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
@@ -136,13 +139,15 @@ export default {
       this.shigongData.prj_state = "2";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
-        this.shigongData
+        this.shigongData1
       );
       if (dt != 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
+      this.fasongData.news.articles[0].title = `小型工程移送失败`;
+      this.fasongData.news.articles[0].description = `小型工程移送失败`;
       this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
@@ -164,6 +169,7 @@ export default {
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.gongchengData
       });
+      this.shigongData1 = dt;
       this.shigongData.prj_state = dt.prj_state;
       this.shigongData.prj_name = dt.prj_name;
       this.shigongData.prj_addr = dt.prj_addr;
@@ -179,7 +185,9 @@ export default {
       this.shigongData.prj_check = dt.prj_check;
     }
   },
-  created() {}
+  created() {
+    this.content();
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -67,12 +67,22 @@ export default {
   //方法集合
   methods: {
     zizhi() {
-      this.$router.push({ name: "ViewCertificate" });
+      this.$router.push({
+        path: "/viewCertificate",
+        query: {
+          prj_name: this.prj_name
+        }
+      });
     },
     async content() {
       const shigongData = localStorage.getItem("shigongData");
-      this.shigongData1 = JSON.parse(shigongData);
-      this.shigongData.prj_name = this.shigongData1.prj_name;
+      if (shigongData) {
+        this.shigongData1 = JSON.parse(shigongData);
+        this.shigongData.prj_name = this.shigongData1.prj_name;
+      } else {
+        this.shigongData.prj_name = this.$route.query.prj_name;
+      }
+
       console.log(this.shigongData);
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData

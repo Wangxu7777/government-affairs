@@ -1,6 +1,11 @@
 <template>
   <div>
-    <van-nav-bar id="reset" title="工程列表" left-arrow />
+    <van-nav-bar
+      id="reset"
+      title="工程列表"
+      left-arrow
+      @click-left="onClickLeft"
+    />
 
     <van-search
       v-model="value"
@@ -102,9 +107,13 @@ export default {
       this.timeout = setTimeout(() => {
         this.sousuoList(curVal);
       }, 1000);
-    }
+    },
+    radio() {}
   },
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     see(e) {
       var w = e.currentTarget.innerText;
       var a = w.trim().split("\n");
@@ -114,7 +123,6 @@ export default {
           prj_name: a[0]
         }
       });
-      console.log(a[0]);
     },
     async sousuoList(curVal) {
       this.sousuoData.prj_name = curVal;
@@ -123,6 +131,9 @@ export default {
       });
       this.list = dt;
       this.list.forEach(e => {
+        if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
         if (e.data.prj_state == "-1") {
           e.data.prj_state = "未受理";
         }
@@ -162,6 +173,9 @@ export default {
 
       this.list = dt;
       this.list.forEach(e => {
+        if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
         if (e.data.prj_state == "-1") {
           e.data.prj_state = "未受理";
         }
@@ -169,7 +183,7 @@ export default {
           e.data.prj_state = "已受理";
         }
         if (e.data.prj_state == "1") {
-          e.data.prj_state = "非小型工程 已移送";
+          e.data.prj_state = "非小型工程，已移送";
         }
         if (e.data.prj_state == "2") {
           e.data.prj_state = "不同意移交";
@@ -198,6 +212,16 @@ export default {
   },
   created() {
     // this.content();
+    var users = [
+      { name: "张含韵", email: "zhang@email.com" },
+      { name: "江一燕", email: "jiang@email.com" },
+      { name: "李小璐", email: "li@email.com" }
+    ];
+
+    var emails = users.map(user => {
+      return user.email;
+    });
+    console.log(emails);
   }
 };
 </script>
