@@ -21,33 +21,37 @@
             </template>
             <van-radio-group v-model="radio">
               <van-cell-group>
-                <van-cell title="已受理" clickable @click="radio = '1'">
+                <van-cell title="已受理" clickable @click="radio = '已受理'">
                   <template #right-icon>
-                    <van-radio name="1" />
+                    <van-radio name="已受理" />
                   </template>
                 </van-cell>
-                <van-cell title="检查合格" clickable @click="radio = '2'">
+                <van-cell title="检查合格" clickable @click="radio = '已督察'">
                   <template #right-icon>
-                    <van-radio name="2" />
+                    <van-radio name="已督察" />
                   </template>
                 </van-cell>
-                <van-cell title="检查未合格" clickable @click="radio = '3'">
+                <van-cell
+                  title="检查未合格"
+                  clickable
+                  @click="radio = '督察不合格'"
+                >
                   <template #right-icon>
-                    <van-radio name="3" />
+                    <van-radio name="督察不合格" />
                   </template>
                 </van-cell>
-                <van-cell title="已竣工" clickable @click="radio = '4'">
+                <van-cell title="已竣工" clickable @click="radio = '已竣工'">
                   <template #right-icon>
-                    <van-radio name="4" />
+                    <van-radio name="已竣工" />
                   </template>
                 </van-cell>
                 <van-cell
                   title="非小型工程，已移交"
                   clickable
-                  @click="radio = '5'"
+                  @click="radio = '非小型工程 已移送'"
                 >
                   <template #right-icon>
-                    <van-radio name="5" />
+                    <van-radio name="非小型工程 已移送" />
                   </template>
                 </van-cell>
               </van-cell-group>
@@ -91,6 +95,7 @@ export default {
       value: "",
       radio: "",
       list: [],
+      list1: [],
       loading: false,
       finished: false,
       timeout: null,
@@ -108,7 +113,9 @@ export default {
         this.sousuoList(curVal);
       }, 1000);
     },
-    radio() {}
+    radio(curVal) {
+      this.shaixuan(curVal);
+    }
   },
   methods: {
     onClickLeft() {
@@ -204,24 +211,20 @@ export default {
           e.data.prj_state = "已督察";
         }
       });
-      console.log(this.list);
+      this.list1 = this.list;
       // 加载状态结束
       this.loading = false;
       this.finished = true;
+    },
+    shaixuan(prj_state) {
+      this.list = this.list1;
+      if (this.finished == true) {
+        this.list = this.list.filter(item => item.data.prj_state == prj_state);
+      }
     }
   },
   created() {
     // this.content();
-    var users = [
-      { name: "张含韵", email: "zhang@email.com" },
-      { name: "江一燕", email: "jiang@email.com" },
-      { name: "李小璐", email: "li@email.com" }
-    ];
-
-    var emails = users.map(user => {
-      return user.email;
-    });
-    console.log(emails);
   }
 };
 </script>
