@@ -38,12 +38,26 @@
     </van-cell-group>
 
     <div style="margin: 16px;">
-      <van-button class="btn1" round block type="info" native-type="submit">
+      <van-button
+        @click="butongyi"
+        class="btn1"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         不同意接收
       </van-button>
     </div>
     <div style="margin: 16px;">
-      <van-button class="btn2" round block type="info" native-type="submit">
+      <van-button
+        @click="tongyi"
+        class="btn2"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         同意接收
       </van-button>
     </div>
@@ -98,7 +112,7 @@ export default {
   //方法集合
   methods: {
     async tongyi() {
-      this.shigongData.prj_state = "5";
+      this.shigongData1.prj_state = "5";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
         this.shigongData1
@@ -122,7 +136,7 @@ export default {
       this.$router.push({ name: "success4" });
     },
     async butongyi() {
-      this.shigongData.prj_state = "4";
+      this.shigongData1.prj_state = "4";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
         this.shigongData1
@@ -134,7 +148,7 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程接收失败`;
       this.fasongData.news.articles[0].description = `小型工程接收失败`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -150,11 +164,14 @@ export default {
     async content() {
       this.contentData.prj_name = this.$route.query.prj_name;
 
-      console.log(this.contentData);
+      // console.log(this.contentData);
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.contentData
       });
       this.shigongData1 = dt;
+      delete this.shigongData1.updateTime;
+      delete this.shigongData1.__v;
+      delete this.shigongData1._id;
       this.shigongData.prj_state = dt.prj_state;
       this.shigongData.prj_name = dt.prj_name;
       this.shigongData.prj_addr = dt.prj_addr;

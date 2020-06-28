@@ -193,7 +193,7 @@ export default {
     RouterData() {
       const shigongData = localStorage.getItem("shigongData");
       this.shigongData = JSON.parse(shigongData);
-      console.log(this.shigongData);
+      // console.log(this.shigongData);
     },
     afterRead(file) {
       // console.log(file.file);
@@ -208,9 +208,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_property = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead1(file) {
@@ -226,9 +238,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_lease_contract = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead2(file) {
@@ -243,9 +267,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_con_contract = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead3(file) {
@@ -261,9 +297,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_license = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead4(file) {
@@ -279,9 +327,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_certifications = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead5(file) {
@@ -297,9 +357,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_manager_cert = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead6(file) {
@@ -315,9 +387,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_safe_cert = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead7(file) {
@@ -333,9 +417,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_manager_appiontment = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead8(file) {
@@ -351,9 +447,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_safe_appiontment = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     afterRead9(file) {
@@ -369,9 +477,21 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
           this.prj_design_cert = response.data.data.result;
+          this.$toast.success({
+            message: "上传图片成功"
+          });
         });
     },
     onClickLeft() {

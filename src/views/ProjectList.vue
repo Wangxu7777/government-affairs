@@ -19,7 +19,7 @@
             <template #title>
               <icon-svg class="touxiang" icon-class="shaixuantiaojian" />
             </template>
-            <van-radio-group v-model="radio">
+            <!-- <van-radio-group v-model="radio">
               <van-cell-group>
                 <van-cell title="已受理" clickable @click="radio = '已受理'">
                   <template #right-icon>
@@ -55,7 +55,22 @@
                   </template>
                 </van-cell>
               </van-cell-group>
-            </van-radio-group>
+            </van-radio-group> -->
+            <van-checkbox-group v-model="result">
+              <van-cell-group>
+                <van-cell
+                  v-for="(item, index) in list2"
+                  clickable
+                  :key="item"
+                  :title="`${item}`"
+                  @click="toggle(index)"
+                >
+                  <template #right-icon>
+                    <van-checkbox :name="item" ref="checkboxes" />
+                  </template>
+                </van-cell>
+              </van-cell-group>
+            </van-checkbox-group>
           </van-dropdown-item>
         </van-dropdown-menu>
         <!-- <div @click="onSearch">
@@ -92,6 +107,14 @@
 export default {
   data() {
     return {
+      list2: [
+        "已受理，待审核",
+        "受理审核通过",
+        "督察不合格",
+        "已督察",
+        "已竣工"
+      ],
+      result: [],
       value: "",
       radio: "",
       list: [],
@@ -101,6 +124,9 @@ export default {
       timeout: null,
       sousuoData: {
         prj_name: ""
+      },
+      shaixuanData: {
+        prj_state: []
       }
     };
   },
@@ -113,11 +139,17 @@ export default {
         this.sousuoList(curVal);
       }, 1000);
     },
-    radio(curVal) {
+    // radio(curVal) {
+    //   this.shaixuan(curVal);
+    // },
+    result(curVal) {
       this.shaixuan(curVal);
     }
   },
   methods: {
+    toggle(index) {
+      this.$refs.checkboxes[index].toggle();
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -145,10 +177,10 @@ export default {
           e.data.prj_state = "未受理";
         }
         if (e.data.prj_state == "0") {
-          e.data.prj_state = "已受理";
+          e.data.prj_state = "受理审核通过";
         }
         if (e.data.prj_state == "1") {
-          e.data.prj_state = "非小型工程 已移送";
+          e.data.prj_state = "非小型工程,已移送";
         }
         if (e.data.prj_state == "2") {
           e.data.prj_state = "不同意移交";
@@ -167,6 +199,9 @@ export default {
         }
         if (e.data.prj_state == "7") {
           e.data.prj_state = "已督察";
+        }
+        if (e.data.prj_state == "8") {
+          e.data.prj_state = "已竣工";
         }
       });
     },
@@ -187,7 +222,7 @@ export default {
           e.data.prj_state = "未受理";
         }
         if (e.data.prj_state == "0") {
-          e.data.prj_state = "已受理";
+          e.data.prj_state = "受理审核通过";
         }
         if (e.data.prj_state == "1") {
           e.data.prj_state = "非小型工程，已移送";
@@ -210,17 +245,55 @@ export default {
         if (e.data.prj_state == "7") {
           e.data.prj_state = "已督察";
         }
+        if (e.data.prj_state == "8") {
+          e.data.prj_state = "已竣工";
+        }
       });
-      this.list1 = this.list;
+
       // 加载状态结束
       this.loading = false;
       this.finished = true;
     },
-    shaixuan(prj_state) {
-      this.list = this.list1;
-      if (this.finished == true) {
-        this.list = this.list.filter(item => item.data.prj_state == prj_state);
-      }
+    async shaixuan(prj_state) {
+      this.shaixuanData.prj_state = prj_state.map(e => {
+        if (e == "已受理，待审核") {
+          return (e = "-2");
+        }
+        if (e == "受理审核通过") {
+          return (e = "0");
+        }
+        if (e == "非小型工程，已移送") {
+          return (e = "1");
+        }
+        if (e == "不同意移交") {
+          return (e = "2");
+        }
+        if (e == "同意移交") {
+          return (e = "3");
+        }
+        if (e == "不同意接收") {
+          return (e = "4");
+        }
+        if (e == "同意接收") {
+          return (e = "5");
+        }
+        if (e == "督察不合格") {
+          return (e = "6");
+        }
+        if (e == "已督察") {
+          return (e = "7");
+        }
+        if (e == "已竣工") {
+          return (e = "8");
+        }
+      });
+      this.shaixuanData.prj_state = this.shaixuanData.prj_state.toString();
+      console.log(this.shaixuanData.prj_state);
+      var { data: dt } = await this.$http.get("wx/getGongdi_info_ByState", {
+        params: this.shaixuanData
+      });
+      console.log(dt);
+      // this.list = dt;
     }
   },
   created() {

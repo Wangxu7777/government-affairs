@@ -291,7 +291,10 @@ export default {
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData
       });
-
+      this.shigongData1 = dt;
+      delete this.shigongData1.updateTime;
+      delete this.shigongData1.__v;
+      delete this.shigongData1._id;
       if (dt.prj_lease_contract) {
         this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
       }

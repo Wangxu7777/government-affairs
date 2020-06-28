@@ -14,6 +14,7 @@
         name="工程名称"
         label="工程名称"
         placeholder="工程名称"
+        readonly
         :rules="[{ required: true, message: '请填写工程名称' }]"
       />
       <van-field
@@ -169,9 +170,9 @@ export default {
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
       });
-      console.log(dt);
-      this.shigongData.prj_name = this.gongchengData.prj_name;
+      this.shigongData.prj_name = dt.prj_name;
       this.shigongData.prj_addr = dt.prj_addr;
+      this.shigongData.prj_type = dt.prj_type;
     },
     onSubmit() {
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
@@ -192,7 +193,9 @@ export default {
       this.showCalendar1 = false;
     }
   },
-  created() {},
+  created() {
+    this.content();
+  },
   beforeCreate() {
     document
       .querySelector("body")

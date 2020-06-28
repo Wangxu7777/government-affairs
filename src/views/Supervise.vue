@@ -317,9 +317,22 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
+
           this.shigongData.change_pictures.push(response.data.data.result); //上传一张之后压入这个数组
+          this.$toast.success({
+            message: "上传图片成功"
+          });
 
           // console.log(this.gongchengData);
         });

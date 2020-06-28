@@ -132,7 +132,13 @@ export default {
       gongchengData: {
         prj_name: ""
       },
-      shouliData: {},
+      shouliData: {
+        prj_name: "",
+        prj_depart: "",
+        prj_type: "",
+        prj_grid: "",
+        prj_addr: ""
+      },
       fasongData: {
         touser: "15810457862",
         toparty: "293",
@@ -156,10 +162,9 @@ export default {
   methods: {
     async yiban() {
       this.shouliData.prj_state = "1";
-      var { data: dt } = await this.$http.post(
-        "wx/saveGongdi",
-        this.shouliData
-      );
+      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
+        params: this.shouliData
+      });
       if (dt != 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -185,10 +190,9 @@ export default {
     },
     async shouli() {
       this.shouliData.prj_state = "0";
-      var { data: dt } = await this.$http.post(
-        "wx/saveGongdi",
-        this.shouliData
-      );
+      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
+        params: this.shouliData
+      });
       if (dt != 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -204,11 +208,23 @@ export default {
     },
     async no_shouli() {
       this.shouliData.prj_state = "-1";
-      var { data: dt } = await this.$http.post(
-        "wx/saveGongdi",
-        this.shouliData
-      );
+      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
+        params: this.shouliData
+      });
       if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+
+      this.fasongData.news.articles[0].title = `小型工程未受理`;
+      this.fasongData.news.articles[0].description = `小型工程未受理`;
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferForm?prj_name=${this.gongchengData.prj_name}`;
+      // this.fasongData.new.articles[0].url =
+      //   "http://47.104.29.235:8080/flower.jpeg";
+      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
+
+      if (dt1.data.errcode != 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
@@ -216,34 +232,31 @@ export default {
       this.$toast.success({
         message: "非小型工程拒绝受理"
       });
-      this.fasongData.news.articles[0].title = `小型工程未受理`;
-      this.fasongData.news.articles[0].description = `小型工程未受理`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferForm?prj_name=${this.gongchengData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
     },
     async content() {
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;
       this.gongchengData.prj_name = this.$route.query.prj_name;
-      var { data: dt } = await this.$http.get("wx/getGongdi", {
+      var { data: dt } = await this.$http.get("/wx/getGongdi", {
         params: this.gongchengData
       });
-      this.shouliData = dt;
+
       this.prj_depart = dt.prj_depart;
       this.prj_name = dt.prj_name;
       this.prj_addr = dt.prj_addr;
       this.prj_grid = dt.prj_grid;
       this.prj_type = dt.prj_type;
+      this.shouliData.prj_depart = dt.prj_depart;
+      this.shouliData.prj_name = dt.prj_name;
+      this.shouliData.prj_addr = dt.prj_addr;
+      this.shouliData.prj_grid = dt.prj_grid;
+      this.shouliData.prj_type = dt.prj_type;
+      this.shouliData.lng = dt.location[0];
+      this.shouliData.lat = dt.location[1];
+      this.shouliData.picture = dt.picture;
       var imgArr = dt.picture.trim().split(",");
+
       if (imgArr.length == 1) {
         this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
       }

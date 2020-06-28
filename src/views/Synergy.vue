@@ -80,7 +80,24 @@ export default {
         "灯光景观所",
         "第三方机构"
       ],
-      result: []
+      result: [],
+      fasongData: {
+        touser: "15810457862",
+        toparty: "293",
+        msgtype: "news",
+        agentid: "1000081",
+        // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
+        news: {
+          articles: [
+            {
+              title: "政务微信流程测试",
+              description: "政务微信流程",
+              url: "",
+              picurl: "http://47.104.29.235:8080/flower.jpeg"
+            }
+          ]
+        }
+      }
     };
   },
   //方法集合
@@ -99,6 +116,18 @@ export default {
         this.shigongData
       );
       if (dt != 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      this.fasongData.news.articles[0].title = `已受理小型工程，代审核`;
+      this.fasongData.news.articles[0].description = `已受理小型工程，代审核`;
+      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details1?prj_name=${this.shigongData.prj_name}`;
+      // this.fasongData.new.articles[0].url =
+      //   "http://47.104.29.235:8080/flower.jpeg";
+      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
+
+      if (dt1.data.errcode != 0) {
         return this.$toast.fail({
           message: "提交失败"
         });

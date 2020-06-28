@@ -226,7 +226,7 @@ export default {
   //方法集合
   methods: {
     validator(val) {
-      console.log(val.length);
+      // console.log(val.length);
 
       return val.length < 16;
 
@@ -249,8 +249,20 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post("http://111.229.190.8:8000/gongdi/general/upload", param, config)
+        .post(
+          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          param,
+          config
+        )
         .then(response => {
+          if (response.data.status != 200) {
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
+          this.$toast.success({
+            message: "上传图片成功"
+          });
           this.gongchengData.picture.push(response.data.data.result); //上传一张之后压入这个数组
 
           // this.gongchengData.picture = response.data.data.result;
@@ -286,14 +298,13 @@ export default {
       //     "Content-Type": "application/x-www-form-urlencoded"
       //   }
       // };
-
+      this.gongchengData.picture = this.gongchengData.picture.toString();
       this.gongchengData.lng = this.gongchengData.lng.toString();
       this.gongchengData.lat = this.gongchengData.lat.toString();
 
-      var { data: dt } = await this.$http.post(
-        "wx/saveGongdi",
-        this.gongchengData
-      );
+      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
+        params: this.gongchengData
+      });
       if (dt != 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -302,7 +313,7 @@ export default {
       this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/accept?prj_name=${this.gongchengData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {
         return this.$toast.fail({

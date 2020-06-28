@@ -144,9 +144,10 @@ export default {
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
       });
-      console.log(dt);
+      // console.log(dt);
       this.shigongData.prj_name = this.gongchengData.prj_name;
       this.shigongData.prj_addr = dt.prj_addr;
+      this.shigongData.prj_type = dt.prj_type;
     },
     async yijiao() {
       this.shigongData.prj_state = "1";

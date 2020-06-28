@@ -83,7 +83,7 @@ export default {
       } else {
         this.shigongData.prj_name = this.$route.query.prj_name;
       }
-      console.log(this.shigongData);
+      // console.log(this.shigongData);
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData
       });

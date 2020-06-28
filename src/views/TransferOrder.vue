@@ -113,7 +113,7 @@ export default {
       this.shigongData.prj_state = "3";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
-        this.shigongData1
+        this.shigongData
       );
       if (dt != 0) {
         return this.$toast.fail({
@@ -139,7 +139,7 @@ export default {
       this.shigongData.prj_state = "2";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
-        this.shigongData1
+        this.shigongData
       );
       if (dt != 0) {
         return this.$toast.fail({
@@ -169,7 +169,8 @@ export default {
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.gongchengData
       });
-      this.shigongData1 = dt;
+      // this.shigongData1 = dt;
+      // console.log(this.shigongData1);
       this.shigongData.prj_state = dt.prj_state;
       this.shigongData.prj_name = dt.prj_name;
       this.shigongData.prj_addr = dt.prj_addr;
