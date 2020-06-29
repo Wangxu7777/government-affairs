@@ -160,6 +160,7 @@ export default {
     //这里存放数据
     return {
       gongchengData: {
+        prj_state: "",
         prj_name: "",
         prj_type: "",
         prj_depart: "",

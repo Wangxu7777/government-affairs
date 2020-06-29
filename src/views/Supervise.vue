@@ -20,11 +20,7 @@
       <van-field label="联系人姓名" :value="shigongData.fbi_name" readonly />
       <van-field label="联系人电话" :value="shigongData.fbi_phone" readonly />
       <van-field label="工程面积" :value="shigongData.prj_area" readonly />
-      <van-field
-        label="合同造价"
-        :value="shigongData.contract_price"
-        readonly
-      />
+      <van-field label="合同造价" :value="shigongData.prj_price" readonly />
       <van-field
         label="基本违法,违规情况"
         :value="shigongData.prj_check"
@@ -242,34 +238,34 @@ export default {
       this.shigongData.completion_date = dt.completion_date;
       this.shigongData.completion_date = dt.completion_date;
       if (dt.prj_property) {
-        this.prj_property = dt.prj_property;
+        this.shigongData.prj_property = dt.prj_property;
       }
       if (dt.prj_lease_contract) {
-        this.prj_lease_contract = dt.prj_lease_contract;
+        this.shigongData.prj_lease_contract = dt.prj_lease_contract;
       }
       if (dt.prj_con_contract) {
-        this.prj_con_contract = dt.prj_con_contract;
+        this.shigongData.prj_con_contract = dt.prj_con_contract;
       }
       if (dt.prj_license) {
-        this.prj_license = dt.prj_license;
+        this.shigongData.prj_license = dt.prj_license;
       }
       if (dt.prj_certifications) {
-        this.prj_certifications = dt.prj_certifications;
+        this.shigongData.prj_certifications = dt.prj_certifications;
       }
       if (dt.prj_manager_cert) {
-        this.prj_manager_cert = dt.prj_manager_cert;
+        this.shigongData.prj_manager_cert = dt.prj_manager_cert;
       }
       if (dt.prj_safe_cert) {
-        this.prj_safe_cert = dt.prj_safe_cert;
+        this.shigongData.prj_safe_cert = dt.prj_safe_cert;
       }
       if (dt.prj_manager_appiontment) {
-        this.prj_manager_appiontment = dt.prj_manager_appiontment;
+        this.shigongData.prj_manager_appiontment = dt.prj_manager_appiontment;
       }
       if (dt.prj_safe_appiontment) {
         this.prj_safe_appiontment = dt.prj_safe_appiontment;
       }
       if (dt.prj_design_cert) {
-        this.prj_design_cert = dt.prj_design_cert;
+        this.shigongData.prj_design_cert = dt.prj_design_cert;
       }
     },
     async hege() {

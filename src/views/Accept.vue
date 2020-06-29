@@ -161,7 +161,7 @@ export default {
   //方法集合
   methods: {
     async yiban() {
-      this.shouliData.prj_state = "1";
+      this.shouliData.prj_state = "-4";
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
@@ -189,7 +189,7 @@ export default {
       });
     },
     async shouli() {
-      this.shouliData.prj_state = "0";
+      this.shouliData.prj_state = "-2";
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
@@ -207,7 +207,7 @@ export default {
       });
     },
     async no_shouli() {
-      this.shouliData.prj_state = "-1";
+      this.shouliData.prj_state = "-3";
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });

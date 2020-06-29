@@ -1,12 +1,7 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar
-      id="reset"
-      title="小型工程发现上报"
-      left-text="返回"
-      left-arrow
-    />
+    <van-nav-bar id="reset" title="小型工程发现上报" />
     <van-notice-bar color="#EC6A42" background="#F0F0F0" left-icon="info-o">
       小型工程发现上报
     </van-notice-bar>
@@ -50,6 +45,22 @@
             width="100%"
             height="100%"
             :src="picture3"
+          />
+        </van-grid-item>
+        <van-grid-item text="工程照片">
+          <van-image
+            @click="show_before_img"
+            width="100%"
+            height="100%"
+            :src="picture4"
+          />
+        </van-grid-item>
+        <van-grid-item text="工程照片">
+          <van-image
+            @click="show_before_img"
+            width="100%"
+            height="100%"
+            :src="picture5"
           />
         </van-grid-item>
       </van-grid>

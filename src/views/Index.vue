@@ -74,7 +74,7 @@ export default {
       this.$router.push({ name: "EngineeringInformation" });
     },
     ducha() {
-      this.$router.push({ name: "ProjectList" });
+      this.$router.push({ name: "InspectorList" });
     }
   },
   created() {}

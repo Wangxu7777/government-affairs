@@ -24,6 +24,7 @@ import success5 from "./views/success5.vue";
 import TransferForm from "./views/TransferForm.vue";
 import Supervise from "./views/Supervise.vue";
 import TestResult from "./views/TestResult.vue";
+import InspectorList from "./views/InspectorList.vue";
 
 import shiyan from "./views/shiyan.vue";
 
@@ -154,6 +155,12 @@ var router = new Router({
       name: "TestResult",
       component: TestResult
     },
+    {
+      path: "/inspectorList",
+      name: "InspectorList",
+      component: InspectorList
+    },
+
     {
       path: "/shiyan",
       name: "shiyan",
