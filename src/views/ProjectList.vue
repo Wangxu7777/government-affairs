@@ -95,7 +95,7 @@
         :label="item.data.prj_addr"
       >
         <div class="neirong3">
-          <p>{{ item.data.start_date }}</p>
+          <p>{{ item.data.updateTime }}</p>
           <p>{{ item.data.prj_state }}</p>
         </div>
       </van-cell>
@@ -157,12 +157,22 @@ export default {
     see(e) {
       var w = e.currentTarget.innerText;
       var a = w.trim().split("\n");
-      this.$router.push({
-        path: "/details",
-        query: {
-          prj_name: a[0]
-        }
-      });
+
+      if (a[5] == "发现工程" || a[5] == "待移交") {
+        this.$router.push({
+          path: "/projectReporting",
+          query: {
+            prj_name: a[0]
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/details",
+          query: {
+            prj_name: a[0]
+          }
+        });
+      }
     },
     async sousuoList(curVal) {
       this.sousuoData.prj_name = curVal;
@@ -170,7 +180,11 @@ export default {
         params: this.sousuoData
       });
       this.list = dt;
+
       this.list.forEach(e => {
+        if (e.data.prj_state == "-100") {
+          e.data.prj_state = "发现工程";
+        }
         if (e.data.prj_state == "-4") {
           e.data.prj_state = "待移交";
         }
@@ -210,6 +224,8 @@ export default {
         if (e.data.prj_state == "8") {
           e.data.prj_state = "已竣工";
         }
+        let str = e.data.updateTime.split(" ");
+        e.data.updateTime = str[0];
       });
     },
     onConfirm() {},
@@ -217,9 +233,12 @@ export default {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
       var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate");
-      console.log(dt);
       this.list = dt;
+
       this.list.forEach(e => {
+        if (e.data.prj_state == "-100") {
+          e.data.prj_state = "发现工程";
+        }
         if (e.data.prj_state == "-4") {
           e.data.prj_state = "待移交";
         }
@@ -259,95 +278,27 @@ export default {
         if (e.data.prj_state == "8") {
           e.data.prj_state = "已竣工";
         }
+        let str = e.data.updateTime.split(" ");
+        e.data.updateTime = str[0];
       });
-
+      this.list1 = this.list;
       // 加载状态结束
       this.loading = false;
       this.finished = true;
     },
-    async shaixuan(prj_state) {
+    shaixuan(prj_state) {
       if (prj_state.length == 0) {
         return this.onLoad();
       }
-      this.shaixuanData.prj_state = prj_state.map(e => {
-        if (e == "已受理，待审核") {
-          return (e = "-2");
-        }
-        if (e == "受理审核通过") {
-          return (e = "0");
-        }
-        if (e == "正在移交") {
-          return (e = "1");
-        }
-        if (e == "不同意移交") {
-          return (e = "2");
-        }
-        if (e == "同意移交") {
-          return (e = "3");
-        }
-        if (e == "不同意接收") {
-          return (e = "4");
-        }
-        if (e == "同意接收") {
-          return (e = "5");
-        }
-        if (e == "督察不合格") {
-          return (e = "6");
-        }
-        if (e == "已督察") {
-          return (e = "7");
-        }
-        if (e == "已竣工") {
-          return (e = "8");
-        }
-      });
-      this.shaixuanData.prj_state = this.shaixuanData.prj_state.toString();
-      var { data: dt } = await this.$http.get("wx/getGongdi_info_ByState", {
-        params: this.shaixuanData
+
+      var st = prj_state;
+
+      var arr = [];
+      arr = this.list1.filter(function(arr) {
+        return st.indexOf(arr.data.prj_state) > -1;
       });
 
-      this.list = dt;
-      this.list.forEach(e => {
-        if (e.data.prj_state == "-4") {
-          e.data.prj_state = "待移交";
-        }
-        if (e.data.prj_state == "-3") {
-          e.data.prj_state = "待移交";
-        }
-        if (e.data.prj_state == "-2") {
-          e.data.prj_state = "已受理，待审核";
-        }
-        if (e.data.prj_state == "-1") {
-          e.data.prj_state = "受理审核未通过";
-        }
-        if (e.data.prj_state == "0") {
-          e.data.prj_state = "受理审核通过";
-        }
-        if (e.data.prj_state == "1") {
-          e.data.prj_state = "正在移交";
-        }
-        if (e.data.prj_state == "2") {
-          e.data.prj_state = "不同意移交";
-        }
-        if (e.data.prj_state == "3") {
-          e.data.prj_state = "同意移交";
-        }
-        if (e.data.prj_state == "4") {
-          e.data.prj_state = "不同意接收";
-        }
-        if (e.data.prj_state == "5") {
-          e.data.prj_state = "同意接收";
-        }
-        if (e.data.prj_state == "6") {
-          e.data.prj_state = "督察不合格";
-        }
-        if (e.data.prj_state == "7") {
-          e.data.prj_state = "已督察";
-        }
-        if (e.data.prj_state == "8") {
-          e.data.prj_state = "已竣工";
-        }
-      });
+      this.list = arr;
     }
   },
   created() {

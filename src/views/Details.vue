@@ -1,195 +1,131 @@
 <!--  -->
 <template>
   <div>
-    <div v-if="this.faixan">
-      <van-nav-bar id="reset" title="小型工程发现上报" />
-      <van-notice-bar color="#EC6A42" background="#F0F0F0" left-icon="info-o">
-        小型工程发现上报
-      </van-notice-bar>
-      <van-cell-group>
-        <van-field label="工程名称" :value="prj_name" readonly />
-        <van-field label="工程发现单位" :value="prj_depart" readonly />
-        <van-field label="工程类型" :value="prj_type" readonly />
-        <van-field label="地址信息" :value="prj_addr" readonly />
-        <van-field label="工程所属网络" :value="prj_grid" readonly />
-      </van-cell-group>
-      <div class="tupian">
-        <h5>工程照片</h5>
-        <van-grid :column-num="2" square :gutter="10">
-          <van-grid-item text="工程照片">
-            <van-image
-              @click="show_img"
-              width="100%"
-              height="100%"
-              :src="picture"
-            />
-          </van-grid-item>
-          <van-grid-item text="工程照片">
-            <van-image
-              @click="show_img"
-              width="100%"
-              height="100%"
-              :src="picture1"
-            />
-          </van-grid-item>
-          <van-grid-item text="工程照片">
-            <van-image
-              @click="show_img"
-              width="100%"
-              height="100%"
-              :src="picture2"
-            />
-          </van-grid-item>
-          <van-grid-item text="工程照片">
-            <van-image
-              @click="show_img"
-              width="100%"
-              height="100%"
-              :src="picture3"
-            />
-          </van-grid-item>
-          <van-grid-item text="工程照片">
-            <van-image
-              @click="show_img"
-              width="100%"
-              height="100%"
-              :src="picture4"
-            />
-          </van-grid-item>
-          <van-grid-item text="工程照片">
-            <van-image
-              @click="show_img"
-              width="100%"
-              height="100%"
-              :src="picture5"
-            />
-          </van-grid-item>
-        </van-grid>
-      </div>
+    <van-nav-bar
+      id="reset"
+      title="完整工程施工信息单"
+      left-arrow
+      @click-left="onClickLeft"
+    />
+    <p>工程施工信息</p>
+    <div class="biaoti">
+      <icon-svg class="icn_box" icon-class="shenhe" />
+      <span v-if="this.prj_state == '-2'">已受理，待审核</span>
+      <span v-if="this.prj_state == '0'">已受理，审核通过</span>
+      <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
+      <span v-if="this.prj_state == '1'">正在移交</span>
+      <span v-if="this.prj_state == '2'">不同意移交</span>
+      <span v-if="this.prj_state == '3'">同意移交</span>
+      <span v-if="this.prj_state == '4'">不同意接收</span>
+      <span v-if="this.prj_state == '5'">同意接收</span>
+      <span v-if="this.prj_state == '7'">检查合格</span>
+      <span v-if="this.prj_state == '6'">检查不合格</span>
     </div>
-    <div v-if="!this.faixan">
-      <van-nav-bar
-        id="reset"
-        title="完整工程施工信息单"
-        left-arrow
-        @click-left="onClickLeft"
-      />
-      <p>工程施工信息</p>
-      <div class="biaoti">
-        <icon-svg class="icn_box" icon-class="shenhe" />
-        <span v-if="this.prj_state == '-2'">已受理，待审核</span>
-        <span v-if="this.prj_state == '0'">已受理，审核通过</span>
-        <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
-        <span v-if="this.prj_state == '1'">正在移交</span>
-        <span v-if="this.prj_state == '2'">不同意移交</span>
-        <span v-if="this.prj_state == '3'">同意移交</span>
-        <span v-if="this.prj_state == '4'">不同意接收</span>
-        <span v-if="this.prj_state == '5'">同意接收</span>
-        <span v-if="this.prj_state == '7'">检查合格</span>
-        <span v-if="this.prj_state == '6'">检查不合格</span>
-      </div>
-      <van-cell-group>
-        <van-field label="工程名称" :value="prj_name" readonly />
-        <van-field label="工程地址" :value="prj_addr" readonly />
-        <van-field label="建设单位" :value="demand_com" readonly />
-        <van-field label="施工单位" :value="construction_com" readonly />
-        <van-field label="监理单位" :value="supervison_com" readonly />
-        <van-field label="设计单位" :value="design_rom" readonly />
-        <van-field label="开工日期" :value="start_date" readonly />
-        <van-field label="竣工日期" :value="completion_date" readonly />
-      </van-cell-group>
-      <p>监督单位信息</p>
-      <van-cell-group>
-        <van-field label="单位名称" :value="fbi_name" readonly />
-        <van-field label="监督电话" :value="fbi_phone" readonly />
-      </van-cell-group>
-      <p>负责人信息</p>
-      <van-cell-group>
-        <van-field label="姓名" :value="prj_person_name" readonly />
-        <van-field label="联系方式" :value="prj_person_phone" readonly />
-      </van-cell-group>
-      <p>工程文件</p>
-      <van-row class="buju" gutter="20">
-        <van-col span="6" @click="show_before_img">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_property" />
-          </div>
+    <van-cell-group>
+      <van-field label="工程名称" :value="prj_name" readonly />
+      <van-field label="工程地址" :value="prj_addr" readonly />
+      <van-field label="工程类型" :value="prj_type" readonly />
+      <van-field label="工程面积" :value="prj_area" readonly />
+      <van-field label="合同造价" :value="prj_price" readonly />
+      <van-field label="建设单位" :value="demand_com" readonly />
+      <van-field label="施工单位" :value="construction_com" readonly />
+      <van-field label="监理单位" :value="supervison_com" readonly />
+      <van-field label="设计单位" :value="design_rom" readonly />
 
-          <p class="wenjianming">产权证</p>
-        </van-col>
-        <van-col span="6" @click="show_before_img1">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_lease_contract" />
-          </div>
+      <van-field label="开工日期" :value="start_date" readonly />
+      <van-field label="竣工日期" :value="completion_date" readonly />
+    </van-cell-group>
+    <p>监督单位信息</p>
+    <van-cell-group>
+      <van-field label="单位名称" :value="fbi_name" readonly />
+      <van-field label="监督电话" :value="fbi_phone" readonly />
+    </van-cell-group>
+    <p>负责人信息</p>
+    <van-cell-group>
+      <van-field label="姓名" :value="prj_person_name" readonly />
+      <van-field label="联系方式" :value="prj_person_phone" readonly />
+    </van-cell-group>
+    <p>工程文件</p>
+    <van-row class="buju" gutter="20">
+      <van-col span="6" @click="show_before_img">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_property" />
+        </div>
 
-          <p class="wenjianming">租赁合同</p>
-        </van-col>
-        <van-col span="6" @click="show_before_img2">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_con_contract" />
-          </div>
+        <p class="wenjianming">产权证</p>
+      </van-col>
+      <van-col span="6" @click="show_before_img1">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_lease_contract" />
+        </div>
 
-          <p class="wenjianming">施工合同</p>
-        </van-col>
-        <van-col span="6" @click="show_before_img3">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_license" />
-          </div>
+        <p class="wenjianming">租赁合同</p>
+      </van-col>
+      <van-col span="6" @click="show_before_img2">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_con_contract" />
+        </div>
 
-          <p class="wenjianming">施工单位营业执照</p>
-        </van-col>
-      </van-row>
-      <van-row class="buju" gutter="20">
-        <van-col span="6" @click="show_before_img4">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_certifications" />
-          </div>
+        <p class="wenjianming">施工合同</p>
+      </van-col>
+      <van-col span="6" @click="show_before_img3">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_license" />
+        </div>
 
-          <p class="wenjianming">施工单位资质证书</p>
-        </van-col>
-        <van-col span="6" @click="show_before_img5">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_manager_cert" />
-          </div>
+        <p class="wenjianming">施工单位营业执照</p>
+      </van-col>
+    </van-row>
+    <van-row class="buju" gutter="20">
+      <van-col span="6" @click="show_before_img4">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_certifications" />
+        </div>
 
-          <p class="wenjianming">项目经理证书</p>
-        </van-col>
-        <van-col span="6" @click="show_before_img6">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_safe_cert" />
-          </div>
+        <p class="wenjianming">施工单位资质证书</p>
+      </van-col>
+      <van-col span="6" @click="show_before_img5">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_manager_cert" />
+        </div>
 
-          <p class="wenjianming">安全员证书</p>
-        </van-col>
-        <van-col span="6" @click="show_before_img7">
-          <div class="beijin">
-            <van-image
-              width="100%"
-              height="100%"
-              :src="prj_manager_appiontment"
-            />
-          </div>
+        <p class="wenjianming">项目经理证书</p>
+      </van-col>
+      <van-col span="6" @click="show_before_img6">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_safe_cert" />
+        </div>
 
-          <p class="wenjianming">项目经理任命文件</p>
-        </van-col>
-      </van-row>
-      <van-row class="buju" gutter="20">
-        <van-col span="6" @click="show_before_img8">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_safe_appiontment" />
-          </div>
+        <p class="wenjianming">安全员证书</p>
+      </van-col>
+      <van-col span="6" @click="show_before_img7">
+        <div class="beijin">
+          <van-image
+            width="100%"
+            height="100%"
+            :src="prj_manager_appiontment"
+          />
+        </div>
 
-          <p class="wenjianming">安全员任命文件</p>
-        </van-col>
-        <van-col span="6" @click="show_before_img9">
-          <div class="beijin">
-            <van-image width="100%" height="100%" :src="prj_design_cert" />
-          </div>
+        <p class="wenjianming">项目经理任命文件</p>
+      </van-col>
+    </van-row>
+    <van-row class="buju" gutter="20">
+      <van-col span="6" @click="show_before_img8">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_safe_appiontment" />
+        </div>
 
-          <p class="wenjianming">设计单位资质文件</p>
-        </van-col>
-      </van-row>
-    </div>
+        <p class="wenjianming">安全员任命文件</p>
+      </van-col>
+      <van-col span="6" @click="show_before_img9">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_design_cert" />
+        </div>
+
+        <p class="wenjianming">设计单位资质文件</p>
+      </van-col>
+    </van-row>
 
     <div v-if="this.prj_state == '0'" style="margin: 16px;">
       <van-button @click="jiludan" round block type="info" native-type="submit">
@@ -219,16 +155,6 @@ export default {
   data() {
     //这里存放数据
     return {
-      faixan: false,
-      shigong: false,
-      picture5: "",
-      picture4: "",
-      picture3: "",
-      picture2: "",
-      picture1: "",
-      picture: "",
-      prj_depart: "",
-      prj_grid: "",
       prj_name: "",
       prj_addr: "",
       prj_type: "",
@@ -356,22 +282,24 @@ export default {
         this.shigongData.prj_name = this.shigongData1.prj_name;
       } else {
         this.shigongData.prj_name = this.$route.query.prj_name;
+        // this.prj_state = this.$route.query.prj_state;
       }
+      // if (
+      //   this.prj_state == "-4" ||
+      //   this.prj_state == "-3" ||
+      //   this.prj_state == "-100"
+      // ) {
+      //   this.faixan = true;
+      //   var { data: dt1 } = await this.$http.get("/wx/getGongdi", {
+      //   params: this.shigongData
+      // });
+      // }
 
       // console.log(this.shigongData);
       var { data: dt } = await this.$http.get("/wx/getGongdi_info", {
         params: this.shigongData
       });
-      if (
-        dt.prj_state == "-4" ||
-        dt.prj_state == "-3" ||
-        dt.prj_state == "-4" ||
-        dt.prj_state == ""
-      ) {
-        this.faixan = true;
-      }
-      this.prj_grid = dt.prj_grid;
-      this.prj_depart = dt.prj_depart;
+
       this.prj_state = dt.prj_state;
       this.prj_name = dt.prj_name;
       this.prj_addr = dt.prj_addr;
@@ -420,44 +348,6 @@ export default {
       }
       if (dt.prj_assist_org) {
         this.prj_assist_org = `http://111.229.190.8:8000/gongdi/file/${dt.prj_assist_org}`;
-      }
-      if (dt.picture) {
-        var imgArr = dt.picture.trim().split(",");
-        if (imgArr.length == 1) {
-          this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-        }
-        if (imgArr.length == 2) {
-          this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-        }
-
-        if (imgArr.length == 3) {
-          this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
-        }
-
-        if (imgArr.length == 4) {
-          this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
-          this.picture3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
-        }
-        if (imgArr.length == 5) {
-          this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
-          this.picture3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
-          this.picture4 = `http://111.229.190.8:8000/gongdi/file/${imgArr[4]}`;
-        }
-        if (imgArr.length == 6) {
-          this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
-          this.picture3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
-          this.picture4 = `http://111.229.190.8:8000/gongdi/file/${imgArr[4]}`;
-          this.picture5 = `http://111.229.190.8:8000/gongdi/file/${imgArr[5]}`;
-        }
       }
     },
     onClickLeft() {

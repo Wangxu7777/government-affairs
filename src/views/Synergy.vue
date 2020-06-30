@@ -120,8 +120,8 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.news.articles[0].title = `已受理小型工程，代审核`;
-      this.fasongData.news.articles[0].description = `已受理小型工程，代审核`;
+      this.fasongData.news.articles[0].title = `已受理小型工程，待审核`;
+      this.fasongData.news.articles[0].description = `已受理小型工程，待审核`;
       this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details1?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";

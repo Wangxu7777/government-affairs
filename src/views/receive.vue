@@ -1,7 +1,12 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="街办移交建管委" left-arrow />
+    <van-nav-bar
+      id="reset"
+      title="街办移交建管委"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <p>非小型建设工程移送单</p>
     <div class="biaoti">
       <icon-svg class="icn_box" icon-class="wenjianyisong" />
@@ -33,6 +38,11 @@
       <van-field
         label="基本违法,违规情况"
         :value="shigongData.prj_check"
+        readonly
+      />
+      <van-field
+        label="街道办意见"
+        :value="shigongData.prj_state == '3' ? '同意移送' : '不同意移送'"
         readonly
       />
     </van-cell-group>
@@ -111,6 +121,9 @@ export default {
   },
   //方法集合
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     async tongyi() {
       this.shigongData1.prj_state = "5";
       var { data: dt } = await this.$http.post(

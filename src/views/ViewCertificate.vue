@@ -1,7 +1,12 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="主任查看工程资质文件" left-arrow />
+    <van-nav-bar
+      id="reset"
+      title="主任查看工程资质文件"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <p>小型工地施工信息单位</p>
     <!-- <div>
       <van-row>
@@ -15,42 +20,91 @@
         <van-col span="18">产权证</van-col>
       </van-row>
     </div> -->
-    <van-cell-group>
-      <van-cell @click="show_before_img" title="产权证" icon="orders-o" />
-      <van-cell @click="show_before_img1" title="租赁合同" icon="orders-o" />
-      <van-cell @click="show_before_img2" title="施工合同" icon="orders-o" />
-      <van-cell
-        @click="show_before_img3"
-        title="施工单位营业执照"
-        icon="orders-o"
-      />
-      <van-cell
-        @click="show_before_img4"
-        title="施工单位资质证书"
-        icon="orders-o"
-      />
-      <van-cell
-        @click="show_before_img5"
-        title="项目经理证书"
-        icon="orders-o"
-      />
-      <van-cell @click="show_before_img6" title="安全员证书" icon="orders-o" />
-      <van-cell
-        @click="show_before_img7"
-        title="项目经理任命文件"
-        icon="orders-o"
-      />
-      <van-cell
-        @click="show_before_img8"
-        title="安全员任命书"
-        icon="orders-o"
-      />
-      <van-cell
-        @click="show_before_img9"
-        title="设计单位资质文件"
-        icon="orders-o"
-      />
-    </van-cell-group>
+    <van-row class="buju" gutter="20">
+      <van-col span="12" @click="show_before_img">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_property" />
+        </div>
+
+        <p class="wenjianming">产权证</p>
+      </van-col>
+      <van-col span="12" @click="show_before_img1">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_lease_contract" />
+        </div>
+
+        <p class="wenjianming">租赁合同</p>
+      </van-col>
+    </van-row>
+    <van-row class="buju" gutter="20">
+      <van-col span="12" @click="show_before_img2">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_con_contract" />
+        </div>
+
+        <p class="wenjianming">施工合同</p>
+      </van-col>
+      <van-col span="12" @click="show_before_img3">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_license" />
+        </div>
+
+        <p class="wenjianming">施工单位营业执照</p>
+      </van-col>
+    </van-row>
+    <van-row class="buju" gutter="20">
+      <van-col span="12" @click="show_before_img4">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_certifications" />
+        </div>
+
+        <p class="wenjianming">施工单位资质证书</p>
+      </van-col>
+      <van-col span="12" @click="show_before_img5">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_manager_cert" />
+        </div>
+
+        <p class="wenjianming">项目经理证书</p>
+      </van-col>
+    </van-row>
+    <van-row class="buju" gutter="20">
+      <van-col span="12" @click="show_before_img6">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_safe_cert" />
+        </div>
+
+        <p class="wenjianming">安全员证书</p>
+      </van-col>
+      <van-col span="12" @click="show_before_img7">
+        <div class="beijin">
+          <van-image
+            width="100%"
+            height="100%"
+            :src="prj_manager_appiontment"
+          />
+        </div>
+
+        <p class="wenjianming">项目经理任命文件</p>
+      </van-col>
+    </van-row>
+    <van-row class="buju" gutter="20">
+      <van-col span="12" @click="show_before_img8">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_safe_appiontment" />
+        </div>
+
+        <p class="wenjianming">安全员任命文件</p>
+      </van-col>
+      <van-col span="12" @click="show_before_img9">
+        <div class="beijin">
+          <van-image width="100%" height="100%" :src="prj_design_cert" />
+        </div>
+
+        <p class="wenjianming">设计单位资质文件</p>
+      </van-col>
+    </van-row>
+
     <div style="margin: 16px;margin-bottom: 0;">
       <van-button
         @click="weitongguo"
@@ -141,6 +195,9 @@ export default {
   },
   //方法集合
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     async feixiaoxing() {
       this.shigongData1.prj_state = "1";
       var { data: dt } = await this.$http.post(
@@ -339,6 +396,23 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.beijin {
+  position: relative;
+  height: 200px;
+  background: rgba(249, 249, 249, 1);
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.09);
+  border-radius: 10px;
+}
+.wenjianming {
+  font-size: 18px;
+  color: rgba(52, 52, 52, 1);
+  padding: 10px;
+  background-color: #fff;
+  text-align: center;
+}
+.buju {
+  padding: 30px;
+}
 .van-nav-bar {
   //   height: 60px;
 
@@ -373,10 +447,10 @@ p {
   border-radius: 10px;
   line-height: 60px;
 }
-.van-row {
-  //   height: 90px;
-  border-bottom: 1px solid #343434ff;
-}
+// .van-row {
+//   //   height: 90px;
+//   border-bottom: 1px solid #343434ff;
+// }
 .col1 {
   text-align: center;
 }

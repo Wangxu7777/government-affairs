@@ -1,7 +1,12 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="小型工程发现上报" />
+    <van-nav-bar
+      id="reset"
+      title="小型工程发现上报"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <van-notice-bar color="#EC6A42" background="#F0F0F0" left-icon="info-o">
       小型工程发现上报
     </van-notice-bar>
@@ -104,6 +109,7 @@ export default {
       prj_depart: "",
       prj_grid: "",
       prj_addr: "",
+      prj_type: "",
       picture: "",
       picture1: "",
       picture2: "",
@@ -118,6 +124,9 @@ export default {
   },
   //方法集合
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     show_before_img() {
       this.instance_before = ImagePreview({
         images: [
@@ -133,11 +142,18 @@ export default {
     },
     async content() {
       const gongchengData = localStorage.getItem("gongchengData");
-      this.gongchengData1 = JSON.parse(gongchengData);
-      this.gongchengData.prj_name = this.gongchengData1.prj_name;
+      if (gongchengData) {
+        this.gongchengData1 = JSON.parse(gongchengData);
+        this.gongchengData.prj_name = this.gongchengData1.prj_name;
+      } else {
+        this.gongchengData.prj_name = this.$route.query.prj_name;
+        // this.prj_state = this.$route.query.prj_state;
+      }
+
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
       });
+
       this.prj_depart = dt.prj_depart;
       this.prj_name = dt.prj_name;
       this.prj_addr = dt.prj_addr;

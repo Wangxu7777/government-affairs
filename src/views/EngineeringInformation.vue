@@ -160,7 +160,7 @@ export default {
     //这里存放数据
     return {
       gongchengData: {
-        prj_state: "",
+        prj_state: "-100",
         prj_name: "",
         prj_type: "",
         prj_depart: "",
@@ -238,14 +238,14 @@ export default {
 
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
-      if (file instanceof Array && file.length) {
-        for (let i = 0; i < file.length; i++) {
-          param.append("files", file[i].file);
-        }
-      } else {
-        param.append("file", file.file); // 通过append向form对象添加数据
-      }
-      // param.append("file", file.file); // 通过append向form对象添加数据
+      // if (file instanceof Array && file.length) {
+      //   for (let i = 0; i < file.length; i++) {
+      //     param.append("files", file[i].file);
+      //   }
+      // } else {
+      //   param.append("file", file.file); // 通过append向form对象添加数据
+      // }
+      param.append("file", file.file); // 通过append向form对象添加数据
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
@@ -261,14 +261,10 @@ export default {
               message: "上传图片失败"
             });
           }
+          this.gongchengData.picture.push(response.data.data.result);
           this.$toast.success({
             message: "上传图片成功"
           });
-          this.gongchengData.picture.push(response.data.data.result); //上传一张之后压入这个数组
-
-          // this.gongchengData.picture = response.data.data.result;
-
-          // console.log(this.gongchengData);
         });
     },
 
@@ -446,7 +442,7 @@ export default {
 }
 .bm-view {
   width: 100%;
-  height: 300px;
+  height: 500px;
 }
 .map {
   margin-top: 30px;
