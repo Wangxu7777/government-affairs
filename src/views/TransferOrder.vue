@@ -1,7 +1,12 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="街办移交建管委" left-arrow />
+    <van-nav-bar
+      id="reset"
+      title="街办移交建管委"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <p>非小型建设工程移送单</p>
 
     <van-cell-group>
@@ -89,10 +94,10 @@ export default {
       },
       shigongData1: {},
       fasongData: {
-        touser: "15810457862",
-        toparty: "293",
+        touser: "13201691542",
+        toparty: "6899",
         msgtype: "news",
-        agentid: "1000081",
+        agentid: "1000101",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
         news: {
           articles: [
@@ -109,6 +114,9 @@ export default {
   },
   //方法集合
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     async tongyi() {
       this.shigongData.prj_state = "3";
       var { data: dt } = await this.$http.post(

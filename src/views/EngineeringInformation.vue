@@ -199,10 +199,10 @@ export default {
       imgurl: "",
       postData: [],
       fasongData: {
-        touser: "15810457862",
-        toparty: "293",
+        touser: "13620968905",
+        toparty: "6899",
         msgtype: "news",
-        agentid: "1000081",
+        agentid: "1000101",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
         news: {
           articles: [
