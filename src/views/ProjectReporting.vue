@@ -159,6 +159,7 @@ export default {
       this.prj_addr = dt.prj_addr;
       this.prj_grid = dt.prj_grid;
       this.prj_type = dt.prj_type;
+      this.prj_state = dt.prj_state;
       var imgArr = dt.picture.trim().split(",");
       if (imgArr.length == 1) {
         this.picture = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;

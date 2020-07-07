@@ -44,13 +44,13 @@
       />
 
       <van-field
-        v-model="shigongData.fbi_name"
+        v-model="shigongData.prj_person_name"
         name="联系人姓名"
         label="联系人姓名"
         placeholder="联系人姓名"
       />
       <van-field
-        v-model="shigongData.fbi_phone"
+        v-model="shigongData.prj_person_phone"
         name="联系人电话"
         label="联系人电话"
         placeholder="联系人电话"

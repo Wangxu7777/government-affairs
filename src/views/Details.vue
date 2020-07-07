@@ -316,6 +316,7 @@ export default {
       this.fbi_phone = dt.fbi_phone;
       this.prj_person_name = dt.prj_person_name;
       this.prj_person_phone = dt.prj_person_phone;
+      this.prj_assist_org = dt.prj_assist_org;
       if (dt.prj_lease_contract) {
         this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
       }
@@ -345,9 +346,6 @@ export default {
       }
       if (dt.prj_design_cert) {
         this.prj_design_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_design_cert}`;
-      }
-      if (dt.prj_assist_org) {
-        this.prj_assist_org = `http://111.229.190.8:8000/gongdi/file/${dt.prj_assist_org}`;
       }
     },
     onClickLeft() {
