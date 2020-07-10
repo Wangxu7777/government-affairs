@@ -10,6 +10,7 @@ import Information2 from "./views/Information2.vue";
 import Details from "./views/Details.vue";
 import Details1 from "./views/Details1.vue";
 import Details2 from "./views/Details2.vue";
+import Details3 from "./views/Details3.vue";
 import Synergy from "./views/Synergy.vue";
 import ViewCertificate from "./views/ViewCertificate.vue";
 import TransferOrder from "./views/TransferOrder.vue";
@@ -25,6 +26,9 @@ import TransferForm from "./views/TransferForm.vue";
 import Supervise from "./views/Supervise.vue";
 import TestResult from "./views/TestResult.vue";
 import InspectorList from "./views/InspectorList.vue";
+import User from "./views/User.vue";
+import Accept1 from "./views/Accept1.vue";
+import CompletionList from "./views/CompletionList.vue";
 
 import shiyan from "./views/shiyan.vue";
 
@@ -106,6 +110,11 @@ var router = new Router({
       component: Details2
     },
     {
+      path: "/details3",
+      name: "Details3",
+      component: Details3
+    },
+    {
       path: "/information2",
       name: "Information2",
       component: Information2
@@ -159,6 +168,21 @@ var router = new Router({
       path: "/inspectorList",
       name: "InspectorList",
       component: InspectorList
+    },
+    {
+      path: "/user",
+      name: "User",
+      component: User
+    },
+    {
+      path: "/accept1",
+      name: "Accept1",
+      component: Accept1
+    },
+    {
+      path: "/completionList",
+      name: "CompletionList",
+      component: CompletionList
     },
 
     {

@@ -1,40 +1,84 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="街办移交建管委" left-arrow />
-    <p class="p_biaoti">非小型建设工程移送单</p>
+    <van-nav-bar id="reset" title="查询结果页" left-arrow />
+    <p class="p_biaoti">小型工程施工信息表</p>
     <div class="biaoti">
-      <icon-svg class="icn_box" icon-class="wenjianyisong" />
+      <van-icon name="completed" />
       <span>已督察</span>
     </div>
     <van-cell-group>
-      <van-field label="工程名称" value="输入框只读" readonly />
-      <van-field label="工程地址" value="输入框只读" readonly />
-      <van-field label="建设单位" value="输入框只读" readonly />
-      <van-field label="施工单位" value="输入框只读" readonly />
-      <van-field label="监理单位" value="输入框只读" readonly />
-      <van-field label="设计单位" value="输入框只读" readonly />
-      <van-field label="开工日期" value="输入框只读" readonly />
-      <van-field label="竣工日期" value="输入框只读" readonly />
+      <van-field
+        label="工程名称"
+        value="输入框只读"
+        v-model="form.prj_name"
+        readonly
+      />
+      <van-field label="工程地址" value="" v-model="form.prj_addr" readonly />
+      <van-field label="建设单位" value="" v-model="form.demand_com" readonly />
+      <van-field
+        label="施工单位"
+        value=""
+        v-model="form.construction_com"
+        readonly
+      />
+      <van-field
+        label="监理单位"
+        value=""
+        v-model="form.supervison_com"
+        readonly
+      />
+      <van-field label="设计单位" value="" v-model="form.design_rom" readonly />
+      <van-field label="开工日期" value="" v-model="form.start_date" readonly />
+      <van-field
+        label="竣工日期"
+        value=""
+        v-model="form.completion_date"
+        readonly
+      />
+      <van-button class="xiangxi" @click="xiangxi" type="default"
+        >详细资料 ></van-button
+      >
     </van-cell-group>
     <p class="p_biaoti">施工检查记录</p>
-    <van-steps direction="vertical" :active="0">
-      <van-step>
-        <h3>检查合格</h3>
-        <p>2016-07-12 12:40</p>
-      </van-step>
-      <van-step>
-        <h3>检查合格</h3>
-        <p>2016-07-11 10:00</p>
-      </van-step>
-      <van-step>
-        <h3>检查合格</h3>
-        <p>2016-07-10 09:30</p>
-      </van-step>
-    </van-steps>
+    <div class="buzhoutiao">
+      <van-steps direction="vertical" :active="tableData.lenght">
+        <van-step v-for="(item, i) in tableData" :key="i">
+          <div @click="see(item)">
+            <h3
+              :style="
+                item.prj_state == '检查合格' ? 'color: #07c160;' : 'color: red;'
+              "
+            >
+              {{ item.prj_state }}
+            </h3>
+            <p
+              :style="
+                item.prj_state == '检查合格' ? 'color: #07c160;' : 'color: red;'
+              "
+            >
+              {{ item.updateTime }}
+            </p>
+          </div>
+        </van-step>
+      </van-steps>
+    </div>
+
     <div style="margin: 16px;">
-      <van-button class="btn1" round block type="info" native-type="submit">
+      <van-button
+        @click="shouye"
+        class="btn1"
+        round
+        block
+        type="info"
+        native-type="submit"
+      >
         返回首页
+      </van-button>
+    </div>
+    <div style="margin: 16px;">
+      <van-button @click="queding" round block type="info" native-type="submit">
+        确认竣工
       </van-button>
     </div>
   </div>
@@ -46,15 +90,184 @@ export default {
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      form: {
+        prj_name: "",
+        prj_addr: "",
+        prj_type: "",
+        prj_area: "",
+        prj_price: "",
+        demand_com: "",
+        construction_com: "",
+        supervison_com: "",
+        design_rom: "",
+        start_date: "",
+        completion_date: "",
+        fbi_name: "",
+        fbi_phone: "",
+        prj_person_name: "",
+        prj_person_phone: "",
+        prj_property: "",
+        prj_lease_contract: "",
+        prj_con_contract: "",
+        prj_license: "",
+        prj_certifications: "",
+        prj_manager_cert: "",
+        prj_safe_cert: "",
+        prj_manager_appiontment: "",
+        prj_safe_appiontment: "",
+        prj_design_cert: "",
+        prj_assist_org: "",
+        prj_state: ""
+      },
+      gongchengData: {
+        prj_name: ""
+      },
+      tableData: [],
+      tableFrom: {
+        prj_name: "",
+        prj_state: "6,7"
+      }
+    };
   },
   //方法集合
-  methods: {},
-  created() {}
+  methods: {
+    see(e) {
+      // var w = e.currentTarget.innerText;
+      // var a = w.trim().split("\n");
+
+      this.$router.push({
+        name: "Details3",
+        params: {
+          row: e
+        }
+      });
+    },
+    shouye() {
+      this.$router.push({ name: "Index" });
+    },
+    queding() {
+      this.$dialog
+        .confirm({
+          message: "是否确认竣工"
+        })
+        .then(async () => {
+          this.form.prj_state = "8";
+
+          var { data: dt } = await this.$http.post(
+            "wx/saveGongdi_info",
+            this.form
+          );
+          if (dt != 0) {
+            return this.$toast.fail({
+              message: "提交失败"
+            });
+          }
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    xiangxi() {
+      this.$router.push({
+        path: "/details",
+        query: {
+          prj_name: this.gongchengData.prj_name
+        }
+      });
+    },
+    async jianchaList() {
+      var { data: dt } = await this.$http.get(
+        "wx/getGongdi_info_ByNameAndState",
+        {
+          params: this.tableFrom
+        }
+      );
+      this.tableData = dt;
+      this.tableData.forEach(e => {
+        if (e.prj_state == "6") {
+          e.prj_state = "检查不合格";
+        }
+        if (e.prj_state == "7") {
+          e.prj_state = "检查合格";
+        }
+      });
+
+      // this.total = Math.ceil(dt.data.total / this.tableFrom.limit);
+    },
+    async content() {
+      this.gongchengData.prj_name = this.$route.query.prj_name;
+      console.log(this.gongchengData.prj_name);
+      var { data: dt } = await this.$http.get("/wx/getGongdi_info", {
+        params: this.gongchengData
+      });
+      this.tableFrom.prj_name = dt.prj_name;
+      this.form.prj_state = dt.prj_state;
+      this.form.prj_name = dt.prj_name;
+      this.form.prj_addr = dt.prj_addr;
+      this.form.prj_type = dt.prj_type;
+      this.form.prj_area = dt.prj_area;
+      this.form.prj_price = dt.prj_price;
+      this.form.demand_com = dt.demand_com;
+      this.form.construction_com = dt.construction_com;
+      this.form.supervison_com = dt.supervison_com;
+      this.form.design_rom = dt.design_rom;
+      this.form.start_date = dt.start_date;
+      this.form.completion_date = dt.completion_date;
+      this.form.fbi_name = dt.fbi_name;
+      this.form.fbi_phone = dt.fbi_phone;
+      this.form.prj_person_name = dt.prj_person_name;
+      this.form.prj_person_phone = dt.prj_person_phone;
+      this.form.prj_assist_org = dt.prj_assist_org;
+      if (dt.prj_property) {
+        this.form.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
+      }
+      if (dt.prj_lease_contract) {
+        this.form.prj_lease_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_lease_contract}`;
+      }
+      if (dt.prj_con_contract) {
+        this.form.prj_con_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_con_contract}`;
+      }
+      if (dt.prj_license) {
+        this.form.prj_license = `http://111.229.190.8:8000/gongdi/file/${dt.prj_license}`;
+      }
+      if (dt.prj_certifications) {
+        this.form.prj_certifications = `http://111.229.190.8:8000/gongdi/file/${dt.prj_certifications}`;
+      }
+      if (dt.prj_manager_cert) {
+        this.form.prj_manager_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_cert}`;
+      }
+      if (dt.prj_safe_cert) {
+        this.form.prj_safe_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_cert}`;
+      }
+      if (dt.prj_manager_appiontment) {
+        this.form.prj_manager_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_appiontment}`;
+      }
+      if (dt.prj_safe_appiontment) {
+        this.form.prj_safe_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_appiontment}`;
+      }
+      if (dt.prj_design_cert) {
+        this.form.prj_design_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_design_cert}`;
+      }
+      this.jianchaList();
+    }
+  },
+  created() {
+    this.content();
+    localStorage.removeItem("jianchaData");
+  }
 };
 </script>
 <style lang="less" scoped>
 //@import url(); 引入公共css类
+.buzhoutiao {
+  height: 500px;
+  overflow: auto;
+}
+.xiangxi {
+  border: 0px;
+  color: #666666;
+}
 .van-nav-bar {
   //   height: 60px;
   background: linear-gradient(

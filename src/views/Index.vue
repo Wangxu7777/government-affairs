@@ -7,7 +7,7 @@
         <van-col>
           <icon-svg class="touxiang" icon-class="touxiang" />
         </van-col>
-        <van-col>
+        <van-col @click="geren">
           <span>个人中心</span>
         </van-col>
       </van-row>
@@ -34,7 +34,7 @@
           </van-col>
         </van-row>
         <van-row class="tubiaowie" type="flex" justify="space-around">
-          <van-col class="tubiao">
+          <van-col class="tubiao" @click="jungong">
             <div class="title3">
               <icon-svg class="icn_box" icon-class="jungongyanshou" />
             </div>
@@ -67,6 +67,12 @@ export default {
   },
   //方法集合
   methods: {
+    geren() {
+      this.$router.push({ name: "User" });
+    },
+    jungong() {
+      this.$router.push({ name: "CompletionList" });
+    },
     chaxun() {
       this.$router.push({ name: "ProjectList" });
     },

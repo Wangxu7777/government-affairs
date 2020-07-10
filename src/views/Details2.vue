@@ -107,14 +107,6 @@ export default {
   },
   //方法集合
   methods: {
-    jiludan() {
-      this.$router.push({
-        path: "/supervise",
-        query: {
-          prj_name: this.prj_name
-        }
-      });
-    },
     show_before_img() {
       this.instance_before = ImagePreview({
         images: [this.prj_property],

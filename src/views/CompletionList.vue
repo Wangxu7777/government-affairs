@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar
       id="reset"
-      title="督察列表"
+      title="竣工列表"
       left-arrow
       @click-left="onClickLeft"
     />
@@ -97,7 +97,7 @@ export default {
       var w = e.currentTarget.innerText;
       var a = w.trim().split("\n");
       this.$router.push({
-        path: "/details",
+        path: "/testResult",
         query: {
           prj_name: a[0]
         }
@@ -110,11 +110,14 @@ export default {
       });
       this.list = dt;
       this.list = this.list.filter(function(arr) {
-        return arr.data.prj_state == "0";
+        return arr.data.prj_state == "6" || arr.data.prj_state == "7";
       });
       this.list.forEach(e => {
-        if (e.data.prj_state == "0") {
-          e.data.prj_state = "受理审核通过";
+        if (e.data.prj_state == "6") {
+          e.data.prj_state = "已督察";
+        }
+        if (e.data.prj_state == "7") {
+          e.data.prj_state = "已督察";
         }
         let str = e.data.updateTime.split(" ");
         e.data.updateTime = str[0];
@@ -130,12 +133,15 @@ export default {
 
       this.list = dt;
       this.list = this.list.filter(function(arr) {
-        return arr.data.prj_state == "0";
+        return arr.data.prj_state == "6" || arr.data.prj_state == "7";
       });
 
       this.list.forEach(e => {
-        if (e.data.prj_state == "0") {
-          e.data.prj_state = "受理审核通过";
+        if (e.data.prj_state == "6") {
+          e.data.prj_state = "已督察";
+        }
+        if (e.data.prj_state == "7") {
+          e.data.prj_state = "已督察";
         }
         let str = e.data.updateTime.split(" ");
         e.data.updateTime = str[0];

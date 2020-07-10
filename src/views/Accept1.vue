@@ -71,41 +71,11 @@
         type="info"
         native-type="submit"
         size="large"
-        @click="no_shouli"
+        @click="queding"
       >
-        不受理
+        确定
       </van-button>
     </div>
-    <div style="margin: 16px;">
-      <van-button
-        @click="shouli"
-        round
-        block
-        type="warning"
-        native-type="submit"
-        size="large"
-      >
-        确认受理
-      </van-button>
-    </div>
-    <div style="margin: 16px;">
-      <van-button
-        @click="yiban"
-        round
-        block
-        type="primary"
-        native-type="submit"
-        size="large"
-      >
-        一般工程
-      </van-button>
-    </div>
-    <van-overlay :show="show" @click="show = false">
-      <div class="icn">
-        <icon-svg class="touxiang" icon-class="jujue1" />
-      </div>
-      <h1 class="text">已拒绝受理</h1>
-    </van-overlay>
   </div>
 </template>
 
@@ -160,34 +130,7 @@ export default {
   },
   //方法集合
   methods: {
-    async yiban() {
-      this.shouliData.prj_state = "-4";
-      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
-        params: this.shouliData
-      });
-      if (dt != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      this.$toast.success({
-        message: "一般工程 已拒绝受理"
-      });
-      this.fasongData.news.articles[0].title = `一般工程`;
-      this.fasongData.news.articles[0].description = `一般工程`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/accept1?prj_name=${this.gongchengData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      this.$toast.success({
-        message: "非小型工程拒绝受理"
-      });
+    queding() {
       this.$router.push({ name: "Index" });
     },
     show_before_img() {
@@ -203,51 +146,7 @@ export default {
         closeable: true
       });
     },
-    async shouli() {
-      this.shouliData.prj_state = "-2";
-      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
-        params: this.shouliData
-      });
-      if (dt != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
 
-      this.$router.push({
-        path: "/information1",
-        query: {
-          prj_name: this.prj_name
-        }
-      });
-    },
-    async no_shouli() {
-      this.shouliData.prj_state = "-3";
-      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
-        params: this.shouliData
-      });
-      if (dt != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-
-      this.fasongData.news.articles[0].title = `小型工程未受理`;
-      this.fasongData.news.articles[0].description = `小型工程未受理`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/transferForm?prj_name=${this.gongchengData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      this.$toast.success({
-        message: "非小型工程拒绝受理"
-      });
-    },
     async content() {
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);

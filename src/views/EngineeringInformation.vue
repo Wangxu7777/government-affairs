@@ -123,6 +123,7 @@
           <van-field name="uploader" label="照片上传" class="shangchuan">
             <template #input>
               <van-uploader
+                :before-read="beforeRead"
                 :after-read="afterRead"
                 v-model="uploader"
                 multiple
@@ -152,13 +153,13 @@
 
 <script>
 import axios from "axios";
-
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
     return {
+      picture: [],
       gongchengData: {
         prj_state: "-100",
         prj_name: "",
@@ -199,7 +200,7 @@ export default {
       imgurl: "",
       postData: [],
       fasongData: {
-        touser: "13620968905",
+        touser: "18632397636",
         toparty: "6899",
         msgtype: "news",
         agentid: "1000101",
@@ -217,15 +218,31 @@ export default {
       }
     };
   },
-  //   watch: {
-  //     showPicker1: function(newQuestion, oldQuestion) {
-  //       if (newQuestion == false && this.value1 == "请输入") {
-  //         this.$refs.danweixuankbox.focus();
-  //       }
-  //     }
-  //   },
+  // watch: {
+  //   picture: function(r) {
+  //     console.log(r);
+  //   }
+  // },
   //方法集合
   methods: {
+    beforeRead(file) {
+      if (
+        file.type !== "image/jpeg" &&
+        file.type !== "image/png" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/bmp" &&
+        file.type !== "image/tif" &&
+        file.type !== "image/gif" &&
+        file.type !== "image/pcx" &&
+        file.type !== "image/tga"
+      ) {
+        this.$toast.fail({
+          message: "只可上传图片格式的文件"
+        });
+        return false;
+      }
+      return true;
+    },
     validator(val) {
       // console.log(val.length);
 
@@ -246,6 +263,7 @@ export default {
       //   param.append("file", file.file); // 通过append向form对象添加数据
       // }
       param.append("file", file.file); // 通过append向form对象添加数据
+      console.log(param.get("file"));
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
@@ -262,6 +280,8 @@ export default {
             });
           }
           this.gongchengData.picture.push(response.data.data.result);
+          console.log(response);
+          this.picture.push(response.data.data.result);
           this.$toast.success({
             message: "上传图片成功"
           });
@@ -295,7 +315,7 @@ export default {
       //     "Content-Type": "application/x-www-form-urlencoded"
       //   }
       // };
-      this.gongchengData.picture = this.gongchengData.picture.toString();
+      // this.gongchengData.picture = this.gongchengData.picture.toString();
       this.gongchengData.lng = this.gongchengData.lng.toString();
       this.gongchengData.lat = this.gongchengData.lat.toString();
 
