@@ -5,7 +5,14 @@
 
       <van-row class="heard" type="flex" align="center">
         <van-col>
-          <icon-svg class="touxiang" icon-class="touxiang" />
+          <van-image
+            fit="cover"
+            round
+            width="2rem"
+            height="2rem"
+            :src="userData.avatar"
+          />
+          <!-- <icon-svg class="touxiang" icon-class="touxiang" /> -->
         </van-col>
         <van-col @click="geren">
           <span>个人中心</span>
@@ -63,12 +70,34 @@ export default {
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      user: {
+        user_id: "18632397636"
+      },
+      userData: {}
+    };
   },
   //方法集合
   methods: {
+    async content() {
+      this.user.user_id = this.$route.query.userid;
+      // this.$toast(`用户id:${this.user.user_id}`);
+      const { data: dt } = await this.$http.get("getUser", {
+        params: this.user
+      });
+      console.log(dt);
+      this.userData = dt.data;
+      if (dt.data.errcode !== 0) {
+        return this.$toast.fail({
+          message: "获取用户信息失败"
+        });
+      }
+    },
     geren() {
-      this.$router.push({ name: "User" });
+      this.$router.push({
+        name: "User",
+        query: { user_id: this.user.user_id }
+      });
     },
     jungong() {
       this.$router.push({ name: "CompletionList" });
@@ -83,7 +112,9 @@ export default {
       this.$router.push({ name: "InspectorList" });
     }
   },
-  created() {}
+  created() {
+    this.content();
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -101,6 +132,9 @@ export default {
   .touxiang {
     width: 60px;
     height: 60px;
+    margin-right: 5px;
+  }
+  .van-image {
     margin-right: 5px;
   }
   .heard span {

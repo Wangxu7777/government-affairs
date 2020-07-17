@@ -15,7 +15,8 @@ import axios from "axios";
 // 基准路径
 // axios.defaults.withCredentials = true;
 
-axios.defaults.baseURL = "http://111.229.190.8";
+axios.defaults.baseURL = "http://hptest.soyumall.cn";
+// axios.defaults.baseURL = "http://111.229.190.8";
 // axios.defaults.baseURL = "http://172.82.4.51:8082";
 // axios.defaults.baseURL = "http://173.82.57.48:8082";
 // axios.defaults.baseURL = "http://localhost:12315/order/";

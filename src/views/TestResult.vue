@@ -1,11 +1,19 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="查询结果页" left-arrow />
+    <van-nav-bar
+      id="reset"
+      title="查询结果页"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <p class="p_biaoti">小型工程施工信息表</p>
     <div class="biaoti">
       <van-icon name="completed" />
-      <span>已督察</span>
+      <span v-if="this.form.prj_state == '6' || this.form.prj_state == '7'"
+        >已督察</span
+      >
+      <span v-if="this.form.prj_state == '8'">已竣工</span>
     </div>
     <van-cell-group>
       <van-field
@@ -76,7 +84,10 @@
         返回首页
       </van-button>
     </div>
-    <div style="margin: 16px;">
+    <div
+      style="margin: 16px;"
+      v-if="this.form.prj_state == '6' || this.form.prj_state == '7'"
+    >
       <van-button @click="queding" round block type="info" native-type="submit">
         确认竣工
       </van-button>
@@ -132,6 +143,9 @@ export default {
   },
   //方法集合
   methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     see(e) {
       // var w = e.currentTarget.innerText;
       // var a = w.trim().split("\n");
@@ -163,6 +177,12 @@ export default {
               message: "提交失败"
             });
           }
+          this.$router.push({
+            path: "/success6",
+            query: {
+              prj_name: this.form.prj_name
+            }
+          });
         })
         .catch(() => {
           // on cancel

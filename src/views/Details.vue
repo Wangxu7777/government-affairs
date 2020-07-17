@@ -20,6 +20,7 @@
       <span v-if="this.prj_state == '5'">同意接收</span>
       <span v-if="this.prj_state == '7'">检查合格</span>
       <span v-if="this.prj_state == '6'">检查不合格</span>
+      <span v-if="this.prj_state == '8'">已竣工</span>
     </div>
     <van-cell-group>
       <van-field label="工程名称" :value="prj_name" readonly />
@@ -127,7 +128,12 @@
       </van-col>
     </van-row>
 
-    <div v-if="this.prj_state == '0'" style="margin: 16px;">
+    <div
+      v-if="
+        this.prj_state == '0' || this.prj_state == '6' || this.prj_state == '7'
+      "
+      style="margin: 16px;"
+    >
       <van-button @click="jiludan" round block type="info" native-type="submit">
         填写工程检查记录单
       </van-button>

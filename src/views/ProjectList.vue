@@ -107,14 +107,7 @@
 export default {
   data() {
     return {
-      list2: [
-        "已受理，待审核",
-        "正在移交",
-        "受理审核通过",
-        "督察不合格",
-        "已督察",
-        "已竣工"
-      ],
+      list2: ["已受理，待审核", "正在移交", "受理审核通过", "已督察", "已竣工"],
       result: [],
       value: "",
       radio: "",
@@ -216,7 +209,7 @@ export default {
           e.data.prj_state = "同意接收";
         }
         if (e.data.prj_state == "6") {
-          e.data.prj_state = "督察不合格";
+          e.data.prj_state = "已督察";
         }
         if (e.data.prj_state == "7") {
           e.data.prj_state = "已督察";
@@ -270,7 +263,7 @@ export default {
           e.data.prj_state = "同意接收";
         }
         if (e.data.prj_state == "6") {
-          e.data.prj_state = "督察不合格";
+          e.data.prj_state = "已督察";
         }
         if (e.data.prj_state == "7") {
           e.data.prj_state = "已督察";

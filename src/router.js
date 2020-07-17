@@ -22,6 +22,7 @@ import success2 from "./views/success2.vue";
 import success3 from "./views/success3.vue";
 import success4 from "./views/success4.vue";
 import success5 from "./views/success5.vue";
+import success6 from "./views/success6.vue";
 import TransferForm from "./views/TransferForm.vue";
 import Supervise from "./views/Supervise.vue";
 import TestResult from "./views/TestResult.vue";
@@ -34,6 +35,8 @@ import shiyan from "./views/shiyan.vue";
 
 Vue.use(Router);
 var router = new Router({
+  mode: "history",
+  base: "/gongdi/",
   routes: [
     {
       path: "/",
@@ -83,6 +86,11 @@ var router = new Router({
       path: "/success5",
       name: "success5",
       component: success5
+    },
+    {
+      path: "/success6",
+      name: "success6",
+      component: success6
     },
     {
       path: "/accept",

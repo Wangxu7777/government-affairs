@@ -8,7 +8,7 @@
           <van-icon class="header" name="manager" />
         </van-col>
         <van-col class="name">
-          <p class="name1">用户名</p>
+          <p class="name1">{{ userData.name }}</p>
           <p class="name2">所属部门</p>
         </van-col>
         <van-col offset="12">
@@ -48,11 +48,30 @@ export default {
     return {
       loading: false,
       list: [],
-      finished: false
+      finished: false,
+      user: {
+        user_id: ""
+      },
+      userData: {}
     };
   },
   //方法集合
   methods: {
+    async content() {
+      this.user.user_id = this.$route.query.user_id;
+
+      const { data: dt } = await this.$http.get("getUser", {
+        params: this.user
+      });
+
+      this.userData = dt.data;
+      console.log(this.userData);
+      if (dt.data.errcode !== 0) {
+        return this.$toast.fail({
+          message: "获取用户信息失败"
+        });
+      }
+    },
     see(e) {
       var w = e.currentTarget.innerText;
       var a = w.trim().split("\n");
@@ -76,57 +95,56 @@ export default {
     async onLoad() {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate");
-      this.list = dt;
-
-      this.list.forEach(e => {
-        if (e.data.prj_state == "-100") {
-          e.data.prj_state = "发现工程";
-        }
-        if (e.data.prj_state == "-4") {
-          e.data.prj_state = "待移交";
-        }
-        if (e.data.prj_state == "-3") {
-          e.data.prj_state = "待移交";
-        }
-        if (e.data.prj_state == "-2") {
-          e.data.prj_state = "已受理，待审核";
-        }
-        if (e.data.prj_state == "-1") {
-          e.data.prj_state = "受理审核未通过";
-        }
-        if (e.data.prj_state == "0") {
-          e.data.prj_state = "受理审核通过";
-        }
-        if (e.data.prj_state == "1") {
-          e.data.prj_state = "正在移交";
-        }
-        if (e.data.prj_state == "2") {
-          e.data.prj_state = "不同意移交";
-        }
-        if (e.data.prj_state == "3") {
-          e.data.prj_state = "同意移交";
-        }
-        if (e.data.prj_state == "4") {
-          e.data.prj_state = "不同意接收";
-        }
-        if (e.data.prj_state == "5") {
-          e.data.prj_state = "同意接收";
-        }
-        if (e.data.prj_state == "6") {
-          e.data.prj_state = "督察不合格";
-        }
-        if (e.data.prj_state == "7") {
-          e.data.prj_state = "已督察";
-        }
-        if (e.data.prj_state == "8") {
-          e.data.prj_state = "已竣工";
-        }
-        let str = e.data.updateTime.split(" ");
-        e.data.updateTime = str[0];
-      });
-      this.list1 = this.list;
-      // 加载状态结束
+      // var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate");
+      // this.list = dt;
+      // this.list.forEach(e => {
+      //   if (e.data.prj_state == "-100") {
+      //     e.data.prj_state = "发现工程";
+      //   }
+      //   if (e.data.prj_state == "-4") {
+      //     e.data.prj_state = "待移交";
+      //   }
+      //   if (e.data.prj_state == "-3") {
+      //     e.data.prj_state = "待移交";
+      //   }
+      //   if (e.data.prj_state == "-2") {
+      //     e.data.prj_state = "已受理，待审核";
+      //   }
+      //   if (e.data.prj_state == "-1") {
+      //     e.data.prj_state = "受理审核未通过";
+      //   }
+      //   if (e.data.prj_state == "0") {
+      //     e.data.prj_state = "受理审核通过";
+      //   }
+      //   if (e.data.prj_state == "1") {
+      //     e.data.prj_state = "正在移交";
+      //   }
+      //   if (e.data.prj_state == "2") {
+      //     e.data.prj_state = "不同意移交";
+      //   }
+      //   if (e.data.prj_state == "3") {
+      //     e.data.prj_state = "同意移交";
+      //   }
+      //   if (e.data.prj_state == "4") {
+      //     e.data.prj_state = "不同意接收";
+      //   }
+      //   if (e.data.prj_state == "5") {
+      //     e.data.prj_state = "同意接收";
+      //   }
+      //   if (e.data.prj_state == "6") {
+      //     e.data.prj_state = "督察不合格";
+      //   }
+      //   if (e.data.prj_state == "7") {
+      //     e.data.prj_state = "已督察";
+      //   }
+      //   if (e.data.prj_state == "8") {
+      //     e.data.prj_state = "已竣工";
+      //   }
+      //   let str = e.data.updateTime.split(" ");
+      //   e.data.updateTime = str[0];
+      // });
+      // this.list1 = this.list;
+      // // 加载状态结束
       this.loading = false;
       this.finished = true;
     },
@@ -134,7 +152,9 @@ export default {
       this.$router.go(-1);
     }
   },
-  created() {}
+  created() {
+    this.content();
+  }
 };
 </script>
 <style lang="less" scoped>

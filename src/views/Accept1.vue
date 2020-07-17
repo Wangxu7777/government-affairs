@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="小型工程受理" />
+    <van-nav-bar id="reset" title="一般工程" />
     <van-notice-bar color="#EC6A42" background="#F0F0F0" left-icon="info-o">
       小型工程发现上报
     </van-notice-bar>

@@ -12,6 +12,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead"
               v-model="fileList"
               multiple
@@ -23,6 +24,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead1"
               v-model="fileList1"
               multiple
@@ -36,6 +38,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead2"
               v-model="fileList2"
               multiple
@@ -47,6 +50,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead3"
               v-model="fileList3"
               multiple
@@ -60,6 +64,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead4"
               v-model="fileList4"
               multiple
@@ -84,6 +89,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead6"
               v-model="fileList6"
               multiple
@@ -95,6 +101,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead7"
               v-model="fileList7"
               multiple
@@ -108,6 +115,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead8"
               v-model="fileList8"
               multiple
@@ -119,6 +127,7 @@
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead9"
               v-model="fileList9"
               multiple
@@ -176,6 +185,24 @@ export default {
   },
   //方法集合
   methods: {
+    beforeRead(file) {
+      if (
+        file.type !== "image/jpeg" &&
+        file.type !== "image/png" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/bmp" &&
+        file.type !== "image/tif" &&
+        file.type !== "image/gif" &&
+        file.type !== "image/pcx" &&
+        file.type !== "image/tga"
+      ) {
+        this.$toast.fail({
+          message: "只可上传图片格式的文件"
+        });
+        return false;
+      }
+      return true;
+    },
     xiayibu() {
       this.shigongData.prj_property = this.prj_property;
       this.shigongData.prj_lease_contract = this.prj_lease_contract;
@@ -197,7 +224,8 @@ export default {
     },
     afterRead(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -220,14 +248,13 @@ export default {
             });
           }
           this.prj_property = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead1(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -250,14 +277,13 @@ export default {
             });
           }
           this.prj_lease_contract = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead2(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
 
       param.append("file", file.file); // 通过append向form对象添加数据
@@ -279,14 +305,13 @@ export default {
             });
           }
           this.prj_con_contract = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead3(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -309,14 +334,13 @@ export default {
             });
           }
           this.prj_license = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead4(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -339,14 +363,13 @@ export default {
             });
           }
           this.prj_certifications = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead5(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -369,14 +392,13 @@ export default {
             });
           }
           this.prj_manager_cert = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead6(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -399,14 +421,13 @@ export default {
             });
           }
           this.prj_safe_cert = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead7(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -429,14 +450,13 @@ export default {
             });
           }
           this.prj_manager_appiontment = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead8(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -459,14 +479,13 @@ export default {
             });
           }
           this.prj_safe_appiontment = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     afterRead9(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
 
@@ -489,9 +508,7 @@ export default {
             });
           }
           this.prj_design_cert = response.data.data.result;
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
     onClickLeft() {

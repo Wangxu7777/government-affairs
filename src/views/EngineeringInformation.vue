@@ -159,6 +159,9 @@ export default {
   data() {
     //这里存放数据
     return {
+      user: {
+        user_id: "18632397636"
+      },
       picture: [],
       gongchengData: {
         prj_state: "-100",
@@ -252,7 +255,8 @@ export default {
     },
     afterRead(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
       // if (file instanceof Array && file.length) {
@@ -263,7 +267,7 @@ export default {
       //   param.append("file", file.file); // 通过append向form对象添加数据
       // }
       param.append("file", file.file); // 通过append向form对象添加数据
-      console.log(param.get("file"));
+      // console.log(param.get("file"));
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
@@ -275,16 +279,16 @@ export default {
         )
         .then(response => {
           if (response.data.status != 200) {
+            file.status = "failed";
+            file.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.gongchengData.picture.push(response.data.data.result);
-          console.log(response);
+
           this.picture.push(response.data.data.result);
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
         });
     },
 
@@ -327,7 +331,8 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/accept?prj_name=${this.gongchengData.prj_name}`;
+      var qingqiuUrl = `http://hptest.soyumall.cn:8080/gongdi/accept?prj_name=${this.gongchengData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);

@@ -104,6 +104,10 @@ export default {
   .text {
     text-align: center;
   }
+  .text1 {
+    text-align: center;
+    font-size: 12px;
+  }
   .btn1 {
     background: linear-gradient(
       -90deg,

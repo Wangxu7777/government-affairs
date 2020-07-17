@@ -1,12 +1,14 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="审核结束" />
+    <van-nav-bar id="reset" title="接收结果页" />
     <div class="chenggong">
       <div class="icn">
         <icon-svg class="touxiang" icon-class="chenggong" />
       </div>
-      <h1 class="text">审核结束</h1>
+      <h1 class="text">工程已确认竣工</h1>
+
+      <p class="text1">您可以在我的中查询工程单详情或查看处置进程</p>
       <div style="margin: 16px;margin-top: 130px">
         <van-button
           @click="xiangqin"
@@ -17,7 +19,7 @@
           native-type="submit"
           size="large"
         >
-          查看工程施工信息单
+          查看工程完整信息
         </van-button>
       </div>
       <div style="margin: 16px;">
@@ -43,18 +45,27 @@ export default {
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      prj_name: ""
+    };
   },
   //方法集合
   methods: {
     xiangqin() {
-      this.$router.push({ name: "Details" });
+      this.$router.push({
+        path: "/testResult",
+        query: {
+          prj_name: this.prj_name
+        }
+      });
     },
     shouye() {
       this.$router.push({ name: "Index" });
     }
   },
-  created() {}
+  created() {
+    this.prj_name = this.$route.query.prj_name;
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <van-nav-bar id="reset" title="小型建设工程监督检查记录单" />
+    <van-nav-bar
+      id="reset"
+      title="小型建设工程监督检查记录单"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <p>工程基本信息</p>
     <van-cell-group>
       <van-field label="工程名称" :value="shigongData.prj_name" readonly />
@@ -103,6 +108,7 @@
         <van-field name="uploader" label="照片上传" class="shangchuan">
           <template #input>
             <van-uploader
+              :before-read="beforeRead"
               :after-read="afterRead"
               v-model="uploader"
               multiple
@@ -207,6 +213,27 @@ export default {
     this.content();
   },
   methods: {
+    beforeRead(file) {
+      if (
+        file.type !== "image/jpeg" &&
+        file.type !== "image/png" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/bmp" &&
+        file.type !== "image/tif" &&
+        file.type !== "image/gif" &&
+        file.type !== "image/pcx" &&
+        file.type !== "image/tga"
+      ) {
+        this.$toast.fail({
+          message: "只可上传图片格式的文件"
+        });
+        return false;
+      }
+      return true;
+    },
+    onClickLeft() {
+      this.$router.go(-1);
+    },
     async content() {
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
@@ -298,7 +325,8 @@ export default {
     },
     afterRead(file) {
       // console.log(file.file);
-
+      file.status = "uploading";
+      file.message = "上传中...";
       let param = new FormData(); // 创建form对象
       //区分单文件上传还是多文件
       if (file instanceof Array && file.length) {
@@ -326,9 +354,7 @@ export default {
           }
 
           this.shigongData.change_pictures.push(response.data.data.result); //上传一张之后压入这个数组
-          this.$toast.success({
-            message: "上传图片成功"
-          });
+          file.status = "done";
 
           // console.log(this.gongchengData);
         });
