@@ -173,7 +173,7 @@ export default {
         lat: 0,
         prj_addr: "",
         picture: [],
-        userid: "15810457862"
+        userid: ""
       },
       uploader: [],
 
@@ -204,7 +204,7 @@ export default {
       postData: [],
       fasongData: {
         touser: "18632397636",
-        toparty: "6899",
+        // toparty: "6899",
         msgtype: "news",
         agentid: "1000101",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
@@ -218,7 +218,8 @@ export default {
             }
           ]
         }
-      }
+      },
+      user_id: ""
     };
   },
   // watch: {
@@ -228,6 +229,10 @@ export default {
   // },
   //方法集合
   methods: {
+    content() {
+      const user_id = sessionStorage.getItem("user_id");
+      this.gongchengData.userid = JSON.parse(user_id);
+    },
     beforeRead(file) {
       if (
         file.type !== "image/jpeg" &&
@@ -273,7 +278,8 @@ export default {
       };
       axios
         .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
           param,
           config
         )
@@ -331,10 +337,9 @@ export default {
           message: "提交失败"
         });
       }
-      var qingqiuUrl = `http://hptest.soyumall.cn:8080/gongdi/accept?prj_name=${this.gongchengData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/accept?prj_name=${this.gongchengData.prj_name}`;
       this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
+
       var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {
@@ -417,6 +422,7 @@ export default {
   },
   created() {
     // this.tokenData();
+    this.content();
   },
   beforeCreate() {
     document

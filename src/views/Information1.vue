@@ -138,6 +138,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      userid: "",
       shigongData: {
         prj_name: "",
         prj_addr: "",
@@ -166,6 +167,18 @@ export default {
   //方法集合
   methods: {
     async content() {
+      const userid = sessionStorage.getItem("user_id");
+
+      if (userid) {
+        this.userid = JSON.parse(userid);
+      } else {
+        this.userid = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
+      }
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData

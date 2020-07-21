@@ -5,14 +5,21 @@
     <div class="user">
       <van-row type="flex" align="center">
         <van-col class="icn">
-          <van-icon class="header" name="manager" />
+          <van-image
+            fit="cover"
+            round
+            width="3.5rem"
+            height="3.6rem"
+            :src="userData.avatar"
+          />
+          <!-- <van-icon class="header" name="manager" /> -->
         </van-col>
         <van-col class="name">
           <p class="name1">{{ userData.name }}</p>
-          <p class="name2">所属部门</p>
+          <p class="name2">{{ userData.department }}</p>
         </van-col>
         <van-col offset="12">
-          <van-icon class="xiaoxi" name="envelop-o" />
+          <!-- <van-icon class="xiaoxi" name="envelop-o" /> -->
         </van-col>
       </van-row>
     </div>
@@ -58,14 +65,22 @@ export default {
   //方法集合
   methods: {
     async content() {
-      this.user.user_id = this.$route.query.user_id;
+      const userid = sessionStorage.getItem("user_id");
+
+      if (userid) {
+        this.user.user_id = JSON.parse(userid);
+      } else {
+        this.user.user_id = this.$route.query.user_id;
+
+        sessionStorage.setItem("user_id", JSON.stringify(this.user.user_id));
+      }
 
       const { data: dt } = await this.$http.get("getUser", {
         params: this.user
       });
 
       this.userData = dt.data;
-      console.log(this.userData);
+      this.userData.department = this.userData.department.toString();
       if (dt.data.errcode !== 0) {
         return this.$toast.fail({
           message: "获取用户信息失败"
@@ -93,56 +108,58 @@ export default {
       }
     },
     async onLoad() {
-      // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      // var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate");
-      // this.list = dt;
-      // this.list.forEach(e => {
-      //   if (e.data.prj_state == "-100") {
-      //     e.data.prj_state = "发现工程";
-      //   }
-      //   if (e.data.prj_state == "-4") {
-      //     e.data.prj_state = "待移交";
-      //   }
-      //   if (e.data.prj_state == "-3") {
-      //     e.data.prj_state = "待移交";
-      //   }
-      //   if (e.data.prj_state == "-2") {
-      //     e.data.prj_state = "已受理，待审核";
-      //   }
-      //   if (e.data.prj_state == "-1") {
-      //     e.data.prj_state = "受理审核未通过";
-      //   }
-      //   if (e.data.prj_state == "0") {
-      //     e.data.prj_state = "受理审核通过";
-      //   }
-      //   if (e.data.prj_state == "1") {
-      //     e.data.prj_state = "正在移交";
-      //   }
-      //   if (e.data.prj_state == "2") {
-      //     e.data.prj_state = "不同意移交";
-      //   }
-      //   if (e.data.prj_state == "3") {
-      //     e.data.prj_state = "同意移交";
-      //   }
-      //   if (e.data.prj_state == "4") {
-      //     e.data.prj_state = "不同意接收";
-      //   }
-      //   if (e.data.prj_state == "5") {
-      //     e.data.prj_state = "同意接收";
-      //   }
-      //   if (e.data.prj_state == "6") {
-      //     e.data.prj_state = "督察不合格";
-      //   }
-      //   if (e.data.prj_state == "7") {
-      //     e.data.prj_state = "已督察";
-      //   }
-      //   if (e.data.prj_state == "8") {
-      //     e.data.prj_state = "已竣工";
-      //   }
-      //   let str = e.data.updateTime.split(" ");
-      //   e.data.updateTime = str[0];
-      // });
+      var { data: dt } = await this.$http.get(
+        "wx/getGongdi_All_History_ByUser",
+        { params: this.user }
+      );
+      console.log(dt);
+      this.list = dt;
+      this.list.forEach(e => {
+        if (e.data.prj_state == "-100") {
+          e.data.prj_state = "发现工程";
+        }
+        if (e.data.prj_state == "-4") {
+          e.data.prj_state = "待移交";
+        }
+        if (e.data.prj_state == "-3") {
+          e.data.prj_state = "待移交";
+        }
+        if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-1") {
+          e.data.prj_state = "受理审核未通过";
+        }
+        if (e.data.prj_state == "0") {
+          e.data.prj_state = "受理审核通过";
+        }
+        if (e.data.prj_state == "1") {
+          e.data.prj_state = "正在移交";
+        }
+        if (e.data.prj_state == "2") {
+          e.data.prj_state = "不同意移交";
+        }
+        if (e.data.prj_state == "3") {
+          e.data.prj_state = "同意移交";
+        }
+        if (e.data.prj_state == "4") {
+          e.data.prj_state = "不同意接收";
+        }
+        if (e.data.prj_state == "5") {
+          e.data.prj_state = "同意接收";
+        }
+        if (e.data.prj_state == "6") {
+          e.data.prj_state = "督察不合格";
+        }
+        if (e.data.prj_state == "7") {
+          e.data.prj_state = "已督察";
+        }
+        if (e.data.prj_state == "8") {
+          e.data.prj_state = "已竣工";
+        }
+        let str = e.data.updateTime.split(" ");
+        e.data.updateTime = str[0];
+      });
       // this.list1 = this.list;
       // // 加载状态结束
       this.loading = false;

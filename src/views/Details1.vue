@@ -43,6 +43,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      userid: "",
       prj_name: "",
       prj_addr: "",
       prj_type: "",
@@ -75,6 +76,18 @@ export default {
       });
     },
     async content() {
+      const userid = sessionStorage.getItem("user_id");
+
+      if (userid) {
+        this.userid = JSON.parse(userid);
+      } else {
+        this.userid = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
+      }
       const shigongData = localStorage.getItem("shigongData");
       if (shigongData) {
         this.shigongData1 = JSON.parse(shigongData);

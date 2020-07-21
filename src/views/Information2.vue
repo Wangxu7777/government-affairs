@@ -236,11 +236,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -265,11 +261,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -293,11 +285,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -322,11 +310,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -351,11 +335,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -380,11 +360,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -409,11 +385,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -438,11 +410,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -467,11 +435,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({
@@ -496,11 +460,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({

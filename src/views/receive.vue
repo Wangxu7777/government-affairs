@@ -161,7 +161,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程接收失败`;
       this.fasongData.news.articles[0].description = `小型工程接收失败`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.shigongData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/viewTransferOrder?prj_name=${this.shigongData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -198,6 +200,18 @@ export default {
       this.shigongData.fbi_phone = dt.fbi_phone;
       this.shigongData.contract_price = dt.contract_price;
       this.shigongData.prj_check = dt.prj_check;
+      const userid = sessionStorage.getItem("user_id");
+
+      if (userid) {
+        this.shigongData1.userid = JSON.parse(userid);
+      } else {
+        this.shigongData1.userid = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
+      }
     }
   },
   created() {

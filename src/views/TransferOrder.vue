@@ -24,8 +24,16 @@
         readonly
       />
       <van-field label="设计单位" :value="shigongData.design_rom" readonly />
-      <van-field label="联系人姓名" :value="shigongData.fbi_name" readonly />
-      <van-field label="联系人电话" :value="shigongData.fbi_phone" readonly />
+      <van-field
+        label="联系人姓名"
+        :value="shigongData.prj_person_name"
+        readonly
+      />
+      <van-field
+        label="联系人电话"
+        :value="shigongData.prj_person_phone"
+        readonly
+      />
       <van-field label="工程面积" :value="shigongData.prj_area" readonly />
       <van-field
         label="合同造价"
@@ -74,6 +82,7 @@ export default {
     //这里存放数据
     return {
       shigongData: {
+        userid: "",
         prj_name: "",
         prj_addr: "",
         prj_area: "",
@@ -82,8 +91,8 @@ export default {
         construction_com: "",
         supervison_com: "",
         design_rom: "",
-        fbi_name: "",
-        fbi_phone: "",
+        prj_person_name: "",
+        prj_person_phone: "",
         prj_check: "",
         contract_price: "",
         prj_state: ""
@@ -130,7 +139,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程移送`;
       this.fasongData.news.articles[0].description = `小型工程移送`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/receive?prj_name=${this.gongchengData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/receive?prj_name=${this.gongchengData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/receive?prj_name=${this.gongchengData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -156,7 +167,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程移送失败`;
       this.fasongData.news.articles[0].description = `小型工程移送失败`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -173,6 +186,17 @@ export default {
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;
+      const userid = sessionStorage.getItem("user_id");
+      if (userid) {
+        this.shigongData.userid = JSON.parse(userid);
+      } else {
+        this.shigongData.userid = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
+      }
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.gongchengData
@@ -188,8 +212,8 @@ export default {
       this.shigongData.construction_com = dt.construction_com;
       this.shigongData.supervison_com = dt.supervison_com;
       this.shigongData.design_rom = dt.design_rom;
-      this.shigongData.fbi_name = dt.fbi_name;
-      this.shigongData.fbi_phone = dt.fbi_phone;
+      this.shigongData.prj_person_name = dt.prj_person_name;
+      this.shigongData.prj_person_phone = dt.prj_person_phone;
       this.shigongData.contract_price = dt.contract_price;
       this.shigongData.prj_check = dt.prj_check;
     }

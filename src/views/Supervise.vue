@@ -238,6 +238,17 @@ export default {
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;
+      const userid = sessionStorage.getItem("user_id");
+      if (userid) {
+        this.shigongData.userid = JSON.parse(userid);
+      } else {
+        this.shigongData.userid = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
+      }
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.gongchengData
@@ -341,11 +352,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(
-          `${this.$http.defaults.baseURL}:8000/gongdi/general/upload`,
-          param,
-          config
-        )
+        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
         .then(response => {
           if (response.data.status != 200) {
             return this.$toast.fail({

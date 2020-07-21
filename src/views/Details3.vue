@@ -171,39 +171,39 @@ export default {
       if (this.jianchaData.change_pictures) {
         var imgArr = this.jianchaData.change_pictures.trim().split(",");
         if (imgArr.length == 1) {
-          this.change_pictures = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
+          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
         }
         if (imgArr.length == 2) {
-          this.change_pictures = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
+          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
         }
 
         if (imgArr.length == 3) {
-          this.change_pictures = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
+          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
         }
 
         if (imgArr.length == 4) {
-          this.change_pictures = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
-          this.change_pictures3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
+          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
+          this.change_pictures3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
         }
         if (imgArr.length == 5) {
-          this.change_pictures = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
-          this.change_pictures3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
-          this.change_pictures4 = `http://111.229.190.8:8000/gongdi/file/${imgArr[4]}`;
+          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
+          this.change_pictures3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
+          this.change_pictures4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
         }
         if (imgArr.length == 6) {
-          this.change_pictures = `http://111.229.190.8:8000/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://111.229.190.8:8000/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://111.229.190.8:8000/gongdi/file/${imgArr[2]}`;
-          this.change_pictures3 = `http://111.229.190.8:8000/gongdi/file/${imgArr[3]}`;
-          this.change_pictures4 = `http://111.229.190.8:8000/gongdi/file/${imgArr[4]}`;
-          this.change_pictures5 = `http://111.229.190.8:8000/gongdi/file/${imgArr[5]}`;
+          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
+          this.change_pictures3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
+          this.change_pictures4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
+          this.change_pictures5 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[5]}`;
         }
       }
     },

@@ -206,37 +206,37 @@ export default {
       this.change_desp = dt.change_desp;
 
       if (dt.prj_lease_contract) {
-        this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
+        this.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;
       }
       if (dt.prj_lease_contract) {
-        this.prj_lease_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_lease_contract}`;
+        this.prj_lease_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_lease_contract}`;
       }
       if (dt.prj_con_contract) {
-        this.prj_con_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_con_contract}`;
+        this.prj_con_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_con_contract}`;
       }
       if (dt.prj_license) {
-        this.prj_license = `http://111.229.190.8:8000/gongdi/file/${dt.prj_license}`;
+        this.prj_license = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_license}`;
       }
       if (dt.prj_certifications) {
-        this.prj_certifications = `http://111.229.190.8:8000/gongdi/file/${dt.prj_certifications}`;
+        this.prj_certifications = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_certifications}`;
       }
       if (dt.prj_manager_cert) {
-        this.prj_manager_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_cert}`;
+        this.prj_manager_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_cert}`;
       }
       if (dt.prj_safe_cert) {
-        this.prj_safe_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_cert}`;
+        this.prj_safe_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_cert}`;
       }
       if (dt.prj_manager_appiontment) {
-        this.prj_manager_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_appiontment}`;
+        this.prj_manager_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_appiontment}`;
       }
       if (dt.prj_safe_appiontment) {
-        this.prj_safe_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_appiontment}`;
+        this.prj_safe_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_appiontment}`;
       }
       if (dt.prj_design_cert) {
-        this.prj_design_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_design_cert}`;
+        this.prj_design_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_design_cert}`;
       }
       if (dt.prj_assist_org) {
-        this.prj_assist_org = `http://111.229.190.8:8000/gongdi/file/${dt.prj_assist_org}`;
+        this.prj_assist_org = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_assist_org}`;
       }
     },
     onClickLeft() {

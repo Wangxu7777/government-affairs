@@ -72,7 +72,7 @@ export default {
     //这里存放数据
     return {
       user: {
-        user_id: "18632397636"
+        user_id: ""
       },
       userData: {}
     };
@@ -80,12 +80,23 @@ export default {
   //方法集合
   methods: {
     async content() {
-      this.user.user_id = this.$route.query.userid;
+      const userid = sessionStorage.getItem("user_id");
+
+      if (userid) {
+        this.user.user_id = JSON.parse(userid);
+      } else {
+        this.user.user_id = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
+      }
+
       // this.$toast(`用户id:${this.user.user_id}`);
       const { data: dt } = await this.$http.get("getUser", {
         params: this.user
       });
-      console.log(dt);
       this.userData = dt.data;
       if (dt.data.errcode !== 0) {
         return this.$toast.fail({

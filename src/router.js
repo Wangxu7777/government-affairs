@@ -31,12 +31,10 @@ import User from "./views/User.vue";
 import Accept1 from "./views/Accept1.vue";
 import CompletionList from "./views/CompletionList.vue";
 
-import shiyan from "./views/shiyan.vue";
-
 Vue.use(Router);
 var router = new Router({
-  mode: "history",
-  base: "/gongdi/",
+  // mode: "history",
+  // base: "/gongdi/",
   routes: [
     {
       path: "/",
@@ -191,12 +189,6 @@ var router = new Router({
       path: "/completionList",
       name: "CompletionList",
       component: CompletionList
-    },
-
-    {
-      path: "/shiyan",
-      name: "shiyan",
-      component: shiyan
     }
   ]
 });
@@ -206,11 +198,7 @@ var router = new Router({
 //   var token = window.sessionStorage.getItem("userId");
 //   if (token === null && to.path !== "/login") {
 //     if (
-//       to.path.includes("/apply") ||
-//       to.path.includes("/verification") ||
-//       to.path.includes("/smsVerification") ||
-//       to.path.includes("/modify") ||
-//       to.path.includes("/complete")
+
 //     ) {
 //       next();
 //     } else {

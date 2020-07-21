@@ -211,7 +211,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `非小型工程，请移交`;
       this.fasongData.news.articles[0].description = `非小型工程，请移交`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/transferForm?prj_name=${this.shigongData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/transferForm?prj_name=${this.shigongData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/transferForm?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -237,7 +239,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程受理审核通过`;
       this.fasongData.news.articles[0].description = `小型工程受理审核通过`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details?prj_name=${this.shigongData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/details?prj_name=${this.shigongData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -263,7 +267,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工地受理审核，未通过。`;
       this.fasongData.news.articles[0].description = `小型工地受理审核，未通过。`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/information1?prj_name=${this.shigongData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/information1?prj_name=${this.shigongData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/information1?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
@@ -352,38 +358,48 @@ export default {
       delete this.shigongData1.updateTime;
       delete this.shigongData1.__v;
       delete this.shigongData1._id;
-      if (dt.prj_lease_contract) {
-        this.prj_property = `http://111.229.190.8:8000/gongdi/file/${dt.prj_property}`;
+
+      const userid = sessionStorage.getItem("user_id");
+
+      if (userid) {
+        this.shigongData1.userid = JSON.parse(userid);
+      } else {
+        this.shigongData1.userid = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
       }
       if (dt.prj_lease_contract) {
-        this.prj_lease_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_lease_contract}`;
+        this.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;
+      }
+      if (dt.prj_lease_contract) {
+        this.prj_lease_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_lease_contract}`;
       }
       if (dt.prj_con_contract) {
-        this.prj_con_contract = `http://111.229.190.8:8000/gongdi/file/${dt.prj_con_contract}`;
+        this.prj_con_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_con_contract}`;
       }
       if (dt.prj_license) {
-        this.prj_license = `http://111.229.190.8:8000/gongdi/file/${dt.prj_license}`;
+        this.prj_license = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_license}`;
       }
       if (dt.prj_certifications) {
-        this.prj_certifications = `http://111.229.190.8:8000/gongdi/file/${dt.prj_certifications}`;
+        this.prj_certifications = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_certifications}`;
       }
       if (dt.prj_manager_cert) {
-        this.prj_manager_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_cert}`;
+        this.prj_manager_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_cert}`;
       }
       if (dt.prj_safe_cert) {
-        this.prj_safe_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_cert}`;
+        this.prj_safe_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_cert}`;
       }
       if (dt.prj_manager_appiontment) {
-        this.prj_manager_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_manager_appiontment}`;
+        this.prj_manager_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_appiontment}`;
       }
       if (dt.prj_safe_appiontment) {
-        this.prj_safe_appiontment = `http://111.229.190.8:8000/gongdi/file/${dt.prj_safe_appiontment}`;
+        this.prj_safe_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_appiontment}`;
       }
       if (dt.prj_design_cert) {
-        this.prj_design_cert = `http://111.229.190.8:8000/gongdi/file/${dt.prj_design_cert}`;
-      }
-      if (dt.prj_assist_org) {
-        this.prj_assist_org = `http://111.229.190.8:8000/gongdi/file/${dt.prj_assist_org}`;
+        this.prj_design_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_design_cert}`;
       }
     },
     onChange(index) {

@@ -109,6 +109,8 @@ export default {
       this.$router.go(-1);
     },
     async tijiao() {
+      const user_id = sessionStorage.getItem("user_id");
+      this.shigongData.userid = JSON.parse(user_id);
       this.shigongData.prj_state = "-2";
       this.shigongData.prj_assist_org = this.result.toString();
       var { data: dt } = await this.$http.post(
@@ -122,7 +124,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `已受理小型工程，待审核`;
       this.fasongData.news.articles[0].description = `已受理小型工程，待审核`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details1?prj_name=${this.shigongData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/details1?prj_name=${this.shigongData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details1?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);

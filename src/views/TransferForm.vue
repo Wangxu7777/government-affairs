@@ -98,6 +98,7 @@ export default {
     //这里存放数据
     return {
       shigongData: {
+        userid: "",
         prj_name: "",
         prj_addr: "",
         prj_area: "",
@@ -140,6 +141,17 @@ export default {
   //方法集合
   methods: {
     async content() {
+      const userid = sessionStorage.getItem("user_id");
+      if (userid) {
+        this.shigongData.userid = JSON.parse(userid);
+      } else {
+        this.shigongData.userid = this.$route.query.userid;
+
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.$route.query.userid)
+        );
+      }
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
@@ -162,7 +174,9 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程移送`;
       this.fasongData.news.articles[0].description = `小型工程移送`;
-      this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferOrder?prj_name=${this.shigongData.prj_name}`;
+      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/transferOrder?prj_name=${this.shigongData.prj_name}`;
+      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferOrder?prj_name=${this.shigongData.prj_name}`;
       // this.fasongData.new.articles[0].url =
       //   "http://47.104.29.235:8080/flower.jpeg";
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
