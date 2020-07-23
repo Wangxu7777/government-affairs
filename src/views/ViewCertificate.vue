@@ -176,7 +176,7 @@ export default {
       shigongData1: {},
       fasongData: {
         touser: "13201691542",
-        toparty: "6899",
+        // toparty: "6899",
         msgtype: "news",
         agentid: "1000101",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
@@ -209,13 +209,11 @@ export default {
           message: "提交失败"
         });
       }
+      // this.fasongData.touser = "18017569958";
       this.fasongData.news.articles[0].title = `非小型工程，请移交`;
       this.fasongData.news.articles[0].description = `非小型工程，请移交`;
-      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/transferForm?prj_name=${this.shigongData.prj_name}`;
-      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
-      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/transferForm?prj_name=${this.shigongData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.shigongData.prj_name}`;
+
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {
@@ -237,13 +235,19 @@ export default {
           message: "提交失败"
         });
       }
+      // if (this.shigongData1.prj_assist_org === "0701") {
+      //   this.fasongData.touser = "13701729933|13917049911|13301608675";
+      // }
+      // if (this.shigongData1.prj_assist_org === "0702") {
+      //   this.fasongData.touser = "13795300984";
+      // }
+      // if (this.shigongData1.prj_assist_org === "0703") {
+      //   this.fasongData.touser = "13917049911|13918853364|13301608675";
+      // }
       this.fasongData.news.articles[0].title = `小型工程受理审核通过`;
       this.fasongData.news.articles[0].description = `小型工程受理审核通过`;
-      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/details?prj_name=${this.shigongData.prj_name}`;
-      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
-      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details?prj_name=${this.shigongData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details?prj_name=${this.shigongData.prj_name}`;
+
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {
@@ -265,13 +269,19 @@ export default {
           message: "提交失败"
         });
       }
+      // if (this.shigongData1.prj_grid === "0701") {
+      //   this.fasongData.touser = "13701729933|13917049911|13301608675";
+      // }
+      // if (this.shigongData1.prj_grid === "0702") {
+      //   this.fasongData.touser = "13795300984";
+      // }
+      // if (this.shigongData1.prj_grid === "0703") {
+      //   this.fasongData.touser = "13917049911|13918853364|13301608675";
+      // }
       this.fasongData.news.articles[0].title = `小型工地受理审核，未通过。`;
       this.fasongData.news.articles[0].description = `小型工地受理审核，未通过。`;
-      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/information1?prj_name=${this.shigongData.prj_name}`;
-      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
-      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/information1?prj_name=${this.shigongData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/information1?prj_name=${this.shigongData.prj_name}`;
+
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {
@@ -371,6 +381,17 @@ export default {
           JSON.stringify(this.$route.query.userid)
         );
       }
+
+      // if (dt.prj_assist_org) {
+      //   var assisMap = new Map();
+      //   assisMap.set("社区平安办", "13795357839");
+      //   assisMap.set("城管中队", "202326262");
+      //   assisMap.set("街道社区管理办", "18017569958");
+      //   assisMap.set("灯光景观所", "");
+      //   assisMap.set("第三方机构", "18616582881");
+      //   var assistArr = dt.prj_assist_org.trim().split(",");
+      // }
+
       if (dt.prj_lease_contract) {
         this.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;
       }

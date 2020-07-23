@@ -168,6 +168,8 @@ export default {
   },
   created() {
     // this.content();
+    localStorage.removeItem("gongchengData");
+    localStorage.removeItem("shigongData");
   }
 };
 </script>

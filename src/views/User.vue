@@ -16,11 +16,11 @@
         </van-col>
         <van-col class="name">
           <p class="name1">{{ userData.name }}</p>
-          <p class="name2">{{ userData.department }}</p>
+          <p class="name2">{{ departmentName }}</p>
         </van-col>
-        <van-col offset="12">
-          <!-- <van-icon class="xiaoxi" name="envelop-o" /> -->
-        </van-col>
+        <!-- <van-col offset="12">
+          <van-icon class="xiaoxi" name="envelop-o" />
+        </van-col> -->
       </van-row>
     </div>
     <p class="title"><van-icon name="underway-o" /> 历史足迹</p>
@@ -59,11 +59,23 @@ export default {
       user: {
         user_id: ""
       },
-      userData: {}
+      userData: {},
+      departmentId: {
+        depart_id: ""
+      },
+      departmentName: ""
     };
   },
   //方法集合
   methods: {
+    async department(id) {
+      this.departmentId.depart_id = id;
+      const { data: dt } = await this.$http.get("getDepartName", {
+        params: this.departmentId
+      });
+
+      this.departmentName = dt.data.department[0].name;
+    },
     async content() {
       const userid = sessionStorage.getItem("user_id");
 
@@ -80,12 +92,15 @@ export default {
       });
 
       this.userData = dt.data;
-      this.userData.department = this.userData.department.toString();
+
       if (dt.data.errcode !== 0) {
         return this.$toast.fail({
           message: "获取用户信息失败"
         });
       }
+      this.userData.department.forEach(e => {
+        this.department(e);
+      });
     },
     see(e) {
       var w = e.currentTarget.innerText;
@@ -93,14 +108,14 @@ export default {
 
       if (a[5] == "发现工程" || a[5] == "待移交") {
         this.$router.push({
-          path: "/projectReporting",
+          path: "/projectReporting1",
           query: {
             prj_name: a[0]
           }
         });
       } else {
         this.$router.push({
-          path: "/details",
+          path: "/projectDetails",
           query: {
             prj_name: a[0]
           }
@@ -112,7 +127,7 @@ export default {
         "wx/getGongdi_All_History_ByUser",
         { params: this.user }
       );
-      console.log(dt);
+
       this.list = dt;
       this.list.forEach(e => {
         if (e.data.prj_state == "-100") {

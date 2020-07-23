@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Index from "./views/Index.vue";
 import EngineeringInformation from "./views/EngineeringInformation.vue";
 import ProjectReporting from "./views/ProjectReporting.vue";
+import ProjectReporting1 from "./views/ProjectReporting1.vue";
 import success from "./views/success.vue";
 import Accept from "./views/Accept.vue";
 import Information1 from "./views/Information1.vue";
@@ -17,6 +18,8 @@ import TransferOrder from "./views/TransferOrder.vue";
 import ViewTransferOrder from "./views/ViewTransferOrder.vue";
 import receive from "./views/receive.vue";
 import ProjectList from "./views/ProjectList.vue";
+import ProjectDetails from "./views/ProjectDetails.vue";
+
 import success1 from "./views/success1.vue";
 import success2 from "./views/success2.vue";
 import success3 from "./views/success3.vue";
@@ -54,6 +57,11 @@ var router = new Router({
       path: "/projectReporting",
       name: "ProjectReporting",
       component: ProjectReporting
+    },
+    {
+      path: "/projectReporting1",
+      name: "ProjectReporting1",
+      component: ProjectReporting1
     },
     {
       path: "/success",
@@ -189,6 +197,11 @@ var router = new Router({
       path: "/completionList",
       name: "CompletionList",
       component: CompletionList
+    },
+    {
+      path: "/projectDetails",
+      name: "ProjectDetails",
+      component: ProjectDetails
     }
   ]
 });

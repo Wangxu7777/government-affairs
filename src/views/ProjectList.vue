@@ -86,6 +86,7 @@
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
+      :offset="10"
     >
       <van-cell
         @click="see"
@@ -107,6 +108,11 @@
 export default {
   data() {
     return {
+      total: 0, //总共的数据条数
+      fenyeData: {
+        skip: 1,
+        limit: 10
+      },
       list2: ["已受理，待审核", "正在移交", "受理审核通过", "已督察", "已竣工"],
       result: [],
       value: "",
@@ -153,14 +159,14 @@ export default {
 
       if (a[5] == "发现工程" || a[5] == "待移交") {
         this.$router.push({
-          path: "/projectReporting",
+          path: "/projectReporting1",
           query: {
             prj_name: a[0]
           }
         });
       } else {
         this.$router.push({
-          path: "/details",
+          path: "/projectDetails",
           query: {
             prj_name: a[0]
           }
@@ -221,10 +227,17 @@ export default {
         e.data.updateTime = str[0];
       });
     },
+    onLoad() {
+      this.fenyeData.skip++;
+      this.getroadList();
+    },
     onConfirm() {},
-    async onLoad() {
+    async getroadList() {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+      // var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate", {
+      //   params: this.fenyeData
+      // });
       var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate");
       this.list = dt;
 
@@ -277,6 +290,18 @@ export default {
       this.list1 = this.list;
       // 加载状态结束
       this.loading = false;
+      // if (dt == null || dt.length === 0) {
+      //   // 加载结束
+      //   this.finished = true;
+      //   return;
+      // }
+      // 将新数据与老数据进行合并
+      // this.list = this.list.concat(dt);
+
+      //如果列表数据条数>=总条数，不再触发滚动加载
+      // if (this.list.length >= this.total) {
+      //   this.finished = true;
+      // }
       this.finished = true;
     },
     shaixuan(prj_state) {
@@ -296,6 +321,8 @@ export default {
   },
   created() {
     // this.content();
+    localStorage.removeItem("gongchengData");
+    localStorage.removeItem("shigongData");
   }
 };
 </script>

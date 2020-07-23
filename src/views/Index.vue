@@ -74,11 +74,51 @@ export default {
       user: {
         user_id: ""
       },
-      userData: {}
+      userData: {},
+      departmentId: {
+        depart_id: ""
+      },
+      departmentName: "",
+      arrDepartment1: [
+        "房管办",
+        "老西门物业",
+        "第三方监理",
+        "网格中心",
+        "黄浦施工工地应用测试"
+      ],
+      arrDepartment2: [
+        "城管执法",
+        "房管办",
+        "老西门物业",
+        "第三方监理",
+        "网格中心",
+        "平安办",
+        "黄浦施工工地应用测试"
+      ],
+      arrDepartment3: ["房管办", "黄浦施工工地应用测试"],
+      arrDepartment4: [
+        "城管执法",
+        "房管办",
+        "老西门物业",
+        "第三方监理",
+        "网格一",
+        "社区管理办",
+        "建管委",
+        "平安办",
+        "黄浦施工工地应用测试"
+      ]
     };
   },
   //方法集合
   methods: {
+    async department(id) {
+      this.departmentId.depart_id = id;
+      const { data: dt } = await this.$http.get("getDepartName", {
+        params: this.departmentId
+      });
+
+      this.departmentName = dt.data.department[0].name;
+    },
     async content() {
       const userid = sessionStorage.getItem("user_id");
 
@@ -103,6 +143,9 @@ export default {
           message: "获取用户信息失败"
         });
       }
+      this.userData.department.forEach(e => {
+        this.department(e);
+      });
     },
     geren() {
       this.$router.push({
@@ -111,15 +154,30 @@ export default {
       });
     },
     jungong() {
+      if (this.arrDepartment3.indexOf(this.departmentName) === -1) {
+        return this.$toast.fail({
+          message: "无权限进入如有需要请联系房管办更改"
+        });
+      }
       this.$router.push({ name: "CompletionList" });
     },
     chaxun() {
       this.$router.push({ name: "ProjectList" });
     },
     faxianye() {
+      if (this.arrDepartment1.indexOf(this.departmentName) === -1) {
+        return this.$toast.fail({
+          message: "无权限进入如有需要请联系房管办更改"
+        });
+      }
       this.$router.push({ name: "EngineeringInformation" });
     },
     ducha() {
+      if (this.arrDepartment2.indexOf(this.departmentName) === -1) {
+        return this.$toast.fail({
+          message: "无权限进入如有需要请联系房管办更改"
+        });
+      }
       this.$router.push({ name: "InspectorList" });
     }
   },

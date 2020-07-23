@@ -71,7 +71,7 @@ export default {
   data() {
     //这里存放数据
     return {
-      radio: "社区平安办",
+      radio: "",
       shigongData: {},
       list: [
         "社区平安办",
@@ -82,8 +82,8 @@ export default {
       ],
       result: [],
       fasongData: {
-        touser: "18501726137",
-        toparty: "6899",
+        touser: "13201691542",
+        // toparty: "6899",
         msgtype: "news",
         agentid: "1000101",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
@@ -122,13 +122,11 @@ export default {
           message: "提交失败"
         });
       }
+      // this.fasongData.touser = "13671711858";
       this.fasongData.news.articles[0].title = `已受理小型工程，待审核`;
       this.fasongData.news.articles[0].description = `已受理小型工程，待审核`;
-      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/details1?prj_name=${this.shigongData.prj_name}`;
-      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
-      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/details1?prj_name=${this.shigongData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details1?prj_name=${this.shigongData.prj_name}`;
+
       var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {

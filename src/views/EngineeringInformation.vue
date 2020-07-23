@@ -112,11 +112,17 @@
               :auto-viewport="true"
               :selectFirstResult="true"
             ></bm-local-search>
-            <bm-geolocation
+            <bm-marker
+              :position="center"
+              :dragging="true"
+              animation="BMAP_ANIMATION_BOUNCE"
+            >
+            </bm-marker>
+            <!-- <bm-geolocation
               anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
               :showAddressBar="true"
               :autoLocation="true"
-            ></bm-geolocation>
+            ></bm-geolocation> -->
           </baidu-map>
         </div>
         <div class="shangchuan_box">
@@ -171,7 +177,7 @@ export default {
         prj_grid: "",
         lng: 0,
         lat: 0,
-        prj_addr: "",
+        prj_addr: "上海市黄浦区大吉路71号",
         picture: [],
         userid: ""
       },
@@ -214,7 +220,9 @@ export default {
               title: "发现小型工程，待受理",
               description: "发现小型工程，待受理",
               url: "",
-              picurl: "http://47.104.29.235:8080/flower.jpeg"
+              picurl: `${
+                this.$store.state.xiaoxitu
+              }${require("../assets/img/fasongxinxitu.png")}`
             }
           ]
         }
@@ -337,8 +345,17 @@ export default {
           message: "提交失败"
         });
       }
-      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/accept?prj_name=${this.gongchengData.prj_name}`;
-      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
+      // if (this.gongchengData.prj_grid === "0701") {
+      //   this.fasongData.touser = "13701729933|13917049911|13301608675";
+      // }
+      // if (this.gongchengData.prj_grid === "0702") {
+      //   this.fasongData.touser = "13795300984";
+      // }
+      // if (this.gongchengData.prj_grid === "0703") {
+      //   this.fasongData.touser = "13917049911|13918853364|13301608675";
+      // }
+
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept?prj_name=${this.gongchengData.prj_name}`;
 
       var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
 
@@ -353,33 +370,34 @@ export default {
     handler({ BMap, map }) {
       map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
       map.enableContinuousZoom(); //启用地图惯性拖拽，默认禁用
-      var geolocation = new BMap.Geolocation();
+      // var geolocation = new BMap.Geolocation();
       var geoc = new BMap.Geocoder();
-      geolocation.getCurrentPosition(
-        r => {
-          var mk = new BMap.Marker(r.point);
-          map.addOverlay(mk);
-          map.panTo(r.point);
-          this.gongchengData.lng = r.point.lng;
-          this.gongchengData.lat = r.point.lat;
-          geoc.getLocation(r.point, rs => {
-            // var addComp = rs.addressComponents;
-            // console.log(rs);
-            //   this.gongchengdizhi =
-            //     addComp.province +
-            //     ", " +
-            //     addComp.city +
-            //     ", " +
-            //     addComp.district +
-            //     ", " +
-            //     addComp.street +
-            //     ", " +
-            //     addComp.streetNumber;
-            this.gongchengData.prj_addr = rs.address;
-          });
-        },
-        { enableHighAccuracy: true }
-      );
+
+      // geolocation.getCurrentPosition(
+      //   r => {
+      //     var mk = new BMap.Marker(r.point);
+      //     map.addOverlay(mk);
+      //     map.panTo(r.point);
+      //     this.gongchengData.lng = r.point.lng;
+      //     this.gongchengData.lat = r.point.lat;
+      //     geoc.getLocation(r.point, rs => {
+      //       // var addComp = rs.addressComponents;
+      //       // console.log(rs);
+      //       //   this.gongchengdizhi =
+      //       //     addComp.province +
+      //       //     ", " +
+      //       //     addComp.city +
+      //       //     ", " +
+      //       //     addComp.district +
+      //       //     ", " +
+      //       //     addComp.street +
+      //       //     ", " +
+      //       //     addComp.streetNumber;
+      //       this.gongchengData.prj_addr = rs.address;
+      //     });
+      //   },
+      //   { enableHighAccuracy: true }
+      // );
 
       this.zoom = 15;
 
@@ -423,6 +441,9 @@ export default {
   created() {
     // this.tokenData();
     this.content();
+    console.log(
+      `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}${this.gongchengData.prj_name}`
+    );
   },
   beforeCreate() {
     document

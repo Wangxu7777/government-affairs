@@ -1,15 +1,21 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="小型工程受理" />
-    <van-notice-bar color="#EC6A42" background="#F0F0F0" left-icon="info-o">
+    <van-nav-bar
+      id="reset"
+      title="小型工程发现上报详情"
+      left-arrow
+      @click-left="onClickLeft"
+    />
+    <!-- <van-notice-bar color="#EC6A42" background="#F0F0F0" left-icon="info-o">
       小型工程发现上报
-    </van-notice-bar>
+    </van-notice-bar> -->
     <van-cell-group>
       <van-field label="工程名称" :value="prj_name" readonly />
       <van-field label="工程发现单位" :value="prj_depart" readonly />
       <van-field label="工程类型" :value="prj_type" readonly />
       <van-field label="地址信息" :value="prj_addr" readonly />
+      <van-field label="工程所属网络" :value="prj_grid" readonly />
     </van-cell-group>
     <div class="tupian">
       <h5>工程照片</h5>
@@ -64,48 +70,30 @@
         </van-grid-item>
       </van-grid>
     </div>
-    <div style="margin: 16px;">
+    <!-- <div style="margin: 16px;">
       <van-button
         round
         block
         type="info"
         native-type="submit"
         size="large"
-        @click="no_shouli"
+        @click="xiugai"
       >
-        不受理
+        信息修改
       </van-button>
-    </div>
+    </div> -->
     <div style="margin: 16px;">
       <van-button
-        @click="shouli"
+        @click="shouye"
         round
         block
         type="warning"
         native-type="submit"
         size="large"
       >
-        确认受理
+        返回首页
       </van-button>
     </div>
-    <div style="margin: 16px;">
-      <van-button
-        @click="yiban"
-        round
-        block
-        type="primary"
-        native-type="submit"
-        size="large"
-      >
-        一般工程
-      </van-button>
-    </div>
-    <van-overlay :show="show" @click="show = false">
-      <div class="icn">
-        <icon-svg class="touxiang" icon-class="jujue1" />
-      </div>
-      <h1 class="text">已拒绝受理</h1>
-    </van-overlay>
   </div>
 </template>
 
@@ -117,15 +105,11 @@ export default {
   data() {
     //这里存放数据
     return {
-      user: {
-        user_id: ""
-      },
-      show: false,
       prj_name: "",
       prj_depart: "",
-      prj_type: "",
       prj_grid: "",
       prj_addr: "",
+      prj_type: "",
       picture: "",
       picture1: "",
       picture2: "",
@@ -135,67 +119,13 @@ export default {
       gongchengData: {
         prj_name: ""
       },
-      shouliData: {
-        prj_name: "",
-        prj_depart: "",
-        prj_type: "",
-        prj_grid: "",
-        prj_addr: "",
-        picture: "",
-        lng: "",
-        lat: "",
-        userid: ""
-      },
-      fasongData: {
-        touser: "13201691542",
-        // toparty: "",
-        msgtype: "news",
-        agentid: "1000101",
-        // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
-        news: {
-          articles: [
-            {
-              title: "政务微信流程测试",
-              description: "政务微信流程",
-              url: "",
-              picurl: "http://47.104.29.235:8080/flower.jpeg"
-            }
-          ]
-        }
-      }
+      gongchengData1: {}
     };
   },
   //方法集合
   methods: {
-    async yiban() {
-      this.shouliData.prj_state = "-4";
-      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
-        params: this.shouliData
-      });
-      if (dt != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      this.$toast.success({
-        message: "一般工程 已拒绝受理"
-      });
-      // this.fasongData.touser = "13311803795";
-      this.fasongData.news.articles[0].title = `一般工程`;
-      this.fasongData.news.articles[0].description = `一般工程`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept1?prj_name=${this.gongchengData.prj_name}`;
-
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      this.$toast.success({
-        message: "非小型工程拒绝受理"
-      });
-      this.$router.push({ name: "Index" });
+    onClickLeft() {
+      this.$router.go(-1);
     },
     show_before_img() {
       this.instance_before = ImagePreview({
@@ -210,75 +140,30 @@ export default {
         closeable: true
       });
     },
-    async shouli() {
-      this.shouliData.prj_state = "-2";
-      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
-        params: this.shouliData
-      });
-      if (dt != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-
-      this.$router.push({
-        path: "/information1",
-        query: {
-          prj_name: this.prj_name
-        }
-      });
-    },
-    async no_shouli() {
-      this.shouliData.prj_state = "-3";
-      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
-        params: this.shouliData
-      });
-      if (dt != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      // this.fasongData.touser = "18017569958";
-      this.fasongData.news.articles[0].title = `小型工程未受理`;
-      this.fasongData.news.articles[0].description = `小型工程未受理`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.gongchengData.prj_name}`;
-
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      this.$toast.success({
-        message: "非小型工程拒绝受理"
-      });
-      this.$router.push({ name: "Index" });
-    },
     async content() {
-      this.shouliData.userid = this.$route.query.userid;
-      sessionStorage.setItem("user_id", JSON.stringify(this.shouliData.userid));
-      // const gongchengData = localStorage.getItem("gongchengData");
-      // this.shouliData = JSON.parse(gongchengData);
-      // this.gongchengData.prj_name = this.shouliData.prj_name;
-      this.gongchengData.prj_name = this.$route.query.prj_name;
-      var { data: dt } = await this.$http.get("/wx/getGongdi", {
+      const gongchengData = localStorage.getItem("gongchengData");
+      if (gongchengData) {
+        this.gongchengData1 = JSON.parse(gongchengData);
+        this.gongchengData.prj_name = this.gongchengData1.prj_name;
+      } else {
+        this.gongchengData.prj_name = this.$route.query.prj_name;
+        // this.prj_state = this.$route.query.prj_state;
+      }
+
+      var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
       });
-
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取失败或无此工程"
+        });
+      }
       this.prj_depart = dt.prj_depart;
       this.prj_name = dt.prj_name;
       this.prj_addr = dt.prj_addr;
       this.prj_grid = dt.prj_grid;
       this.prj_type = dt.prj_type;
-      this.shouliData.prj_depart = dt.prj_depart;
-      this.shouliData.prj_name = dt.prj_name;
-      this.shouliData.prj_addr = dt.prj_addr;
-      this.shouliData.prj_grid = dt.prj_grid;
-      this.shouliData.prj_type = dt.prj_type;
-      this.shouliData.lng = dt.location[0];
-      this.shouliData.lat = dt.location[1];
-      this.shouliData.picture = dt.picture;
+      this.prj_state = dt.prj_state;
       if (dt.picture) {
         var imgArr = dt.picture.trim().split(",");
 
@@ -318,6 +203,12 @@ export default {
           this.picture5 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[5]}`;
         }
       }
+    },
+    xiugai() {
+      this.$router.push({ name: "EngineeringInformation" });
+    },
+    shouye() {
+      this.$router.push({ name: "Index" });
     }
   },
   created() {
@@ -358,23 +249,5 @@ export default {
   .zhaop {
     margin-top: 20px;
   }
-}
-.icn {
-  height: 40vh;
-  position: relative;
-  .touxiang {
-    width: 150px;
-    height: 180px;
-    position: absolute;
-    left: 50%;
-    top: 80%;
-    transform: translate(-50%, -50%);
-  }
-}
-.text {
-  font-size: 40px;
-  color: #fff;
-  text-align: center;
-  font-weight: 400;
 }
 </style>

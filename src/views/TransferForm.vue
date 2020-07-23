@@ -121,7 +121,7 @@ export default {
       },
       fasongData: {
         touser: "13201691542",
-        toparty: "6899",
+        // toparty: "6899",
         msgtype: "news",
         agentid: "1000101",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
@@ -174,11 +174,8 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程移送`;
       this.fasongData.news.articles[0].description = `小型工程移送`;
-      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/transferOrder?prj_name=${this.shigongData.prj_name}`;
-      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
-      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/TransferOrder?prj_name=${this.shigongData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferOrder?prj_name=${this.shigongData.prj_name}`;
+
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {

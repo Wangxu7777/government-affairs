@@ -161,11 +161,8 @@ export default {
       }
       this.fasongData.news.articles[0].title = `小型工程接收失败`;
       this.fasongData.news.articles[0].description = `小型工程接收失败`;
-      var qingqiuUrl = `http://hpweb.soyumall.cn/gongdi/%23/viewTransferOrder?prj_name=${this.shigongData.prj_name}`;
-      this.fasongData.news.articles[0].url = `http://hptest.soyumall.cn/oauth/wx_login?callback=${qingqiuUrl}`;
-      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/viewTransferOrder?prj_name=${this.shigongData.prj_name}`;
-      // this.fasongData.new.articles[0].url =
-      //   "http://47.104.29.235:8080/flower.jpeg";
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/viewTransferOrder?prj_name=${this.shigongData.prj_name}`;
+
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
 
       if (dt1.data.errcode != 0) {
