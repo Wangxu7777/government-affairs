@@ -111,13 +111,14 @@
               :keyword="gongchengData.prj_addr"
               :auto-viewport="true"
               :selectFirstResult="true"
+              @infohtmlset="qipao"
             ></bm-local-search>
-            <bm-marker
+            <!-- <bm-marker
               :position="center"
               :dragging="true"
               animation="BMAP_ANIMATION_BOUNCE"
             >
-            </bm-marker>
+            </bm-marker> -->
             <!-- <bm-geolocation
               anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
               :showAddressBar="true"
@@ -231,12 +232,19 @@ export default {
     };
   },
   // watch: {
-  //   picture: function(r) {
-  //     console.log(r);
+  //   "gongchengData.prj_addr": {
+  //     handler(val, oldVal) {
+  //       this.handler();
+  //     },
+  //     deep: true
   //   }
   // },
   //方法集合
   methods: {
+    qipao(poi) {
+      this.gongchengData.lng = poi.point.lng;
+      this.gongchengData.lat = poi.point.lat;
+    },
     content() {
       const user_id = sessionStorage.getItem("user_id");
       this.gongchengData.userid = JSON.parse(user_id);
@@ -441,9 +449,6 @@ export default {
   created() {
     // this.tokenData();
     this.content();
-    console.log(
-      `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}${this.gongchengData.prj_name}`
-    );
   },
   beforeCreate() {
     document

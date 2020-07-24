@@ -153,6 +153,8 @@ export default {
   data() {
     //这里存放数据
     return {
+      party: "",
+      assisStr: "",
       show: false,
       index: 0,
       images: [
@@ -176,7 +178,7 @@ export default {
       shigongData1: {},
       fasongData: {
         touser: "13201691542",
-        // toparty: "6899",
+        // toparty: "",
         msgtype: "news",
         agentid: "1000101",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
@@ -235,15 +237,10 @@ export default {
           message: "提交失败"
         });
       }
-      // if (this.shigongData1.prj_assist_org === "0701") {
-      //   this.fasongData.touser = "13701729933|13917049911|13301608675";
+      // if (this.party) {
+      //   this.fasongData.toparty = this.party;
       // }
-      // if (this.shigongData1.prj_assist_org === "0702") {
-      //   this.fasongData.touser = "13795300984";
-      // }
-      // if (this.shigongData1.prj_assist_org === "0703") {
-      //   this.fasongData.touser = "13917049911|13918853364|13301608675";
-      // }
+      // this.fasongData.touser = this.assisStr;
       this.fasongData.news.articles[0].title = `小型工程受理审核通过`;
       this.fasongData.news.articles[0].description = `小型工程受理审核通过`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details?prj_name=${this.shigongData.prj_name}`;
@@ -364,6 +361,11 @@ export default {
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData
       });
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取工程失败"
+        });
+      }
       this.shigongData1 = dt;
       delete this.shigongData1.updateTime;
       delete this.shigongData1.__v;
@@ -382,15 +384,24 @@ export default {
         );
       }
 
-      // if (dt.prj_assist_org) {
-      //   var assisMap = new Map();
-      //   assisMap.set("社区平安办", "13795357839");
-      //   assisMap.set("城管中队", "202326262");
-      //   assisMap.set("街道社区管理办", "18017569958");
-      //   assisMap.set("灯光景观所", "");
-      //   assisMap.set("第三方机构", "18616582881");
-      //   var assistArr = dt.prj_assist_org.trim().split(",");
-      // }
+      //判断协同人员
+      if (dt.prj_assist_org) {
+        let assisMap = new Map();
+        assisMap.set("社区平安办", "13795357839");
+        // assisMap.set("城管中队", "202326262");
+        assisMap.set("街道社区管理办", "18017569958");
+        assisMap.set("第三方机构", "18616582881");
+        // assisMap.set("灯光景观所", "");
+        let mapArr = [];
+        let assistArr = dt.prj_assist_org.trim().split(",");
+        assistArr.forEach(e => {
+          if (e === "城管中队") {
+            this.party = "202326262";
+          }
+          mapArr.push(assisMap.get(e));
+          this.assisStr = mapArr.join("|");
+        });
+      }
 
       if (dt.prj_lease_contract) {
         this.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;

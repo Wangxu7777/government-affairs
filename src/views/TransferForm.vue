@@ -172,6 +172,7 @@ export default {
           message: "提交失败"
         });
       }
+      // this.fasongData.touser = "";
       this.fasongData.news.articles[0].title = `小型工程移送`;
       this.fasongData.news.articles[0].description = `小型工程移送`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferOrder?prj_name=${this.shigongData.prj_name}`;

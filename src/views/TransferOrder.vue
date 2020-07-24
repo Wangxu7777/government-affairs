@@ -137,6 +137,7 @@ export default {
           message: "提交失败"
         });
       }
+      // this.fasongData.touser = "13901776093";
       this.fasongData.news.articles[0].title = `小型工程移送`;
       this.fasongData.news.articles[0].description = `小型工程移送`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/receive?prj_name=${this.gongchengData.prj_name}`;
@@ -162,6 +163,7 @@ export default {
           message: "提交失败"
         });
       }
+      // this.fasongData.touser = "18017569958";
       this.fasongData.news.articles[0].title = `小型工程移送失败`;
       this.fasongData.news.articles[0].description = `小型工程移送失败`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
