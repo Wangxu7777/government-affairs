@@ -108,23 +108,6 @@ export default {
         prj_type: "",
         prj_grid: "",
         prj_addr: ""
-      },
-      fasongData: {
-        touser: "13201691542",
-        toparty: "6899",
-        msgtype: "news",
-        agentid: "1000101",
-        // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
-        news: {
-          articles: [
-            {
-              title: "政务微信流程测试",
-              description: "政务微信流程",
-              url: "",
-              picurl: "http://47.104.29.235:8080/flower.jpeg"
-            }
-          ]
-        }
       }
     };
   },

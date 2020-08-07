@@ -130,6 +130,7 @@
           <van-field name="uploader" label="照片上传" class="shangchuan">
             <template #input>
               <van-uploader
+                :deletable="false"
                 :before-read="beforeRead"
                 :after-read="afterRead"
                 v-model="uploader"
@@ -210,10 +211,10 @@ export default {
       imgurl: "",
       postData: [],
       fasongData: {
-        touser: "18632397636",
+        touser: "18868196750",
         // toparty: "6899",
         msgtype: "news",
-        agentid: "1000101",
+        agentid: "1000201",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
         news: {
           articles: [
@@ -341,7 +342,7 @@ export default {
       //     "Content-Type": "application/x-www-form-urlencoded"
       //   }
       // };
-      // this.gongchengData.picture = this.gongchengData.picture.toString();
+      this.gongchengData.picture = this.gongchengData.picture.toString();
       this.gongchengData.lng = this.gongchengData.lng.toString();
       this.gongchengData.lat = this.gongchengData.lat.toString();
 
@@ -369,7 +370,7 @@ export default {
 
       if (dt1.data.errcode != 0) {
         return this.$toast.fail({
-          message: "提交失败"
+          message: "发送信息失败"
         });
       }
       localStorage.setItem("gongchengData", JSON.stringify(this.gongchengData));

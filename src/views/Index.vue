@@ -106,7 +106,9 @@ export default {
         "建管委",
         "平安办",
         "黄浦施工工地应用测试"
-      ]
+      ],
+      auth: {},
+      errcode: ""
     };
   },
   //方法集合
@@ -120,6 +122,24 @@ export default {
       this.departmentName = dt.data.department[0].name;
     },
     async content() {
+      //获取传参过来的状态值
+      const errcode = sessionStorage.getItem("errcode");
+      if (errcode) {
+        this.errcode = JSON.parse(errcode);
+      } else {
+        this.errcode = this.$route.query.errcode;
+
+        sessionStorage.setItem(
+          "errcode",
+          JSON.stringify(this.$route.query.errcode)
+        );
+      }
+      if (this.errcode !== "0") {
+        return this.$toast.fail({
+          message: "无权限进入如有需要请联系房管办更改"
+        });
+      }
+      //获取用户id
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {
@@ -131,6 +151,16 @@ export default {
           "user_id",
           JSON.stringify(this.$route.query.userid)
         );
+      }
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        this.auth = JSON.parse(this.$route.query.auth);
+
+        sessionStorage.setItem("auth", this.$route.query.auth);
       }
 
       // this.$toast(`用户id:${this.user.user_id}`);
@@ -153,8 +183,14 @@ export default {
         query: { user_id: this.user.user_id }
       });
     },
+    //竣工按钮
     jungong() {
-      if (this.arrDepartment3.indexOf(this.departmentName) === -1) {
+      // if (this.arrDepartment3.indexOf(this.departmentName) === -1) {
+      //   return this.$toast.fail({
+      //     message: "无权限进入如有需要请联系房管办更改"
+      //   });
+      // }
+      if (!this.auth.p_over) {
         return this.$toast.fail({
           message: "无权限进入如有需要请联系房管办更改"
         });
@@ -164,16 +200,28 @@ export default {
     chaxun() {
       this.$router.push({ name: "ProjectList" });
     },
+    //发现工程
     faxianye() {
-      if (this.arrDepartment1.indexOf(this.departmentName) === -1) {
+      // if (this.arrDepartment1.indexOf(this.departmentName) === -1) {
+      //   return this.$toast.fail({
+      //     message: "无权限进入如有需要请联系房管办更改"
+      //   });
+      // }
+      if (!this.auth.p_find) {
         return this.$toast.fail({
           message: "无权限进入如有需要请联系房管办更改"
         });
       }
       this.$router.push({ name: "EngineeringInformation" });
     },
+    //工程督察
     ducha() {
-      if (this.arrDepartment2.indexOf(this.departmentName) === -1) {
+      // if (this.arrDepartment2.indexOf(this.departmentName) === -1) {
+      //   return this.$toast.fail({
+      //     message: "无权限进入如有需要请联系房管办更改"
+      //   });
+      // }
+      if (!this.auth.p_check) {
         return this.$toast.fail({
           message: "无权限进入如有需要请联系房管办更改"
         });

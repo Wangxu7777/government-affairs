@@ -147,10 +147,10 @@ export default {
         userid: ""
       },
       fasongData: {
-        touser: "13201691542",
+        touser: "18868196750",
         // toparty: "",
         msgtype: "news",
-        agentid: "1000101",
+        agentid: "1000201",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
         news: {
           articles: [
@@ -158,7 +158,9 @@ export default {
               title: "政务微信流程测试",
               description: "政务微信流程",
               url: "",
-              picurl: "http://47.104.29.235:8080/flower.jpeg"
+              picurl: `${
+                this.$store.state.xiaoxitu
+              }${require("../assets/img/fasongxinxitu.png")}`
             }
           ]
         }
@@ -189,7 +191,7 @@ export default {
 
       if (dt1.data.errcode != 0) {
         return this.$toast.fail({
-          message: "提交失败"
+          message: "发送信息失败"
         });
       }
       this.$toast.success({
@@ -247,7 +249,7 @@ export default {
 
       if (dt1.data.errcode != 0) {
         return this.$toast.fail({
-          message: "提交失败"
+          message: "发送信息失败"
         });
       }
       this.$toast.success({
