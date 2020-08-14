@@ -82,7 +82,7 @@ export default {
       ],
       result: [],
       fasongData: {
-        touser: "18868196750",
+        touser: "13413156908",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -112,19 +112,19 @@ export default {
     },
     async tijiao() {
       const user_id = sessionStorage.getItem("user_id");
-      this.shigongData.userid = JSON.parse(user_id);
+      this.shigongData.userid = user_id;
       this.shigongData.prj_state = "-2";
       this.shigongData.prj_assist_org = this.result.toString();
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
         this.shigongData
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // this.fasongData.touser = "13671711858";
+      this.fasongData.touser = "13671711858";
       this.fasongData.news.articles[0].title = `已受理小型工程，待审核`;
       this.fasongData.news.articles[0].description = `已受理小型工程，待审核`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details1?prj_name=${this.shigongData.prj_name}`;

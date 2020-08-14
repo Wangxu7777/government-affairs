@@ -4,7 +4,7 @@
     <van-nav-bar id="reset" title="完整工程施工信息单" left-arrow />
     <p>小型工程施工信息表</p>
     <div class="biaoti">
-      <icon-svg class="icn_box" icon-class="shenhe" />
+      <icon-svg class="icn_box" icon-class="shenhe" style="margin-right:10px" />
       <span>已受理，待审核</span>
     </div>
     <van-cell-group>
@@ -62,7 +62,8 @@ export default {
       shigongData: {
         prj_name: ""
       },
-      shigongData1: {}
+      shigongData1: {},
+      auth: {}
     };
   },
   //方法集合
@@ -76,6 +77,17 @@ export default {
       });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {

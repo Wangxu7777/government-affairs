@@ -120,7 +120,7 @@ export default {
         prj_name: ""
       },
       fasongData: {
-        touser: "18868196750",
+        touser: "13413156908",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -137,12 +137,24 @@ export default {
             }
           ]
         }
-      }
+      },
+      auth: {}
     };
   },
   //方法集合
   methods: {
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const userid = sessionStorage.getItem("user_id");
       if (userid) {
         this.shigongData.userid = JSON.parse(userid);
@@ -169,14 +181,14 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // this.fasongData.touser = "13917332229";
-      this.fasongData.news.articles[0].title = `小型工程移送`;
-      this.fasongData.news.articles[0].description = `小型工程移送`;
+      this.fasongData.touser = "13917332229";
+      this.fasongData.news.articles[0].title = `非小型工程移送`;
+      this.fasongData.news.articles[0].description = `非小型工程移送`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferOrder?prj_name=${this.shigongData.prj_name}`;
 
       var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);

@@ -79,7 +79,11 @@
         placeholder="点击选择日期"
         @click="showCalendar = true"
       />
-      <van-calendar v-model="showCalendar" @confirm="onConfirm" />
+      <van-calendar
+        :min-date="minDate"
+        v-model="showCalendar"
+        @confirm="onConfirm"
+      />
       <van-field
         readonly
         clickable
@@ -138,6 +142,8 @@ export default {
   data() {
     //这里存放数据
     return {
+      maxDate: new Date(2010, 0, 31),
+      minDate: new Date(2010, 0, 1),
       userid: "",
       shigongData: {
         prj_name: "",
@@ -170,7 +176,7 @@ export default {
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {
-        this.userid = JSON.parse(userid);
+        this.userid = userid;
       } else {
         this.userid = this.$route.query.userid;
 

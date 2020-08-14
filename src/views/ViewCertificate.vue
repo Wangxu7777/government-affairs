@@ -177,7 +177,7 @@ export default {
       },
       shigongData1: {},
       fasongData: {
-        touser: "18868196750",
+        touser: "13413156908",
         // toparty: "",
         msgtype: "news",
         agentid: "1000201",
@@ -194,7 +194,8 @@ export default {
             }
           ]
         }
-      }
+      },
+      auth: {}
     };
   },
   //方法集合
@@ -208,12 +209,12 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // this.fasongData.touser = "18017569958";
+      this.fasongData.touser = "18017569958";
       this.fasongData.news.articles[0].title = `非小型工程，请移交`;
       this.fasongData.news.articles[0].description = `非小型工程，请移交`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.shigongData.prj_name}`;
@@ -234,15 +235,15 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // if (this.party) {
-      //   this.fasongData.toparty = this.party;
-      // }
-      // this.fasongData.touser = this.assisStr;
+      if (this.party) {
+        this.fasongData.toparty = this.party;
+      }
+      this.fasongData.touser = this.assisStr;
       this.fasongData.news.articles[0].title = `小型工程受理审核通过`;
       this.fasongData.news.articles[0].description = `小型工程受理审核通过`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details?prj_name=${this.shigongData.prj_name}`;
@@ -263,20 +264,20 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // if (this.shigongData1.prj_grid === "0701") {
-      //   this.fasongData.touser = "13701729933|13917049911|13301608675";
-      // }
-      // if (this.shigongData1.prj_grid === "0702") {
-      //   this.fasongData.touser = "13795300984";
-      // }
-      // if (this.shigongData1.prj_grid === "0703") {
-      //   this.fasongData.touser = "13917049911|13918853364|13301608675";
-      // }
+      if (this.shigongData1.prj_grid === "0701") {
+        this.fasongData.touser = "13701729933|13917049911|13301608675";
+      }
+      if (this.shigongData1.prj_grid === "0702") {
+        this.fasongData.touser = "13795300984";
+      }
+      if (this.shigongData1.prj_grid === "0703") {
+        this.fasongData.touser = "13917049911|13918853364|13301608675";
+      }
       this.fasongData.news.articles[0].title = `小型工地受理审核，未通过。`;
       this.fasongData.news.articles[0].description = `小型工地受理审核，未通过。`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/information1?prj_name=${this.shigongData.prj_name}`;
@@ -352,6 +353,17 @@ export default {
       });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const shigongData = localStorage.getItem("shigongData");
       if (shigongData) {
         this.shigongData1 = JSON.parse(shigongData);

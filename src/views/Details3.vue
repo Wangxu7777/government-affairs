@@ -137,7 +137,8 @@ export default {
       change_pictures2: "",
       change_pictures3: "",
       change_pictures4: "",
-      change_pictures5: ""
+      change_pictures5: "",
+      auth: {}
     };
   },
   //方法集合
@@ -160,6 +161,17 @@ export default {
       this.$router.push({ name: "Index" });
     },
     content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const jianchaData = localStorage.getItem("jianchaData");
       if (jianchaData) {
         this.jianchaData = JSON.parse(jianchaData);

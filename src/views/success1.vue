@@ -50,7 +50,7 @@ export default {
   //方法集合
   methods: {
     xiangqin() {
-      this.$router.push({ name: "Details" });
+      this.$router.push({ name: "ProjectDetails" });
     },
     shouye() {
       this.$router.push({ name: "Index" });

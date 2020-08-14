@@ -9,7 +9,7 @@
     />
     <p>工程施工信息</p>
     <div class="biaoti">
-      <icon-svg class="icn_box" icon-class="shenhe" />
+      <icon-svg class="icn_box" icon-class="shenhe" style="margin-right:10px" />
       <span v-if="this.prj_state == '-2'">已受理，待审核</span>
       <span v-if="this.prj_state == '0'">已受理，审核通过</span>
       <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
@@ -161,6 +161,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      auth: {},
       userid: "",
       prj_name: "",
       prj_addr: "",
@@ -283,10 +284,21 @@ export default {
       this.$router.push({ name: "Index" });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {
-        this.userid = JSON.parse(userid);
+        this.userid = userid;
       } else {
         this.userid = this.$route.query.userid;
 
@@ -296,12 +308,15 @@ export default {
         );
       }
       const shigongData = localStorage.getItem("shigongData");
+
       if (shigongData) {
         this.shigongData1 = JSON.parse(shigongData);
+        this.shigongData.prj_name = this.shigongData1.prj_name;
       } else {
         this.shigongData.prj_name = this.$route.query.prj_name;
         // this.prj_state = this.$route.query.prj_state;
       }
+
       // if (
       //   this.prj_state == "-4" ||
       //   this.prj_state == "-3" ||

@@ -8,8 +8,15 @@
       @click-left="onClickLeft"
     />
     <div class="biaoti">
-      <span class="hege" v-if="this.prj_state == '7'">检查合格</span>
-      <span class="buhege" v-if="this.prj_state == '6'">检查不合格</span>
+      <span class="hege" v-if="this.prj_state == '7'" style="margin-right:10px"
+        >检查合格</span
+      >
+      <span
+        class="buhege"
+        v-if="this.prj_state == '6'"
+        style="margin-right:10px"
+        >检查不合格</span
+      >
       <span>本次审查已完成</span>
     </div>
     <van-cell-group>
@@ -102,7 +109,8 @@ export default {
       },
       shigongData1: {},
       shigongData2: {},
-      prj_state: ""
+      prj_state: "",
+      auth: {}
     };
   },
   //方法集合
@@ -171,6 +179,17 @@ export default {
       this.$router.push({ name: "Index" });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const shigongData = localStorage.getItem("shigongData");
       if (shigongData) {
         this.shigongData1 = JSON.parse(shigongData);

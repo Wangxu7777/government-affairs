@@ -157,9 +157,22 @@ export default {
       var w = e.currentTarget.innerText;
       var a = w.trim().split("\n");
 
-      if (a[5] == "发现工程" || a[5] == "待移交") {
+      if (a[a.length - 1] == "发现工程" || a[a.length - 1] == "待移交") {
         this.$router.push({
           path: "/projectReporting1",
+          query: {
+            prj_name: a[0]
+          }
+        });
+      } else if (
+        a[a.length - 1] == "同意接收" ||
+        a[a.length - 1] == "正在移交" ||
+        a[a.length - 1] == "不同意移交" ||
+        a[a.length - 1] == "不同意接收" ||
+        a[a.length - 1] == "同意移交"
+      ) {
+        this.$router.push({
+          path: "/viewTransferOrder",
           query: {
             prj_name: a[0]
           }

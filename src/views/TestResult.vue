@@ -139,7 +139,8 @@ export default {
       tableFrom: {
         prj_name: "",
         prj_state: "6,7"
-      }
+      },
+      auth: {}
     };
   },
   //方法集合
@@ -173,7 +174,7 @@ export default {
             "wx/saveGongdi_info",
             this.form
           );
-          if (dt != 0) {
+          if (dt !== 0) {
             return this.$toast.fail({
               message: "提交失败"
             });
@@ -217,6 +218,17 @@ export default {
       // this.total = Math.ceil(dt.data.total / this.tableFrom.limit);
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const userid = sessionStorage.getItem("user_id");
       if (userid) {
         this.form.userid = JSON.parse(userid);

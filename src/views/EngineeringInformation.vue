@@ -211,7 +211,7 @@ export default {
       imgurl: "",
       postData: [],
       fasongData: {
-        touser: "18868196750",
+        touser: "13413156908",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -349,20 +349,20 @@ export default {
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.gongchengData
       });
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // if (this.gongchengData.prj_grid === "0701") {
-      //   this.fasongData.touser = "13701729933|13917049911|13301608675";
-      // }
-      // if (this.gongchengData.prj_grid === "0702") {
-      //   this.fasongData.touser = "13795300984";
-      // }
-      // if (this.gongchengData.prj_grid === "0703") {
-      //   this.fasongData.touser = "13917049911|13918853364|13301608675";
-      // }
+      if (this.gongchengData.prj_grid === "0701") {
+        this.fasongData.touser = "13701729933|13917049911|13301608675";
+      }
+      if (this.gongchengData.prj_grid === "0702") {
+        this.fasongData.touser = "13795300984";
+      }
+      if (this.gongchengData.prj_grid === "0703") {
+        this.fasongData.touser = "13917049911|13918853364|13301608675";
+      }
 
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept?prj_name=${this.gongchengData.prj_name}`;
 

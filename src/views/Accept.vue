@@ -117,6 +117,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      auth: {},
       user: {
         user_id: ""
       },
@@ -147,7 +148,7 @@ export default {
         userid: ""
       },
       fasongData: {
-        touser: "18868196750",
+        touser: "13413156908",
         // toparty: "",
         msgtype: "news",
         agentid: "1000201",
@@ -174,7 +175,7 @@ export default {
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
@@ -182,7 +183,7 @@ export default {
       this.$toast.success({
         message: "一般工程 已拒绝受理"
       });
-      // this.fasongData.touser = "13311803795";
+      this.fasongData.touser = "13311803795";
       this.fasongData.news.articles[0].title = `一般工程`;
       this.fasongData.news.articles[0].description = `一般工程`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept1?prj_name=${this.gongchengData.prj_name}`;
@@ -217,7 +218,7 @@ export default {
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
@@ -235,12 +236,12 @@ export default {
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // this.fasongData.touser = "18017569958";
+      this.fasongData.touser = "18017569958";
       this.fasongData.news.articles[0].title = `小型工程未受理`;
       this.fasongData.news.articles[0].description = `小型工程未受理`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.gongchengData.prj_name}`;
@@ -258,8 +259,29 @@ export default {
       this.$router.push({ name: "Index" });
     },
     async content() {
-      this.shouliData.userid = this.$route.query.userid;
-      sessionStorage.setItem("user_id", JSON.stringify(this.shouliData.userid));
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
+      if (this.$route.query.userid) {
+        this.shouliData.userid = this.$route.query.userid;
+        sessionStorage.setItem(
+          "user_id",
+          JSON.stringify(this.shouliData.userid)
+        );
+      } else {
+        return this.$toast.fail({
+          message: "获取用户id失败，请尝试重新进入"
+        });
+      }
+
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;

@@ -9,13 +9,27 @@
     />
     <p>非小型建设工程移送单</p>
     <div class="biaoti">
-      <icon-svg class="icn_box" icon-class="chuanshuliebiao" />
+      <icon-svg
+        class="icn_box"
+        icon-class="chuanshuliebiao"
+        style="margin-right:10px"
+      />
       <span v-if="this.prj_state == '-1' || this.prj_state == '1'"
         >正在移交</span
       >
-      <span v-if="this.prj_state == '2'">移交失败</span>
-      <span v-if="this.prj_state == '5'">已被成功接收</span>
-      <span v-if="this.prj_state == '4'">拒接接收</span>
+      <span v-if="this.prj_state == '2'" style="margin-right:10px"
+        >移交失败</span
+      >
+      <span v-if="this.prj_state == '5'" style="margin-right:10px"
+        >已被成功接收</span
+      >
+      <span v-if="this.prj_state == '4'" style="margin-right:10px"
+        >拒接接收</span
+      >
+      <span v-if="this.prj_state == '3'" style="margin-right:10px"
+        >同意移交</span
+      >
+
       <icon-svg
         v-if="this.prj_state == '3' || this.prj_state == '5'"
         class="icn_box"
@@ -72,7 +86,8 @@ export default {
       shigongData: {
         prj_name: ""
       },
-      shigongData1: {}
+      shigongData1: {},
+      auth: {}
     };
   },
   //方法集合
@@ -84,6 +99,17 @@ export default {
       this.$router.push({ name: "Index" });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const shigongData = localStorage.getItem("shigongData");
       if (shigongData) {
         this.shigongData1 = JSON.parse(shigongData);

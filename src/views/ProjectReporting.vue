@@ -119,7 +119,8 @@ export default {
       gongchengData: {
         prj_name: ""
       },
-      gongchengData1: {}
+      gongchengData1: {},
+      auth: {}
     };
   },
   //方法集合
@@ -141,6 +142,17 @@ export default {
       });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const gongchengData = localStorage.getItem("gongchengData");
       if (gongchengData) {
         this.gongchengData1 = JSON.parse(gongchengData);

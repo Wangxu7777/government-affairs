@@ -10,7 +10,7 @@
             round
             width="2rem"
             height="2rem"
-            :src="userData.avatar"
+            :src="headUrl"
           />
           <!-- <icon-svg class="touxiang" icon-class="touxiang" /> -->
         </van-col>
@@ -60,7 +60,9 @@
         </van-row>
       </div>
     </div>
-    <p class="copyright">xxx部门总办 咨询电话：xxxxxxxx copyright©2020-2021</p>
+    <p class="copyright">
+      老西门街道办事处总办 联系电话：021-63696363 copyright©2020-2021
+    </p>
   </div>
 </template>
 
@@ -108,7 +110,8 @@ export default {
         "黄浦施工工地应用测试"
       ],
       auth: {},
-      errcode: ""
+      errcode: "",
+      headUrl: ""
     };
   },
   //方法集合
@@ -118,39 +121,47 @@ export default {
       const { data: dt } = await this.$http.get("getDepartName", {
         params: this.departmentId
       });
-
+      if (dt.retcode !== "0") {
+        return this.$toast.fail({
+          message: "部门名称查询失败"
+        });
+      }
       this.departmentName = dt.data.department[0].name;
     },
     async content() {
       //获取传参过来的状态值
-      const errcode = sessionStorage.getItem("errcode");
-      if (errcode) {
-        this.errcode = JSON.parse(errcode);
-      } else {
-        this.errcode = this.$route.query.errcode;
+      // const errcode = sessionStorage.getItem("errcode");
+      // if (errcode) {
+      //   this.errcode = JSON.parse(errcode);
+      // } else {
+      //   if (this.$route.query.errcode) {
+      //     this.errcode = this.$route.query.errcode;
 
-        sessionStorage.setItem(
-          "errcode",
-          JSON.stringify(this.$route.query.errcode)
-        );
-      }
-      if (this.errcode !== "0") {
-        return this.$toast.fail({
-          message: "无权限进入如有需要请联系房管办更改"
-        });
-      }
+      //     sessionStorage.setItem(
+      //       "errcode",
+      //       JSON.stringify(this.$route.query.errcode)
+      //     );
+      //   }
+      // }
+      // if (this.errcode !== "0") {
+      //   return this.$toast.fail({
+      //     message: "无权限进入如有需要请联系房管办更改"
+      //   });
+      // }
       //获取用户id
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {
         this.user.user_id = JSON.parse(userid);
       } else {
-        this.user.user_id = this.$route.query.userid;
+        if (this.$route.query.userid) {
+          this.user.user_id = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+          sessionStorage.setItem(
+            "user_id",
+            JSON.stringify(this.$route.query.userid)
+          );
+        }
       }
       //获取用户权限状态
       const auth = sessionStorage.getItem("auth");
@@ -158,24 +169,30 @@ export default {
       if (auth) {
         this.auth = JSON.parse(auth);
       } else {
-        this.auth = JSON.parse(this.$route.query.auth);
-
-        sessionStorage.setItem("auth", this.$route.query.auth);
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
       }
 
       // this.$toast(`用户id:${this.user.user_id}`);
       const { data: dt } = await this.$http.get("getUser", {
         params: this.user
       });
-      this.userData = dt.data;
+
       if (dt.data.errcode !== 0) {
         return this.$toast.fail({
           message: "获取用户信息失败"
         });
       }
-      this.userData.department.forEach(e => {
-        this.department(e);
-      });
+      this.userData = dt.data;
+      if (this.userData.avatar) {
+        this.headUrl = this.userData.avatar;
+      }
+
+      // this.userData.department.forEach(e => {
+      //   this.department(e);
+      // });
     },
     geren() {
       this.$router.push({

@@ -10,7 +10,7 @@
             round
             width="3.5rem"
             height="3.6rem"
-            :src="userData.avatar"
+            :src="headUrl"
           />
           <!-- <van-icon class="header" name="manager" /> -->
         </van-col>
@@ -63,7 +63,9 @@ export default {
       departmentId: {
         depart_id: ""
       },
-      departmentName: ""
+      departmentName: "",
+      auth: {},
+      headUrl: ""
     };
   },
   //方法集合
@@ -73,10 +75,25 @@ export default {
       const { data: dt } = await this.$http.get("getDepartName", {
         params: this.departmentId
       });
-
+      if (dt.retcode !== "0") {
+        return this.$toast.fail({
+          message: "部门名称查询失败"
+        });
+      }
       this.departmentName = dt.data.department[0].name;
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {
@@ -91,12 +108,14 @@ export default {
         params: this.user
       });
 
-      this.userData = dt.data;
-
       if (dt.data.errcode !== 0) {
         return this.$toast.fail({
           message: "获取用户信息失败"
         });
+      }
+      this.userData = dt.data;
+      if (this.userData.avatar) {
+        this.headUrl = this.userData.avatar;
       }
       this.userData.department.forEach(e => {
         this.department(e);

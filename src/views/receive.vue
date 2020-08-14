@@ -101,8 +101,8 @@ export default {
       },
       shigongData1: {},
       fasongData: {
-        touser: "18868196750",
-        toparty: "6899",
+        touser: "13413156908",
+        // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
@@ -118,7 +118,8 @@ export default {
             }
           ]
         }
-      }
+      },
+      auth: {}
     };
   },
   //方法集合
@@ -132,7 +133,7 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
@@ -156,7 +157,7 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
@@ -177,6 +178,17 @@ export default {
       this.$router.push({ name: "success4" });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       this.contentData.prj_name = this.$route.query.prj_name;
 
       // console.log(this.contentData);

@@ -103,7 +103,7 @@ export default {
       },
       shigongData1: {},
       fasongData: {
-        touser: "18868196750",
+        touser: "13413156908",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -120,7 +120,8 @@ export default {
             }
           ]
         }
-      }
+      },
+      auth: {}
     };
   },
   //方法集合
@@ -134,12 +135,12 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // this.fasongData.touser = "13901776093";
+      this.fasongData.touser = "13901776093";
       this.fasongData.news.articles[0].title = `小型工程移送`;
       this.fasongData.news.articles[0].description = `小型工程移送`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/receive?prj_name=${this.gongchengData.prj_name}`;
@@ -160,12 +161,12 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // this.fasongData.touser = "18017569958";
+      this.fasongData.touser = "18017569958";
       this.fasongData.news.articles[0].title = `小型工程移送失败`;
       this.fasongData.news.articles[0].description = `小型工程移送失败`;
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
@@ -181,6 +182,17 @@ export default {
       this.$router.push({ name: "success4" });
     },
     async content() {
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;

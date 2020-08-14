@@ -206,7 +206,8 @@ export default {
 
       gongchengData: {
         prj_name: ""
-      }
+      },
+      auth: {}
     };
   },
   created() {
@@ -238,6 +239,17 @@ export default {
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
+
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
       const userid = sessionStorage.getItem("user_id");
       if (userid) {
         this.shigongData.userid = JSON.parse(userid);
@@ -312,7 +324,7 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
@@ -326,7 +338,7 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
-      if (dt != 0) {
+      if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });

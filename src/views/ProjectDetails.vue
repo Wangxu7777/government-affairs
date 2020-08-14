@@ -9,7 +9,7 @@
     />
     <p>工程施工信息</p>
     <div class="biaoti">
-      <icon-svg class="icn_box" icon-class="shenhe" />
+      <icon-svg class="icn_box" icon-class="shenhe" style="margin-right:10px" />
       <span v-if="this.prj_state == '-2'">已受理，待审核</span>
       <span v-if="this.prj_state == '0'">已受理，审核通过</span>
       <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
@@ -298,22 +298,12 @@ export default {
       const shigongData = localStorage.getItem("shigongData");
       if (shigongData) {
         this.shigongData1 = JSON.parse(shigongData);
+        this.shigongData.prj_name = this.shigongData1.prj_name;
       } else {
         this.shigongData.prj_name = this.$route.query.prj_name;
         // this.prj_state = this.$route.query.prj_state;
       }
-      // if (
-      //   this.prj_state == "-4" ||
-      //   this.prj_state == "-3" ||
-      //   this.prj_state == "-100"
-      // ) {
-      //   this.faixan = true;
-      //   var { data: dt1 } = await this.$http.get("/wx/getGongdi", {
-      //   params: this.shigongData
-      // });
-      // }
 
-      // console.log(this.shigongData);
       var { data: dt } = await this.$http.get("/wx/getGongdi_info", {
         params: this.shigongData
       });
