@@ -161,10 +161,7 @@ export default {
       } else {
         this.shigongData.userid = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi", {
@@ -174,6 +171,28 @@ export default {
       this.shigongData.prj_name = this.gongchengData.prj_name;
       this.shigongData.prj_addr = dt.prj_addr;
       this.shigongData.prj_type = dt.prj_type;
+    },
+    //发送信息
+    async fasong() {
+      this.fasongData.touser = "13917332229";
+      this.fasongData.news.articles[0].title = `非小型工程移送`;
+
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferOrder?prj_name=${this.shigongData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.shigongData.prj_name;
+      var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({ name: "success3" });
     },
     async yijiao() {
       this.shigongData.prj_state = "1";
@@ -186,20 +205,7 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.touser = "13917332229";
-      this.fasongData.news.articles[0].title = `非小型工程移送`;
-      this.fasongData.news.articles[0].description = `非小型工程移送`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferOrder?prj_name=${this.shigongData.prj_name}`;
-
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "发送信息失败"
-        });
-      }
-      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
-      this.$router.push({ name: "success3" });
+      this.fasong();
     },
     onSubmit() {
       // localStorage.setItem("shigongData", JSON.stringify(this.shigongData));

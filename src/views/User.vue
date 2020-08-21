@@ -101,7 +101,7 @@ export default {
       } else {
         this.user.user_id = this.$route.query.user_id;
 
-        sessionStorage.setItem("user_id", JSON.stringify(this.user.user_id));
+        sessionStorage.setItem("user_id", this.user.user_id);
       }
 
       const { data: dt } = await this.$http.get("getUser", {

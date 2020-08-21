@@ -64,7 +64,7 @@
         <van-field
           v-if="this.shoudong1"
           ref="danweixuankbox"
-          v-model="faxiandanwei"
+          v-model="gongchengData.prj_depart"
           name="发现单位"
           label="发现单位"
           placeholder="输入发现单位"
@@ -130,7 +130,7 @@
           <van-field name="uploader" label="照片上传" class="shangchuan">
             <template #input>
               <van-uploader
-                :deletable="false"
+                :before-delete="pictureDelete"
                 :before-read="beforeRead"
                 :after-read="afterRead"
                 v-model="uploader"
@@ -161,14 +161,17 @@
 
 <script>
 import axios from "axios";
+//图片压缩文件
+import { compressImage } from "../compressImage";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
     return {
+      prj_name: { prj_name: "" },
       user: {
-        user_id: "18632397636"
+        user_id: ""
       },
       picture: [],
       gongchengData: {
@@ -211,7 +214,8 @@ export default {
       imgurl: "",
       postData: [],
       fasongData: {
-        touser: "13413156908",
+        touser: "",
+        // touser: "18632397636|15810457862",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -229,7 +233,8 @@ export default {
           ]
         }
       },
-      user_id: ""
+      user_id: "",
+      uploading: false
     };
   },
   // watch: {
@@ -242,14 +247,81 @@ export default {
   // },
   //方法集合
   methods: {
+    //删除图片
+    pictureDelete(file) {
+      if (file.file) {
+        this.picture.forEach(e => {
+          if (e.name === file.file.name) {
+            this.picture.splice(e, 1);
+          }
+        });
+
+        return true;
+      } else {
+        this.picture.forEach(e => {
+          if (e.name === file.url) {
+            this.picture.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
+    },
+    //压缩图片上传
+    _compressAndUploadFile(file) {
+      compressImage(file.content).then(result => {
+        // console.log("压缩后的结果", result); // result即为压缩后的结果
+        // console.log("压缩前大小", file.file.size);
+        // console.log("压缩后大小", result.size);
+        if (result.size > file.file.size) {
+          // console.log("上传原图");
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
+          // console.log("上传压缩图");
+          this._uploadFile(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      axios
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
+        .then(response => {
+          if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
+            return this.$toast.fail({
+              message: "上传图片失败"
+            });
+          }
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.picture.push(picture);
+        });
+    },
+    //获取经纬度
     qipao(poi) {
       this.gongchengData.lng = poi.point.lng;
       this.gongchengData.lat = poi.point.lat;
     },
-    content() {
-      const user_id = sessionStorage.getItem("user_id");
-      this.gongchengData.userid = JSON.parse(user_id);
-    },
+
+    //校验格式
     beforeRead(file) {
       if (
         file.type !== "image/jpeg" &&
@@ -275,11 +347,12 @@ export default {
 
       // return /1\d{10}/.test(val);
     },
+    //上传图片
     afterRead(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
+      // file.status = "uploading";
+      // file.message = "上传中...";
+
       //区分单文件上传还是多文件
       // if (file instanceof Array && file.length) {
       //   for (let i = 0; i < file.length; i++) {
@@ -288,31 +361,10 @@ export default {
       // } else {
       //   param.append("file", file.file); // 通过append向form对象添加数据
       // }
-      param.append("file", file.file); // 通过append向form对象添加数据
-      // console.log(param.get("file"));
-      let config = {
-        headers: { "Content-Type": "multipart/form-data" }
-      };
-      axios
-        .post(
-          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
-          `http://hpimage.soyumall.cn/gongdi/general/upload`,
-          param,
-          config
-        )
-        .then(response => {
-          if (response.data.status != 200) {
-            file.status = "failed";
-            file.message = "上传失败";
-            return this.$toast.fail({
-              message: "上传图片失败"
-            });
-          }
-          this.gongchengData.picture.push(response.data.data.result);
 
-          this.picture.push(response.data.data.result);
-          file.status = "done";
-        });
+      this._compressAndUploadFile(file);
+
+      // console.log(param.get("file"));
     },
 
     submit() {},
@@ -327,33 +379,18 @@ export default {
       if (value == "请输入") {
         this.shoudong = false;
         this.shoudong1 = true;
+        this.showPicker1 = false;
+      } else {
+        this.gongchengData.prj_depart = value;
+        this.showPicker1 = false;
       }
-      this.gongchengData.prj_depart = value;
-      this.showPicker1 = false;
     },
     onConfirm2(value) {
       this.gongchengData.prj_grid = value;
       this.showPicker2 = false;
     },
-    async onSubmit() {
-      //设置请求头
-      // let config = {
-      //   headers: {
-      //     "Content-Type": "application/x-www-form-urlencoded"
-      //   }
-      // };
-      this.gongchengData.picture = this.gongchengData.picture.toString();
-      this.gongchengData.lng = this.gongchengData.lng.toString();
-      this.gongchengData.lat = this.gongchengData.lat.toString();
-
-      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
-        params: this.gongchengData
-      });
-      if (dt !== 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
+    //发送信息
+    async fasong() {
       if (this.gongchengData.prj_grid === "0701") {
         this.fasongData.touser = "13701729933|13917049911|13301608675";
       }
@@ -364,17 +401,44 @@ export default {
         this.fasongData.touser = "13917049911|13918853364|13301608675";
       }
 
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept?prj_name=${this.gongchengData.prj_name}`;
-
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.gongchengData.prj_name;
+      var { data: dt } = await this.$http.post("/sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      if (dt.data.errcode != 0) {
         return this.$toast.fail({
           message: "发送信息失败"
         });
       }
       localStorage.setItem("gongchengData", JSON.stringify(this.gongchengData));
       this.$router.push({ name: "success" });
+    },
+    async onSubmit() {
+      //赋值给需要提交的属性
+      this.gongchengData.picture = [];
+      this.picture.forEach(e => {
+        this.gongchengData.picture.push(e.UpName);
+      });
+
+      this.gongchengData.picture = this.gongchengData.picture.toString();
+      this.gongchengData.lng = this.gongchengData.lng.toString();
+      this.gongchengData.lat = this.gongchengData.lat.toString();
+      console.log(this.gongchengData);
+      var { data: dt } = await this.$http.get("/wx/saveGongdi", {
+        params: this.gongchengData
+      });
+
+      if (dt !== 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      //提交成功发送信息
+      this.fasong();
     },
     handler({ BMap, map }) {
       map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
@@ -445,6 +509,43 @@ export default {
         map.addOverlay(marker);
         marker.addContextMenu(markerMenu);
       });
+    },
+    //获取id,工程名
+    async content() {
+      const user_id = sessionStorage.getItem("user_id");
+      this.gongchengData.userid = JSON.parse(user_id);
+      //判断是否有传值
+      if (this.$route.query.prj_name) {
+        this.prj_name.prj_name = this.$route.query.prj_name;
+        var { data: dt } = await this.$http.get("/wx/getGongdi", {
+          params: this.prj_name
+        });
+        this.gongchengData.prj_depart = dt.prj_depart;
+        this.gongchengData.prj_name = dt.prj_name;
+        this.gongchengData.prj_addr = dt.prj_addr;
+        this.gongchengData.prj_grid = dt.prj_grid;
+        this.gongchengData.prj_type = dt.prj_type;
+        this.gongchengData.prj_depart = dt.prj_depart;
+
+        this.gongchengData.prj_state = dt.prj_state;
+        this.gongchengData.lng = dt.location[0];
+        this.gongchengData.lat = dt.location[1];
+
+        if (dt.picture) {
+          let imgArr = dt.picture.trim().split(",");
+
+          imgArr.forEach(e => {
+            this.uploader.push({
+              url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+            });
+            let picture = {
+              name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+              UpName: e
+            };
+            this.picture.push(picture);
+          });
+        }
+      }
     }
   },
   created() {

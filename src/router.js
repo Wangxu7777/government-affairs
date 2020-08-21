@@ -33,6 +33,7 @@ import InspectorList from "./views/InspectorList.vue";
 import User from "./views/User.vue";
 import Accept1 from "./views/Accept1.vue";
 import CompletionList from "./views/CompletionList.vue";
+import TestResultDetails from "./views/TestResultDetails.vue";
 
 Vue.use(Router);
 var router = new Router({
@@ -161,7 +162,11 @@ var router = new Router({
     {
       path: "/projectList",
       name: "ProjectList",
-      component: ProjectList
+      component: ProjectList,
+      meta: {
+        pageTitle: "列表页",
+        keepAlive: true
+      }
     },
     {
       path: "/transferForm",
@@ -202,6 +207,11 @@ var router = new Router({
       path: "/projectDetails",
       name: "ProjectDetails",
       component: ProjectDetails
+    },
+    {
+      path: "/testResultDetails",
+      name: "TestResultDetails",
+      component: TestResultDetails
     }
   ]
 });

@@ -217,7 +217,12 @@ export default {
       }
     },
     xiugai() {
-      this.$router.push({ name: "EngineeringInformation" });
+      this.$router.push({
+        name: "EngineeringInformation",
+        query: {
+          prj_name: this.prj_name
+        }
+      });
     },
     shouye() {
       this.$router.push({ name: "Index" });

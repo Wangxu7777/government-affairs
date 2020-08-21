@@ -157,10 +157,7 @@ export default {
         if (this.$route.query.userid) {
           this.user.user_id = this.$route.query.userid;
 
-          sessionStorage.setItem(
-            "user_id",
-            JSON.stringify(this.$route.query.userid)
-          );
+          sessionStorage.setItem("user_id", this.$route.query.userid);
         }
       }
       //获取用户权限状态
@@ -248,6 +245,12 @@ export default {
   },
   created() {
     this.content();
+  },
+  beforeRouteEnter(to, from, next) {
+    if (from.name == "ProjectList") {
+      from.meta.keepAlive = false;
+    }
+    next();
   }
 };
 </script>

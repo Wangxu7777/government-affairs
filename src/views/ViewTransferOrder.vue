@@ -51,7 +51,7 @@
       <van-field label="联系人姓名" :value="fbi_name" readonly />
       <van-field label="联系人电话" :value="fbi_phone" readonly />
       <van-field label="工程面积" :value="prj_area" readonly />
-      <van-field label="合同造价" :value="contract_price" readonly />
+      <van-field label="合同造价" :value="prj_price" readonly />
       <van-field label="基本违法,违规情况" :value="prj_check" readonly />
     </van-cell-group>
 
@@ -139,6 +139,11 @@ export default {
   },
   created() {
     this.content();
+  },
+  beforeRouteLeave(to, from, next) {
+    //设置下一个路由的meta,让列表页面缓存,即不刷新
+    to.meta.keepAlive = true;
+    next();
   }
 };
 </script>

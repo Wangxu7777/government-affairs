@@ -298,14 +298,11 @@ export default {
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {
-        this.userid = userid;
+        this.userid = JSON.parse(userid);
       } else {
         this.userid = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
       const shigongData = localStorage.getItem("shigongData");
 

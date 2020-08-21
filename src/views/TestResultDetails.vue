@@ -58,7 +58,7 @@
                 item.prj_state == '检查合格' ? 'color: #07c160;' : 'color: red;'
               "
             >
-              {{ item.check_depart }}—{{ item.prj_state }}
+              {{ item.prj_state }}
             </h3>
             <p
               :style="
@@ -82,14 +82,6 @@
         native-type="submit"
       >
         返回首页
-      </van-button>
-    </div>
-    <div
-      style="margin: 16px;"
-      v-if="this.form.prj_state == '6' || this.form.prj_state == '7'"
-    >
-      <van-button @click="queding" round block type="info" native-type="submit">
-        确认竣工
       </van-button>
     </div>
   </div>
@@ -162,34 +154,7 @@ export default {
     shouye() {
       this.$router.push({ name: "Index" });
     },
-    queding() {
-      this.$dialog
-        .confirm({
-          message: "是否确认竣工"
-        })
-        .then(async () => {
-          this.form.prj_state = "8";
 
-          var { data: dt } = await this.$http.post(
-            "wx/saveGongdi_info",
-            this.form
-          );
-          if (dt !== 0) {
-            return this.$toast.fail({
-              message: "提交失败"
-            });
-          }
-          this.$router.push({
-            path: "/success6",
-            query: {
-              prj_name: this.form.prj_name
-            }
-          });
-        })
-        .catch(() => {
-          // on cancel
-        });
-    },
     xiangxi() {
       this.$router.push({
         path: "/details",

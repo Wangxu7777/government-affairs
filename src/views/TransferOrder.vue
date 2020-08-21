@@ -103,7 +103,7 @@ export default {
       },
       shigongData1: {},
       fasongData: {
-        touser: "13413156908",
+        touser: "",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -129,6 +129,28 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
+    //发送信息
+    async fasong() {
+      this.fasongData.touser = "13901776093";
+      this.fasongData.news.articles[0].title = `小型工程移送`;
+
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/receive?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.gongchengData.prj_name;
+      var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({ name: "success4" });
+    },
     async tongyi() {
       this.shigongData.prj_state = "3";
       var { data: dt } = await this.$http.post(
@@ -140,18 +162,28 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.touser = "13901776093";
-      this.fasongData.news.articles[0].title = `小型工程移送`;
-      this.fasongData.news.articles[0].description = `小型工程移送`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/receive?prj_name=${this.gongchengData.prj_name}`;
 
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+      this.fasong();
+    },
+    //发送信息
+    async fasong1() {
+      this.fasongData.touser = "18017569958";
+      this.fasongData.news.articles[0].title = `小型工程移送失败`;
 
-      if (dt1.data.errcode != 0) {
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/viewTransferOrder?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.gongchengData.prj_name;
+      var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
         return this.$toast.fail({
           message: "发送信息失败"
         });
       }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success4" });
     },
@@ -166,20 +198,7 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.touser = "18017569958";
-      this.fasongData.news.articles[0].title = `小型工程移送失败`;
-      this.fasongData.news.articles[0].description = `小型工程移送失败`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/viewTransferOrder?prj_name=${this.gongchengData.prj_name}`;
-
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "发送信息失败"
-        });
-      }
-      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
-      this.$router.push({ name: "success4" });
+      this.fasong1();
     },
     async content() {
       //获取用户权限状态
@@ -202,10 +221,7 @@ export default {
       } else {
         this.shigongData.userid = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {

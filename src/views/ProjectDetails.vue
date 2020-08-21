@@ -290,10 +290,7 @@ export default {
       } else {
         this.userid = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
       const shigongData = localStorage.getItem("shigongData");
       if (shigongData) {
@@ -362,6 +359,13 @@ export default {
   },
   created() {
     this.content();
+  },
+  beforeRouteLeave(to, from, next) {
+    //设置下一个路由的meta,让列表页面缓存,即不刷新
+
+    to.meta.keepAlive = true;
+
+    next();
   }
 };
 </script>

@@ -154,6 +154,8 @@
 
 <script>
 import axios from "axios";
+//图片压缩文件
+import { compressImage } from "../compressImage";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -222,254 +224,443 @@ export default {
       this.shigongData = JSON.parse(shigongData);
       // console.log(this.shigongData);
     },
-    afterRead(file) {
-      // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
+    //压缩图片上传
+    _compressAndUploadFile(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile(result, file.file.name, file);
+        }
+      });
+    },
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+    //上传图片
+    _uploadFile(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_property = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead1(file) {
+    afterRead(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile1(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile1(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile1(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile1(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_lease_contract = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead2(file) {
+    afterRead1(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile1(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile2(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile2(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile2(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile2(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_con_contract = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead3(file) {
+    afterRead2(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile2(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile3(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile3(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile3(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile3(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_license = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead4(file) {
+    afterRead3(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile3(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile4(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile4(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile4(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile4(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_certifications = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead5(file) {
+    afterRead4(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile4(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile5(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile5(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile5(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile5(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_manager_cert = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead6(file) {
-      // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
+    afterRead5(file) {
+      this._compressAndUploadFile5(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile6(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile6(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile6(result, file.file.name, file);
+        }
+      });
+    },
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+    //上传图片
+    _uploadFile6(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_safe_cert = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead7(file) {
+    afterRead6(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile6(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile7(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile7(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile7(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile7(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_manager_appiontment = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead8(file) {
+    afterRead7(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile7(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile8(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile8(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile8(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile8(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_safe_appiontment = response.data.data.result;
-          file.status = "done";
         });
     },
-    afterRead9(file) {
+    afterRead8(file) {
       // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
 
-      param.append("file", file.file); // 通过append向form对象添加数据
+      this._compressAndUploadFile8(file);
+    },
+    //压缩图片上传
+    _compressAndUploadFile9(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile9(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
 
-      // param.append("file", file.file); // 通过append向form对象添加数据
+          this._uploadFile9(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile9(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
           this.prj_design_cert = response.data.data.result;
-          file.status = "done";
         });
+    },
+    afterRead9(file) {
+      // console.log(file.file);
+
+      this._compressAndUploadFile9(file);
     },
     onClickLeft() {
       this.$router.go(-1);

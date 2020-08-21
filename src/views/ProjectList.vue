@@ -177,6 +177,13 @@ export default {
             prj_name: a[0]
           }
         });
+      } else if (a[a.length - 1] == "已督察" || a[a.length - 1] == "已竣工") {
+        this.$router.push({
+          path: "/testResultDetails",
+          query: {
+            prj_name: a[0]
+          }
+        });
       } else {
         this.$router.push({
           path: "/projectDetails",
@@ -337,6 +344,10 @@ export default {
     localStorage.removeItem("gongchengData");
     localStorage.removeItem("shigongData");
   }
+  // beforeRouteLeave(to, from, next) {
+  //   to.meta.keepAlive = true;
+  //   next();
+  // }
 };
 </script>
 
@@ -378,5 +389,10 @@ export default {
 .neirong3 {
   width: 100%;
   height: 100%;
+}
+.touxiang {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
 }
 </style>

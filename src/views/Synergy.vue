@@ -110,9 +110,31 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
+    //发送信息
+    async fasong() {
+      this.fasongData.touser = "13671711858";
+      this.fasongData.news.articles[0].title = `已受理小型工程，待审核`;
+
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details1?prj_name=${this.shigongData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.shigongData.prj_name;
+      var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({ name: "success1" });
+    },
     async tijiao() {
       const user_id = sessionStorage.getItem("user_id");
-      this.shigongData.userid = user_id;
+      this.shigongData.userid = JSON.parse(user_id);
       this.shigongData.prj_state = "-2";
       this.shigongData.prj_assist_org = this.result.toString();
       var { data: dt } = await this.$http.post(
@@ -124,20 +146,8 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.touser = "13671711858";
-      this.fasongData.news.articles[0].title = `已受理小型工程，待审核`;
-      this.fasongData.news.articles[0].description = `已受理小型工程，待审核`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details1?prj_name=${this.shigongData.prj_name}`;
 
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "发送信息失败"
-        });
-      }
-      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
-      this.$router.push({ name: "success1" });
+      this.fasong();
     },
     RouterData() {
       const shigongData = localStorage.getItem("shigongData");

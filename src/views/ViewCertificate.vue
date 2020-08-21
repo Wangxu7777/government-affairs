@@ -153,6 +153,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      shigongUserid: "",
       party: "",
       assisStr: "",
       show: false,
@@ -177,7 +178,7 @@ export default {
       },
       shigongData1: {},
       fasongData: {
-        touser: "13413156908",
+        touser: "",
         // toparty: "",
         msgtype: "news",
         agentid: "1000201",
@@ -203,6 +204,28 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
+    //发送信息
+    async fasong() {
+      this.fasongData.touser = "18017569958";
+      this.fasongData.news.articles[0].title = `非小型工程，请移交`;
+
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.shigongData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.shigongData.prj_name;
+      var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
+      this.$router.push({ name: "success2" });
+    },
     async feixiaoxing() {
       this.shigongData1.prj_state = "1";
       var { data: dt } = await this.$http.post(
@@ -214,18 +237,36 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.touser = "18017569958";
-      this.fasongData.news.articles[0].title = `非小型工程，请移交`;
-      this.fasongData.news.articles[0].description = `非小型工程，请移交`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.shigongData.prj_name}`;
 
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+      this.fasong();
+    },
+    //发送信息
+    async fasong1() {
+      if (this.party) {
+        this.fasongData.toparty = this.party;
+      }
+      let assis;
+      if (this.assisStr) {
+        assis = this.assisStr + "|";
+      }
 
-      if (dt1.data.errcode != 0) {
+      this.fasongData.touser = assis + this.shigongUserid;
+      this.fasongData.news.articles[0].title = `小型工程受理审核通过`;
+
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/projectDetails?prj_name=${this.shigongData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.shigongData.prj_name;
+      var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
         return this.$toast.fail({
           message: "发送信息失败"
         });
       }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
       this.$router.push({ name: "success2" });
     },
@@ -240,21 +281,28 @@ export default {
           message: "提交失败"
         });
       }
-      if (this.party) {
-        this.fasongData.toparty = this.party;
-      }
-      this.fasongData.touser = this.assisStr;
-      this.fasongData.news.articles[0].title = `小型工程受理审核通过`;
-      this.fasongData.news.articles[0].description = `小型工程受理审核通过`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details?prj_name=${this.shigongData.prj_name}`;
 
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
+      this.fasong1();
+    },
+    //发送信息
+    async fasong2() {
+      this.fasongData.touser = this.shigongUserid;
+      this.fasongData.news.articles[0].title = `小型工地受理审核，未通过。`;
 
-      if (dt1.data.errcode != 0) {
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/information1?prj_name=${this.shigongData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.shigongData.prj_name;
+      var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
         return this.$toast.fail({
           message: "发送信息失败"
         });
       }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
       this.$router.push({ name: "success2" });
     },
@@ -269,28 +317,8 @@ export default {
           message: "提交失败"
         });
       }
-      if (this.shigongData1.prj_grid === "0701") {
-        this.fasongData.touser = "13701729933|13917049911|13301608675";
-      }
-      if (this.shigongData1.prj_grid === "0702") {
-        this.fasongData.touser = "13795300984";
-      }
-      if (this.shigongData1.prj_grid === "0703") {
-        this.fasongData.touser = "13917049911|13918853364|13301608675";
-      }
-      this.fasongData.news.articles[0].title = `小型工地受理审核，未通过。`;
-      this.fasongData.news.articles[0].description = `小型工地受理审核，未通过。`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/information1?prj_name=${this.shigongData.prj_name}`;
 
-      var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "发送信息失败"
-        });
-      }
-      localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
-      this.$router.push({ name: "success2" });
+      this.fasong2();
     },
     show_before_img() {
       this.instance_before = ImagePreview({
@@ -380,6 +408,8 @@ export default {
           message: "获取工程失败"
         });
       }
+      this.shigongUserid = dt.userid;
+
       this.shigongData1 = dt;
       delete this.shigongData1.updateTime;
       delete this.shigongData1.__v;
@@ -392,10 +422,7 @@ export default {
       } else {
         this.shigongData1.userid = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
 
       //判断协同人员

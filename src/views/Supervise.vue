@@ -35,10 +35,31 @@
     <p>监督检查记录</p>
     <van-form validate-first @submit="onSubmit">
       <van-field
+        class="xuanzeqi"
+        v-if="this.shoudong"
+        readonly
+        clickable
+        label="监督检查部门"
+        :value="shigongData.check_depart"
+        placeholder="选择监督检查部门"
+        @click="showPicker1 = true"
+        :rules="[{ required: true, message: '请选择监督检查部门' }]"
+      />
+      <van-popup v-model="showPicker1" round position="bottom">
+        <van-picker
+          show-toolbar
+          :columns="columns1"
+          @cancel="showPicker1 = false"
+          @confirm="onConfirm1"
+        />
+      </van-popup>
+      <van-field
+        v-if="this.shoudong1"
+        ref="danweixuankbox"
         v-model="shigongData.check_depart"
         name="监督检查部门"
         label="监督检查部门"
-        placeholder="监督检查部门"
+        placeholder="输入监督检查部门"
         :rules="[{ required: true, message: '请填写监督检查部门' }]"
       />
       <van-field
@@ -46,7 +67,7 @@
         name="检察人员"
         label="检察人员"
         placeholder="检察人员"
-        :rules="[{ required: true, message: 'xxx号xxx路' }]"
+        :rules="[{ required: true, message: '请填写检查人员' }]"
       />
 
       <van-cell-group>
@@ -108,6 +129,7 @@
         <van-field name="uploader" label="照片上传" class="shangchuan">
           <template #input>
             <van-uploader
+              :before-delete="pictureDelete"
               :before-read="beforeRead"
               :after-read="afterRead"
               v-model="uploader"
@@ -149,9 +171,17 @@
 
 <script>
 import axios from "axios";
+//图片压缩文件
+import { compressImage } from "../compressImage";
 export default {
   data() {
     return {
+      picture: [],
+      jianchabumen: "",
+      showPicker1: false,
+      columns1: ["城管中队", "房屋管理办", "第三方监理", "其他"],
+      shoudong: true,
+      shoudong1: false,
       uploader: [],
       shigongData: {
         prj_name: "",
@@ -214,6 +244,18 @@ export default {
     this.content();
   },
   methods: {
+    //监察部门选择
+    onConfirm1(value) {
+      if (value == "其他") {
+        this.shoudong = false;
+        this.shoudong1 = true;
+        this.showPicker1 = false;
+      } else {
+        this.shigongData.check_depart = value;
+        this.showPicker1 = false;
+      }
+    },
+    //图片格式校验
     beforeRead(file) {
       if (
         file.type !== "image/jpeg" &&
@@ -256,10 +298,7 @@ export default {
       } else {
         this.shigongData.userid = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
@@ -319,6 +358,13 @@ export default {
       }
     },
     async hege() {
+      //赋值给需要提交的属性
+      this.shigongData.change_pictures = [];
+      this.picture.forEach(e => {
+        this.shigongData.change_pictures.push(e.UpName);
+      });
+
+      this.shigongData.change_pictures = this.shigongData.change_pictures.toString();
       this.shigongData.prj_state = "7";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
@@ -333,6 +379,13 @@ export default {
       this.$router.push({ name: "success5" });
     },
     async buhege() {
+      //赋值给需要提交的属性
+      this.shigongData.change_pictures = [];
+      this.picture.forEach(e => {
+        this.shigongData.change_pictures.push(e.UpName);
+      });
+
+      this.shigongData.change_pictures = this.shigongData.change_pictures.toString();
       this.shigongData.prj_state = "6";
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
@@ -346,37 +399,67 @@ export default {
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success5" });
     },
-    afterRead(file) {
-      // console.log(file.file);
-      file.status = "uploading";
-      file.message = "上传中...";
-      let param = new FormData(); // 创建form对象
-      //区分单文件上传还是多文件
-      if (file instanceof Array && file.length) {
-        for (let i = 0; i < file.length; i++) {
-          param.append("files", file[i].file);
+    //删除图片
+    pictureDelete(file) {
+      this.picture.forEach(e => {
+        if (e.name === file.file.name) {
+          this.picture.splice(e, 1);
         }
-      } else {
-        param.append("file", file.file); // 通过append向form对象添加数据
-      }
-      // param.append("file", file.file); // 通过append向form对象添加数据
+      });
+
+      return true;
+    },
+    //压缩图片上传
+    _compressAndUploadFile(file) {
+      compressImage(file.content).then(result => {
+        if (result.size > file.file.size) {
+          //压缩后比原来更大，则将原图上传
+          this._uploadFile(file.file, file.file.name, file);
+        } else {
+          //压缩后比原来小，上传压缩后的
+
+          this._uploadFile(result, file.file.name, file);
+        }
+      });
+    },
+
+    //上传图片
+    _uploadFile(file, filename, files) {
+      let params = new FormData();
+      params.append("file", file, filename);
       let config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
       axios
-        .post(`http://hpimage.soyumall.cn/gongdi/general/upload`, param, config)
+        .post(
+          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          `http://hpimage.soyumall.cn/gongdi/general/upload`,
+          params,
+          config
+        )
         .then(response => {
           if (response.data.status != 200) {
+            files.status = "failed";
+            files.message = "上传失败";
             return this.$toast.fail({
               message: "上传图片失败"
             });
           }
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
 
-          this.shigongData.change_pictures.push(response.data.data.result); //上传一张之后压入这个数组
-          file.status = "done";
-
-          // console.log(this.gongchengData);
+          this.picture.push(picture);
         });
+    },
+    //获取图片信息
+    afterRead(file) {
+      // console.log(file.file);
+
+      this._compressAndUploadFile(file);
+
+      // param.append("file", file.file); // 通过append向form对象添加数据
     },
     tijiao() {},
     onSubmit() {},

@@ -73,7 +73,7 @@
         size="large"
         @click="no_shouli"
       >
-        不受理
+        非小型工程
       </van-button>
     </div>
     <div style="margin: 16px;">
@@ -97,7 +97,7 @@
         native-type="submit"
         size="large"
       >
-        一般工程
+        拒绝受理
       </van-button>
     </div>
     <van-overlay :show="show" @click="show = false">
@@ -170,6 +170,51 @@ export default {
   },
   //方法集合
   methods: {
+    //发送信息
+    async fasong1() {
+      this.fasongData.touser = "13311803795";
+      this.fasongData.news.articles[0].title = `一般工程`;
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept1?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.gongchengData.prj_name;
+      var { data: dt } = await this.$http.post("/sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      this.$toast.success({
+        message: "一般工程 已拒绝受理"
+      });
+      this.$router.push({ name: "Index" });
+    },
+    //发送信息
+    async fasong() {
+      this.fasongData.touser = "18017569958";
+      this.fasongData.news.articles[0].title = `小型工程未受理`;
+
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].description = this.gongchengData.prj_name;
+      var { data: dt } = await this.$http.post("/sendMsg", this.fasongData);
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      if (dt.data.errcode != 0) {
+        return this.$toast.fail({
+          message: "发送信息失败"
+        });
+      }
+      this.$toast.success({
+        message: "非小型工程拒绝受理"
+      });
+      this.$router.push({ name: "Index" });
+    },
     async yiban() {
       this.shouliData.prj_state = "-4";
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
@@ -180,39 +225,9 @@ export default {
           message: "提交失败"
         });
       }
-      this.$toast.success({
-        message: "一般工程 已拒绝受理"
-      });
-      this.fasongData.touser = "13311803795";
-      this.fasongData.news.articles[0].title = `一般工程`;
-      this.fasongData.news.articles[0].description = `一般工程`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept1?prj_name=${this.gongchengData.prj_name}`;
-
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "发送信息失败"
-        });
-      }
-      this.$toast.success({
-        message: "非小型工程拒绝受理"
-      });
-      this.$router.push({ name: "Index" });
+      this.fasong1();
     },
-    show_before_img() {
-      this.instance_before = ImagePreview({
-        images: [
-          this.picture,
-          this.picture1,
-          this.picture2,
-          this.picture3,
-          this.picture4,
-          this.picture5
-        ],
-        closeable: true
-      });
-    },
+
     async shouli() {
       this.shouliData.prj_state = "-2";
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
@@ -241,22 +256,22 @@ export default {
           message: "提交失败"
         });
       }
-      this.fasongData.touser = "18017569958";
-      this.fasongData.news.articles[0].title = `小型工程未受理`;
-      this.fasongData.news.articles[0].description = `小型工程未受理`;
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.gongchengData.prj_name}`;
 
-      var { data: dt1 } = await this.$http.post("/sendMsg", this.fasongData);
-
-      if (dt1.data.errcode != 0) {
-        return this.$toast.fail({
-          message: "发送信息失败"
-        });
-      }
-      this.$toast.success({
-        message: "非小型工程拒绝受理"
+      this.fasong();
+    },
+    //大图预览
+    show_before_img() {
+      this.instance_before = ImagePreview({
+        images: [
+          this.picture,
+          this.picture1,
+          this.picture2,
+          this.picture3,
+          this.picture4,
+          this.picture5
+        ],
+        closeable: true
       });
-      this.$router.push({ name: "Index" });
     },
     async content() {
       //获取用户权限状态
@@ -272,10 +287,7 @@ export default {
       }
       if (this.$route.query.userid) {
         this.shouliData.userid = this.$route.query.userid;
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.shouliData.userid)
-        );
+        sessionStorage.setItem("user_id", this.shouliData.userid);
       } else {
         return this.$toast.fail({
           message: "获取用户id失败，请尝试重新进入"

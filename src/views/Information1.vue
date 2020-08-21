@@ -176,15 +176,13 @@ export default {
       const userid = sessionStorage.getItem("user_id");
 
       if (userid) {
-        this.userid = userid;
+        this.userid = JSON.parse(userid);
       } else {
         this.userid = this.$route.query.userid;
 
-        sessionStorage.setItem(
-          "user_id",
-          JSON.stringify(this.$route.query.userid)
-        );
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
+
       this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
