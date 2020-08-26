@@ -87,7 +87,8 @@ export default {
         prj_name: ""
       },
       shigongData1: {},
-      auth: {}
+      auth: {},
+      userid: ""
     };
   },
   //方法集合
@@ -110,13 +111,16 @@ export default {
           sessionStorage.setItem("auth", this.$route.query.auth);
         }
       }
-      const shigongData = localStorage.getItem("shigongData");
-      if (shigongData) {
-        this.shigongData1 = JSON.parse(shigongData);
-        this.shigongData.prj_name = this.shigongData1.prj_name;
+      const userid = sessionStorage.getItem("user_id");
+
+      if (userid) {
+        this.userid = JSON.parse(userid);
       } else {
-        this.shigongData.prj_name = this.$route.query.prj_name;
+        this.userid = this.$route.query.userid;
+
+        sessionStorage.setItem("user_id", this.$route.query.userid);
       }
+      this.shigongData.prj_name = this.$route.query.prj_name;
       // console.log(this.shigongData);
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData

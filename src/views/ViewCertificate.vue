@@ -179,6 +179,7 @@ export default {
       shigongData1: {},
       fasongData: {
         touser: "",
+        // touser: "18632397636",
         // toparty: "",
         msgtype: "news",
         agentid: "1000201",
@@ -232,6 +233,11 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -276,6 +282,11 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -312,6 +323,11 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -392,14 +408,8 @@ export default {
           sessionStorage.setItem("auth", this.$route.query.auth);
         }
       }
-      const shigongData = localStorage.getItem("shigongData");
-      if (shigongData) {
-        this.shigongData1 = JSON.parse(shigongData);
-        this.shigongData.prj_name = this.shigongData1.prj_name;
-      } else {
-        this.shigongData.prj_name = this.$route.query.prj_name;
-      }
 
+      this.shigongData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi_info", {
         params: this.shigongData
       });

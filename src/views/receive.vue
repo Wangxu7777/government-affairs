@@ -42,7 +42,7 @@
       />
       <van-field
         label="街道办意见"
-        :value="shigongData.prj_state == '3' ? '同意移送' : '不同意移送'"
+        :value="shigongData.prj_state == '2' ? '不同意移送' : '同意移送'"
         readonly
       />
     </van-cell-group>
@@ -101,7 +101,9 @@ export default {
       },
       shigongData1: {},
       fasongData: {
-        touser: "13413156908",
+        touser: "",
+        // touser: "15810457862",
+
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -133,21 +135,17 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
         });
       }
-      // this.fasongData.news.articles[0].url = `http://103.135.160.14:8925/dist/index.html#/receive?prj_name=${this.gongchengData.prj_name}`;
-      // // this.fasongData.new.articles[0].url =
-      // //   "http://47.104.29.235:8080/flower.jpeg";
-      // var { data: dt1 } = await this.$http.post("sendMsg", this.fasongData);
 
-      // if (dt1.data.errcode != 0) {
-      //   return this.$toast.fail({
-      //     message: "提交失败"
-      //   });
-      // }
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "success4" });
     },
@@ -156,7 +154,7 @@ export default {
       this.fasongData.touser = "18017569958";
       this.fasongData.news.articles[0].title = `小型工程接收失败`;
 
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/viewTransferOrder?prj_name=${this.shigongData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.shigongData.prj_name}&du_msg=1`;
       this.fasongData.news.articles[0].description = this.shigongData.prj_name;
       var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
       if (dt.retcode == "-1") {
@@ -179,6 +177,11 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData1
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"

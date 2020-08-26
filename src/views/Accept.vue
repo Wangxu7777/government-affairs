@@ -72,6 +72,7 @@
         native-type="submit"
         size="large"
         @click="no_shouli"
+        :disabled="disabled"
       >
         非小型工程
       </van-button>
@@ -84,6 +85,7 @@
         type="warning"
         native-type="submit"
         size="large"
+        :disabled="disabled"
       >
         确认受理
       </van-button>
@@ -96,6 +98,7 @@
         type="primary"
         native-type="submit"
         size="large"
+        :disabled="disabled"
       >
         拒绝受理
       </van-button>
@@ -117,6 +120,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      disabled: false,
       auth: {},
       user: {
         user_id: ""
@@ -148,7 +152,9 @@ export default {
         userid: ""
       },
       fasongData: {
-        touser: "13413156908",
+        // touser: "13413156908",
+        touser: "",
+
         // toparty: "",
         msgtype: "news",
         agentid: "1000201",
@@ -220,6 +226,11 @@ export default {
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -233,6 +244,11 @@ export default {
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -251,6 +267,11 @@ export default {
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.shouliData
       });
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -315,6 +336,9 @@ export default {
       this.shouliData.lng = dt.location[0];
       this.shouliData.lat = dt.location[1];
       this.shouliData.picture = dt.picture;
+      if (dt.state != "-100") {
+        this.disabled = true;
+      }
       if (dt.picture) {
         var imgArr = dt.picture.trim().split(",");
 

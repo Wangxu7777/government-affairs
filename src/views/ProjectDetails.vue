@@ -11,6 +11,7 @@
     <div class="biaoti">
       <icon-svg class="icn_box" icon-class="shenhe" style="margin-right:10px" />
       <span v-if="this.prj_state == '-2'">已受理，待审核</span>
+      <span v-if="this.prj_state == '-22'">已受理，待审核</span>
       <span v-if="this.prj_state == '0'">已受理，审核通过</span>
       <span v-if="this.prj_state == '-1'">已受理，审核未通过</span>
       <span v-if="this.prj_state == '1'">正在移交</span>
@@ -46,6 +47,57 @@
       <van-field label="姓名" :value="prj_person_name" readonly />
       <van-field label="联系方式" :value="prj_person_phone" readonly />
     </van-cell-group>
+    <p>工程照片</p>
+    <van-grid :column-num="2" square :gutter="10">
+      <van-grid-item text="工程照片">
+        <van-image
+          @click="show_img"
+          width="100%"
+          height="100%"
+          :src="picture"
+        />
+      </van-grid-item>
+      <van-grid-item text="工程照片">
+        <van-image
+          @click="show_img"
+          width="100%"
+          height="100%"
+          :src="picture1"
+        />
+      </van-grid-item>
+      <van-grid-item text="工程照片">
+        <van-image
+          @click="show_img"
+          width="100%"
+          height="100%"
+          :src="picture2"
+        />
+      </van-grid-item>
+      <van-grid-item text="工程照片">
+        <van-image
+          @click="show_img"
+          width="100%"
+          height="100%"
+          :src="picture3"
+        />
+      </van-grid-item>
+      <van-grid-item text="工程照片">
+        <van-image
+          @click="show_img"
+          width="100%"
+          height="100%"
+          :src="picture4"
+        />
+      </van-grid-item>
+      <van-grid-item text="工程照片">
+        <van-image
+          @click="show_img"
+          width="100%"
+          height="100%"
+          :src="picture5"
+        />
+      </van-grid-item>
+    </van-grid>
     <p>工程文件</p>
     <van-row class="buju" gutter="20">
       <van-col span="6" @click="show_before_img">
@@ -161,6 +213,13 @@ export default {
   data() {
     //这里存放数据
     return {
+      auth: {},
+      picture: "",
+      picture1: "",
+      picture2: "",
+      picture3: "",
+      picture4: "",
+      picture5: "",
       userid: "",
       prj_name: "",
       prj_addr: "",
@@ -219,6 +278,7 @@ export default {
         closeable: true
       });
     },
+
     show_before_img() {
       this.instance_before = ImagePreview({
         images: [this.prj_property],
@@ -292,19 +352,26 @@ export default {
 
         sessionStorage.setItem("user_id", this.$route.query.userid);
       }
-      const shigongData = localStorage.getItem("shigongData");
-      if (shigongData) {
-        this.shigongData1 = JSON.parse(shigongData);
-        this.shigongData.prj_name = this.shigongData1.prj_name;
-      } else {
-        this.shigongData.prj_name = this.$route.query.prj_name;
-        // this.prj_state = this.$route.query.prj_state;
-      }
+      //获取用户权限状态
+      const auth = sessionStorage.getItem("auth");
 
+      if (auth) {
+        this.auth = JSON.parse(auth);
+      } else {
+        if (this.$route.query.auth) {
+          this.auth = JSON.parse(this.$route.query.auth);
+          sessionStorage.setItem("auth", this.$route.query.auth);
+        }
+      }
+      this.shigongData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("/wx/getGongdi_info", {
         params: this.shigongData
       });
-
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取失败或无此工程"
+        });
+      }
       this.prj_state = dt.prj_state;
       this.prj_name = dt.prj_name;
       this.prj_addr = dt.prj_addr;
@@ -322,6 +389,45 @@ export default {
       this.prj_person_name = dt.prj_person_name;
       this.prj_person_phone = dt.prj_person_phone;
       this.prj_assist_org = dt.prj_assist_org;
+      if (dt.picture) {
+        var imgArr = dt.picture.trim().split(",");
+
+        if (imgArr.length == 1) {
+          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+        }
+        if (imgArr.length == 2) {
+          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+        }
+
+        if (imgArr.length == 3) {
+          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
+        }
+
+        if (imgArr.length == 4) {
+          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
+          this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
+        }
+        if (imgArr.length == 5) {
+          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
+          this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
+          this.picture4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
+        }
+        if (imgArr.length == 6) {
+          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
+          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
+          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
+          this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
+          this.picture4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
+          this.picture5 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[5]}`;
+        }
+      }
       if (dt.prj_lease_contract) {
         this.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;
       }

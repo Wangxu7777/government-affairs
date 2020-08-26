@@ -143,6 +143,14 @@ export default {
           sessionStorage.setItem("auth", this.$route.query.auth);
         }
       }
+      if (this.$route.query.userid) {
+        this.shouliData.userid = this.$route.query.userid;
+        sessionStorage.setItem("user_id", this.shouliData.userid);
+      } else {
+        return this.$toast.fail({
+          message: "获取用户id失败，请尝试重新进入"
+        });
+      }
       // const gongchengData = localStorage.getItem("gongchengData");
       // this.shouliData = JSON.parse(gongchengData);
       // this.gongchengData.prj_name = this.shouliData.prj_name;

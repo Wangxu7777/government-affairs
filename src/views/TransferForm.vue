@@ -120,7 +120,8 @@ export default {
         prj_name: ""
       },
       fasongData: {
-        touser: "13413156908",
+        // touser: "13413156908",
+        touser: "",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -200,6 +201,11 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"

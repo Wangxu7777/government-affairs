@@ -33,7 +33,7 @@
       />
     </van-cell-group>
     <p>监督检查记录</p>
-    <van-form validate-first @submit="onSubmit">
+    <van-form alidate-first @submit="submit">
       <van-field
         class="xuanzeqi"
         v-if="this.shoudong"
@@ -143,8 +143,9 @@
       </div>
       <div style="margin: 16px;">
         <van-button
-          class="btn1"
+          ref="tijiaoData"
           @click="buhege"
+          class="btn1"
           round
           block
           type="info"
@@ -155,8 +156,9 @@
       </div>
       <div style="margin: 16px;">
         <van-button
-          class="btn2"
+          ref="tijiaoData"
           @click="hege"
+          class="btn2"
           round
           block
           type="info"
@@ -237,7 +239,8 @@ export default {
       gongchengData: {
         prj_name: ""
       },
-      auth: {}
+      auth: {},
+      zhuangt: true
     };
   },
   created() {
@@ -357,47 +360,11 @@ export default {
         this.shigongData.prj_design_cert = dt.prj_design_cert;
       }
     },
-    async hege() {
-      //赋值给需要提交的属性
-      this.shigongData.change_pictures = [];
-      this.picture.forEach(e => {
-        this.shigongData.change_pictures.push(e.UpName);
-      });
-
-      this.shigongData.change_pictures = this.shigongData.change_pictures.toString();
-      this.shigongData.prj_state = "7";
-      var { data: dt } = await this.$http.post(
-        "wx/saveGongdi_info",
-        this.shigongData
-      );
-      if (dt !== 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
-      this.$router.push({ name: "success5" });
+    hege() {
+      this.zhuangt = true;
     },
-    async buhege() {
-      //赋值给需要提交的属性
-      this.shigongData.change_pictures = [];
-      this.picture.forEach(e => {
-        this.shigongData.change_pictures.push(e.UpName);
-      });
-
-      this.shigongData.change_pictures = this.shigongData.change_pictures.toString();
-      this.shigongData.prj_state = "6";
-      var { data: dt } = await this.$http.post(
-        "wx/saveGongdi_info",
-        this.shigongData
-      );
-      if (dt !== 0) {
-        return this.$toast.fail({
-          message: "提交失败"
-        });
-      }
-      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
-      this.$router.push({ name: "success5" });
+    buhege() {
+      this.zhuangt = false;
     },
     //删除图片
     pictureDelete(file) {
@@ -462,7 +429,36 @@ export default {
       // param.append("file", file.file); // 通过append向form对象添加数据
     },
     tijiao() {},
-    onSubmit() {},
+    async submit() {
+      //提交事件的逻辑
+      this.shigongData.change_pictures = [];
+      this.picture.forEach(e => {
+        this.shigongData.change_pictures.push(e.UpName);
+      });
+      if (this.zhuangt) {
+        this.shigongData.prj_state = "7";
+      } else {
+        this.shigongData.prj_state = "6";
+      }
+      this.shigongData.change_pictures = this.shigongData.change_pictures.toString();
+
+      var { data: dt } = await this.$http.post(
+        "wx/saveGongdi_info",
+        this.shigongData
+      );
+      if (dt !== 0) {
+        return this.$toast.fail({
+          message: "提交失败"
+        });
+      }
+      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({
+        name: "success5",
+        query: {
+          prj_name: this.shigongData.prj_name
+        }
+      });
+    },
     onConfirm(value) {
       this.shigongData.check_question = value;
       this.showPicker = false;

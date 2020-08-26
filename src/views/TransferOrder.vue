@@ -104,6 +104,7 @@ export default {
       shigongData1: {},
       fasongData: {
         touser: "",
+        // touser: "18632397636",
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -157,6 +158,11 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
@@ -170,7 +176,7 @@ export default {
       this.fasongData.touser = "18017569958";
       this.fasongData.news.articles[0].title = `小型工程移送失败`;
 
-      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/viewTransferOrder?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
+      this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
       this.fasongData.news.articles[0].description = this.gongchengData.prj_name;
       var { data: dt } = await this.$http.post("sendMsg", this.fasongData);
       if (dt.retcode == "-1") {
@@ -193,6 +199,11 @@ export default {
         "wx/saveGongdi_info",
         this.shigongData
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"

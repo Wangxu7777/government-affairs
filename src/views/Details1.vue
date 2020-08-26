@@ -10,6 +10,8 @@
     <van-cell-group>
       <van-field label="工程名称" :value="prj_name" readonly />
       <van-field label="工程地址" :value="prj_addr" readonly />
+      <van-field label="工程面积" :value="prj_area" readonly />
+      <van-field label="造价合同" :value="prj_price" readonly />
       <van-field label="建设单位" :value="demand_com" readonly />
       <van-field label="施工单位" :value="construction_com" readonly />
       <van-field label="监理单位" :value="supervison_com" readonly />
@@ -97,19 +99,12 @@ export default {
 
         sessionStorage.setItem("user_id", this.$route.query.userid);
       }
-      const shigongData = localStorage.getItem("shigongData");
-      if (shigongData) {
-        this.shigongData1 = JSON.parse(shigongData);
-        this.shigongData.prj_name = this.shigongData1.prj_name;
-      } else {
-        this.shigongData.prj_name = this.$route.query.prj_name;
-      }
 
       // console.log(this.shigongData);
+      this.shigongData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("/wx/getGongdi_info", {
         params: this.shigongData
       });
-      // console.log(dt);
       this.prj_name = dt.prj_name;
       this.prj_addr = dt.prj_addr;
       this.prj_type = dt.prj_type;

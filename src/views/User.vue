@@ -24,6 +24,13 @@
       </van-row>
     </div>
     <p class="title"><van-icon name="underway-o" /> 历史足迹</p>
+    <van-search
+      v-model="value"
+      show-action
+      placeholder="请输入搜索关键词"
+      shape="round"
+    >
+    </van-search>
     <van-list
       v-model="loading"
       :finished="finished"
@@ -53,6 +60,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      value: "",
       loading: false,
       list: [],
       finished: false,
@@ -65,11 +73,92 @@ export default {
       },
       departmentName: "",
       auth: {},
-      headUrl: ""
+      headUrl: "",
+      sousuoData: { prj_name: "", user_id: "" }
     };
+  },
+  watch: {
+    value(curVal) {
+      // this.loading = true;
+      // 实现input连续输入，只发一次请求
+      if (curVal == "") {
+        return this.onLoad();
+      }
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.sousuoList(curVal);
+      }, 1000);
+    }
   },
   //方法集合
   methods: {
+    async sousuoList(curVal) {
+      this.sousuoData.user_id = this.user.user_id;
+      this.sousuoData.prj_name = curVal;
+
+      var { data: dt } = await this.$http.get(
+        "wx/getGongdi_All_History_ByUser",
+        {
+          params: this.sousuoData
+        }
+      );
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取列表失败"
+        });
+      }
+      this.list = dt;
+
+      this.list.forEach(e => {
+        if (e.data.prj_state == "-100") {
+          e.data.prj_state = "发现工程";
+        }
+        if (e.data.prj_state == "-4") {
+          e.data.prj_state = "待移交";
+        }
+        if (e.data.prj_state == "-3") {
+          e.data.prj_state = "待移交";
+        }
+        if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-22") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-1") {
+          e.data.prj_state = "受理审核未通过";
+        }
+        if (e.data.prj_state == "0") {
+          e.data.prj_state = "受理审核通过";
+        }
+        if (e.data.prj_state == "1") {
+          e.data.prj_state = "正在移交";
+        }
+        if (e.data.prj_state == "2") {
+          e.data.prj_state = "不同意移交";
+        }
+        if (e.data.prj_state == "3") {
+          e.data.prj_state = "同意移交";
+        }
+        if (e.data.prj_state == "4") {
+          e.data.prj_state = "不同意接收";
+        }
+        if (e.data.prj_state == "5") {
+          e.data.prj_state = "同意接收";
+        }
+        if (e.data.prj_state == "6") {
+          e.data.prj_state = "督察不合格";
+        }
+        if (e.data.prj_state == "7") {
+          e.data.prj_state = "已督察";
+        }
+        if (e.data.prj_state == "8") {
+          e.data.prj_state = "已竣工";
+        }
+        let str = e.data.updateTime.split(" ");
+        e.data.updateTime = str[0];
+      });
+    },
     async department(id) {
       this.departmentId.depart_id = id;
       const { data: dt } = await this.$http.get("getDepartName", {
@@ -107,7 +196,11 @@ export default {
       const { data: dt } = await this.$http.get("getUser", {
         params: this.user
       });
-
+      if (dt.retcode == "-1") {
+        return this.$toast.fail({
+          message: "获取用户信息失败"
+        });
+      }
       if (dt.data.errcode !== 0) {
         return this.$toast.fail({
           message: "获取用户信息失败"
@@ -117,9 +210,10 @@ export default {
       if (this.userData.avatar) {
         this.headUrl = this.userData.avatar;
       }
-      this.userData.department.forEach(e => {
-        this.department(e);
-      });
+      //获取部门名称
+      // this.userData.department.forEach(e => {
+      //   this.department(e);
+      // });
     },
     see(e) {
       var w = e.currentTarget.innerText;
@@ -146,7 +240,11 @@ export default {
         "wx/getGongdi_All_History_ByUser",
         { params: this.user }
       );
-
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取列表失败"
+        });
+      }
       this.list = dt;
       this.list.forEach(e => {
         if (e.data.prj_state == "-100") {
@@ -159,6 +257,9 @@ export default {
           e.data.prj_state = "待移交";
         }
         if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-22") {
           e.data.prj_state = "已受理，待审核";
         }
         if (e.data.prj_state == "-1") {

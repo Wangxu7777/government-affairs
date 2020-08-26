@@ -153,15 +153,8 @@ export default {
           sessionStorage.setItem("auth", this.$route.query.auth);
         }
       }
-      const gongchengData = localStorage.getItem("gongchengData");
-      if (gongchengData) {
-        this.gongchengData1 = JSON.parse(gongchengData);
-        this.gongchengData.prj_name = this.gongchengData1.prj_name;
-      } else {
-        this.gongchengData.prj_name = this.$route.query.prj_name;
-        // this.prj_state = this.$route.query.prj_state;
-      }
 
+      this.gongchengData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("wx/getGongdi", {
         params: this.gongchengData
       });

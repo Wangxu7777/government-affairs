@@ -113,7 +113,17 @@ export default {
         skip: 1,
         limit: 10
       },
-      list2: ["已受理，待审核", "正在移交", "受理审核通过", "已督察", "已竣工"],
+      list2: [
+        "已受理，待审核",
+        "正在移交",
+        "受理审核通过",
+        "已督察",
+        "已竣工",
+        "0701",
+        "0702",
+        "0703"
+      ],
+
       result: [],
       value: "",
       radio: "",
@@ -127,7 +137,8 @@ export default {
       },
       shaixuanData: {
         prj_state: []
-      }
+      },
+      shaixuanGet: {}
     };
   },
   watch: {
@@ -198,6 +209,11 @@ export default {
       var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate", {
         params: this.sousuoData
       });
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取列表失败"
+        });
+      }
       this.list = dt;
 
       this.list.forEach(e => {
@@ -211,6 +227,9 @@ export default {
           e.data.prj_state = "待移交";
         }
         if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-22") {
           e.data.prj_state = "已受理，待审核";
         }
         if (e.data.prj_state == "-1") {
@@ -259,6 +278,11 @@ export default {
       //   params: this.fenyeData
       // });
       var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate");
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取列表失败"
+        });
+      }
       this.list = dt;
 
       this.list.forEach(e => {
@@ -272,6 +296,9 @@ export default {
           e.data.prj_state = "待移交";
         }
         if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-22") {
           e.data.prj_state = "已受理，待审核";
         }
         if (e.data.prj_state == "-1") {
@@ -304,6 +331,7 @@ export default {
         if (e.data.prj_state == "8") {
           e.data.prj_state = "已竣工";
         }
+
         let str = e.data.updateTime.split(" ");
         e.data.updateTime = str[0];
       });
@@ -324,30 +352,123 @@ export default {
       // }
       this.finished = true;
     },
-    shaixuan(prj_state) {
+    //筛选
+    async shaixuan(prj_state) {
       if (prj_state.length == 0) {
         return this.onLoad();
       }
-
-      var st = prj_state;
-
-      var arr = [];
-      arr = this.list1.filter(function(arr) {
-        return st.indexOf(arr.data.prj_state) > -1;
+      let stateMap = new Map();
+      stateMap.set("已受理，待审核", "-22");
+      stateMap.set("正在移交", "1");
+      stateMap.set("受理审核通过", "0");
+      stateMap.set("已督察", "6");
+      stateMap.set("已竣工", "8");
+      let shaixuanGet = { prj_state: [], prj_grid: [] };
+      prj_state.forEach(e => {
+        if (e == "0701" || e == "0702" || e == "0703") {
+          shaixuanGet.prj_grid.push(e);
+        } else {
+          if (e == "已督察") {
+            shaixuanGet.prj_state.push("7");
+          }
+          shaixuanGet.prj_state.push(stateMap.get(e));
+        }
       });
 
-      this.list = arr;
+      this.shaixuanGet = shaixuanGet;
+
+      this.shaixuanGet.prj_state = this.shaixuanGet.prj_state.join(",");
+
+      this.shaixuanGet.prj_grid = this.shaixuanGet.prj_grid.join(",");
+      if (!this.shaixuanGet.prj_grid) {
+        delete this.shaixuanGet.prj_grid;
+      }
+      if (!this.shaixuanGet.prj_state) {
+        delete this.shaixuanGet.prj_state;
+      }
+
+      let { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate", {
+        params: this.shaixuanGet
+      });
+      if (dt === -1) {
+        return this.$toast.fail({
+          message: "获取列表失败"
+        });
+      }
+      this.list = dt;
+      this.list.forEach(e => {
+        if (e.data.prj_state == "-100") {
+          e.data.prj_state = "发现工程";
+        }
+        if (e.data.prj_state == "-4") {
+          e.data.prj_state = "待移交";
+        }
+        if (e.data.prj_state == "-3") {
+          e.data.prj_state = "待移交";
+        }
+        if (e.data.prj_state == "-2") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-22") {
+          e.data.prj_state = "已受理，待审核";
+        }
+        if (e.data.prj_state == "-1") {
+          e.data.prj_state = "受理审核未通过";
+        }
+        if (e.data.prj_state == "0") {
+          e.data.prj_state = "受理审核通过";
+        }
+        if (e.data.prj_state == "1") {
+          e.data.prj_state = "正在移交";
+        }
+        if (e.data.prj_state == "2") {
+          e.data.prj_state = "不同意移交";
+        }
+        if (e.data.prj_state == "3") {
+          e.data.prj_state = "同意移交";
+        }
+        if (e.data.prj_state == "4") {
+          e.data.prj_state = "不同意接收";
+        }
+        if (e.data.prj_state == "5") {
+          e.data.prj_state = "同意接收";
+        }
+        if (e.data.prj_state == "6") {
+          e.data.prj_state = "已督察";
+        }
+        if (e.data.prj_state == "7") {
+          e.data.prj_state = "已督察";
+        }
+        if (e.data.prj_state == "8") {
+          e.data.prj_state = "已竣工";
+        }
+
+        let str = e.data.updateTime.split(" ");
+        e.data.updateTime = str[0];
+      });
+      // var st = prj_state;
+
+      // var arr = [];
+      // arr = this.list1.filter(function(arr) {
+      //   return st.indexOf(arr.data.prj_state) > -1;
+      // });
     }
   },
   created() {
     // this.content();
     localStorage.removeItem("gongchengData");
     localStorage.removeItem("shigongData");
-  }
+  },
   // beforeRouteLeave(to, from, next) {
-  //   to.meta.keepAlive = true;
+  //   to.meta.keepAlive = false;
   //   next();
   // }
+  beforeRouteEnter(to, from, next) {
+    if (from.name == "Index") {
+      from.meta.keepAlive = false;
+    }
+    next();
+  }
 };
 </script>
 

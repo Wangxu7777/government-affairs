@@ -414,8 +414,13 @@ export default {
           message: "发送信息失败"
         });
       }
-      localStorage.setItem("gongchengData", JSON.stringify(this.gongchengData));
-      this.$router.push({ name: "success" });
+      // localStorage.setItem("gongchengData", JSON.stringify(this.gongchengData));
+      this.$router.push({
+        name: "success",
+        query: {
+          prj_name: this.gongchengData.prj_name
+        }
+      });
     },
     async onSubmit() {
       //赋值给需要提交的属性

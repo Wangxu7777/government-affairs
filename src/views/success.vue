@@ -44,18 +44,30 @@ export default {
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return {
+      gongdiData: { prj_name: "" }
+    };
   },
   //方法集合
   methods: {
     xiangqin() {
-      this.$router.push({ name: "ProjectReporting" });
+      this.$router.push({
+        name: "ProjectReporting",
+        query: {
+          prj_name: this.gongdiData.prj_name
+        }
+      });
     },
     shouye() {
       this.$router.push({ name: "Index" });
+    },
+    RouterData() {
+      this.gongdiData.prj_name = this.$route.query.prj_name;
     }
   },
-  created() {}
+  created() {
+    this.RouterData();
+  }
 };
 </script>
 <style lang="less" scoped>

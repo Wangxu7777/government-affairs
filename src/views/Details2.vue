@@ -190,14 +190,8 @@ export default {
           sessionStorage.setItem("auth", this.$route.query.auth);
         }
       }
-      const shigongData = localStorage.getItem("shigongData");
-      if (shigongData) {
-        this.shigongData1 = JSON.parse(shigongData);
-        this.shigongData.prj_name = this.shigongData1.prj_name;
-      } else {
-        this.shigongData.prj_name = this.$route.query.prj_name;
-      }
 
+      this.shigongData.prj_name = this.$route.query.prj_name;
       var { data: dt } = await this.$http.get("/wx/getGongdi_info", {
         params: this.shigongData
       });

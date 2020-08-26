@@ -177,7 +177,7 @@ export default {
         params: this.user
       });
 
-      if (dt.data.errcode !== 0) {
+      if (dt.retcode == "-1") {
         return this.$toast.fail({
           message: "获取用户信息失败"
         });

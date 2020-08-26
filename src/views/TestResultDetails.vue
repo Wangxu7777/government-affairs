@@ -58,7 +58,7 @@
                 item.prj_state == '检查合格' ? 'color: #07c160;' : 'color: red;'
               "
             >
-              {{ item.prj_state }}
+              {{ item.check_depart }}—{{ item.prj_state }}
             </h3>
             <p
               :style="
@@ -206,6 +206,7 @@ export default {
       var { data: dt } = await this.$http.get("/wx/getGongdi_info", {
         params: this.gongchengData
       });
+
       this.tableFrom.prj_name = dt.prj_name;
       this.form.prj_state = dt.prj_state;
       this.form.prj_name = dt.prj_name;

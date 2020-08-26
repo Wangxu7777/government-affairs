@@ -82,7 +82,9 @@ export default {
       ],
       result: [],
       fasongData: {
-        touser: "13413156908",
+        // touser: "13413156908",
+        touser: "",
+
         // toparty: "6899",
         msgtype: "news",
         agentid: "1000201",
@@ -123,24 +125,35 @@ export default {
           message: "发送信息失败"
         });
       }
+
       if (dt.data.errcode != 0) {
         return this.$toast.fail({
           message: "发送信息失败"
         });
       }
 
-      localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
-      this.$router.push({ name: "success1" });
+      // localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
+      this.$router.push({
+        name: "success1",
+        query: {
+          prj_name: this.shigongData.prj_name
+        }
+      });
     },
     async tijiao() {
       const user_id = sessionStorage.getItem("user_id");
       this.shigongData.userid = JSON.parse(user_id);
-      this.shigongData.prj_state = "-2";
+      this.shigongData.prj_state = "-22";
       this.shigongData.prj_assist_org = this.result.toString();
       var { data: dt } = await this.$http.post(
         "wx/saveGongdi_info",
         this.shigongData
       );
+      if (dt.retcode == "-2") {
+        return this.$toast.fail({
+          message: "项目已被处理"
+        });
+      }
       if (dt !== 0) {
         return this.$toast.fail({
           message: "提交失败"
