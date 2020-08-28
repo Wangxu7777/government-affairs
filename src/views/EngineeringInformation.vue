@@ -432,7 +432,7 @@ export default {
       this.gongchengData.picture = this.gongchengData.picture.toString();
       this.gongchengData.lng = this.gongchengData.lng.toString();
       this.gongchengData.lat = this.gongchengData.lat.toString();
-      console.log(this.gongchengData);
+
       var { data: dt } = await this.$http.get("/wx/saveGongdi", {
         params: this.gongchengData
       });

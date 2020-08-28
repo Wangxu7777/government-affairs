@@ -8,7 +8,103 @@
       @click-left="onClickLeft"
     />
     <div class="content">
-      <van-row gutter="20">
+      <van-collapse v-model="activeNames">
+        <van-collapse-item title="产权证" name="1">
+          <van-uploader
+            :before-delete="pictureDelete"
+            :before-read="beforeRead"
+            :after-read="afterRead"
+            v-model="fileList"
+            multiple
+            :max-count="9"
+          />
+        </van-collapse-item>
+        <van-collapse-item title="租赁合同" name="2">
+          <van-uploader
+            :before-delete="pictureDelete1"
+            :before-read="beforeRead"
+            :after-read="afterRead1"
+            v-model="fileList1"
+            multiple
+            :max-count="9"
+          />
+        </van-collapse-item>
+        <van-collapse-item title="施工合同" name="3">
+          <van-uploader
+            :before-delete="pictureDelete2"
+            :before-read="beforeRead"
+            :after-read="afterRead2"
+            v-model="fileList2"
+            multiple
+            :max-count="9"
+          />
+        </van-collapse-item>
+        <van-collapse-item title="施工单位营业执照" name="4"
+          ><van-uploader
+            :before-delete="pictureDelete3"
+            :before-read="beforeRead"
+            :after-read="afterRead3"
+            v-model="fileList3"
+            multiple
+            :max-count="9"
+          />
+        </van-collapse-item>
+        <van-collapse-item title="施工单位资质证书" name="5"
+          ><van-uploader
+            :before-delete="pictureDelete4"
+            :before-read="beforeRead"
+            :after-read="afterRead4"
+            v-model="fileList4"
+            multiple
+            :max-count="9"
+        /></van-collapse-item>
+        <van-collapse-item title="项目经理证书" name="6"
+          ><van-uploader
+            :before-delete="pictureDelete5"
+            :after-read="afterRead5"
+            v-model="fileList5"
+            multiple
+            :max-count="9"
+        /></van-collapse-item>
+        <van-collapse-item title="安全员证书" name="7">
+          <van-uploader
+            :before-delete="pictureDelete6"
+            :before-read="beforeRead"
+            :after-read="afterRead6"
+            v-model="fileList6"
+            multiple
+            :max-count="9"
+          />
+        </van-collapse-item>
+        <van-collapse-item title="项目经理任命文件" name="8"
+          ><van-uploader
+            :before-delete="pictureDelete7"
+            :before-read="beforeRead"
+            :after-read="afterRead7"
+            v-model="fileList7"
+            multiple
+            :max-count="9"
+        /></van-collapse-item>
+        <van-collapse-item title="安全员任命文件" name="9"
+          ><van-uploader
+            :before-delete="pictureDelete8"
+            :before-read="beforeRead"
+            :after-read="afterRead8"
+            v-model="fileList8"
+            multiple
+            :max-count="9"
+        /></van-collapse-item>
+        <van-collapse-item title="设计单位资质文件" name="10"
+          ><van-uploader
+            :before-delete="pictureDelete9"
+            :before-read="beforeRead"
+            :after-read="afterRead9"
+            v-model="fileList9"
+            multiple
+            :max-count="9"
+        /></van-collapse-item>
+      </van-collapse>
+      <!-- <van-row gutter="20">
         <van-col span="12">
           <div class="shangchuan">
             <van-uploader
@@ -136,7 +232,7 @@
             <p>设计单位资质文件</p>
           </div>
         </van-col>
-      </van-row>
+      </van-row> -->
       <div style="margin: 16px;">
         <van-button
           @click="xiayibu"
@@ -162,6 +258,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      activeNames: ["1"],
       fileList: [],
       fileList1: [],
       fileList2: [],
@@ -172,21 +269,122 @@ export default {
       fileList7: [],
       fileList8: [],
       fileList9: [],
-      prj_property: "",
-      prj_lease_contract: "",
-      prj_con_contract: "",
-      prj_license: "",
-      prj_certifications: "",
-      prj_manager_cert: "",
-      prj_safe_cert: "",
-      prj_manager_appiontment: "",
-      prj_safe_appiontment: "",
-      prj_design_cert: "",
+      prj_property: [],
+      prj_lease_contract: [],
+      prj_con_contract: [],
+      prj_license: [],
+      prj_certifications: [],
+      prj_manager_cert: [],
+      prj_safe_cert: [],
+      prj_manager_appiontment: [],
+      prj_safe_appiontment: [],
+      prj_design_cert: [],
       shigongData: {}
     };
   },
   //方法集合
   methods: {
+    //删除图片
+    pictureDelete(file) {
+      this.prj_property.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_property.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete1(file) {
+      this.prj_lease_contract.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_lease_contract.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete2(file) {
+      this.prj_con_contract.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_con_contract.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete3(file) {
+      this.prj_license.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_license.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete4(file) {
+      this.prj_certifications.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_certifications.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete5(file) {
+      this.prj_manager_cert.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_manager_cert.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete6(file) {
+      this.prj_safe_cert.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_safe_cert.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete7(file) {
+      this.prj_manager_appiontment.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_manager_appiontment.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+
+    //删除图片
+    pictureDelete8(file) {
+      this.prj_safe_appiontment.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_safe_appiontment.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
+    //删除图片
+    pictureDelete9(file) {
+      this.prj_design_cert.forEach(e => {
+        if (e.name === file.file.name) {
+          this.prj_design_cert.splice(e, 1);
+        }
+      });
+
+      return true;
+    },
     beforeRead(file) {
       if (
         file.type !== "image/jpeg" &&
@@ -206,16 +404,68 @@ export default {
       return true;
     },
     xiayibu() {
-      this.shigongData.prj_property = this.prj_property;
-      this.shigongData.prj_lease_contract = this.prj_lease_contract;
-      this.shigongData.prj_con_contract = this.prj_con_contract;
-      this.shigongData.prj_license = this.prj_license;
-      this.shigongData.prj_certifications = this.prj_certifications;
-      this.shigongData.prj_manager_cert = this.prj_manager_cert;
-      this.shigongData.prj_safe_cert = this.prj_safe_cert;
-      this.shigongData.prj_manager_appiontment = this.prj_manager_appiontment;
-      this.shigongData.prj_safe_appiontment = this.prj_safe_appiontment;
-      this.shigongData.prj_design_cert = this.prj_design_cert;
+      // this.shigongData.prj_property = this.prj_property;
+      //赋值给需要提交的属性
+
+      this.shigongData.prj_property = [];
+      this.prj_property.forEach(e => {
+        this.shigongData.prj_property.push(e.UpName);
+      });
+      this.shigongData.prj_property = this.shigongData.prj_property.toString();
+
+      this.shigongData.prj_lease_contract = [];
+      this.prj_lease_contract.forEach(e => {
+        this.shigongData.prj_lease_contract.push(e.UpName);
+      });
+      this.shigongData.prj_lease_contract = this.shigongData.prj_lease_contract.toString();
+
+      this.shigongData.prj_con_contract = [];
+      this.prj_con_contract.forEach(e => {
+        this.shigongData.prj_con_contract.push(e.UpName);
+      });
+      this.shigongData.prj_con_contract = this.shigongData.prj_con_contract.toString();
+
+      this.shigongData.prj_license = [];
+      this.prj_license.forEach(e => {
+        this.shigongData.prj_license.push(e.UpName);
+      });
+      this.shigongData.prj_license = this.shigongData.prj_license.toString();
+
+      this.shigongData.prj_certifications = [];
+      this.prj_certifications.forEach(e => {
+        this.shigongData.prj_certifications.push(e.UpName);
+      });
+      this.shigongData.prj_certifications = this.shigongData.prj_certifications.toString();
+
+      this.shigongData.prj_manager_cert = [];
+      this.prj_manager_cert.forEach(e => {
+        this.shigongData.prj_manager_cert.push(e.UpName);
+      });
+      this.shigongData.prj_manager_cert = this.shigongData.prj_manager_cert.toString();
+
+      this.shigongData.prj_safe_cert = [];
+      this.prj_safe_cert.forEach(e => {
+        this.shigongData.prj_safe_cert.push(e.UpName);
+      });
+      this.shigongData.prj_safe_cert = this.shigongData.prj_safe_cert.toString();
+
+      this.shigongData.prj_manager_appiontment = [];
+      this.prj_manager_appiontment.forEach(e => {
+        this.shigongData.prj_manager_appiontment.push(e.UpName);
+      });
+      this.shigongData.prj_manager_appiontment = this.shigongData.prj_manager_appiontment.toString();
+
+      this.shigongData.prj_safe_appiontment = [];
+      this.prj_safe_appiontment.forEach(e => {
+        this.shigongData.prj_safe_appiontment.push(e.UpName);
+      });
+      this.shigongData.prj_safe_appiontment = this.shigongData.prj_safe_appiontment.toString();
+
+      this.shigongData.prj_design_cert = [];
+      this.prj_design_cert.forEach(e => {
+        this.shigongData.prj_design_cert.push(e.UpName);
+      });
+      this.shigongData.prj_design_cert = this.shigongData.prj_design_cert.toString();
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));
       this.$router.push({ name: "Synergy" });
     },
@@ -260,7 +510,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_property = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_property.push(picture);
         });
     },
     afterRead(file) {
@@ -304,7 +559,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_lease_contract = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_lease_contract.push(picture);
         });
     },
     afterRead1(file) {
@@ -348,7 +608,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_con_contract = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_con_contract.push(picture);
         });
     },
     afterRead2(file) {
@@ -392,7 +657,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_license = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_license.push(picture);
         });
     },
     afterRead3(file) {
@@ -436,7 +706,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_certifications = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_certifications.push(picture);
         });
     },
     afterRead4(file) {
@@ -480,7 +755,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_manager_cert = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_manager_cert.push(picture);
         });
     },
     afterRead5(file) {
@@ -522,7 +802,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_safe_cert = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_safe_cert.push(picture);
         });
     },
     afterRead6(file) {
@@ -566,7 +851,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_manager_appiontment = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_manager_appiontment.push(picture);
         });
     },
     afterRead7(file) {
@@ -610,7 +900,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_safe_appiontment = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_safe_appiontment.push(picture);
         });
     },
     afterRead8(file) {
@@ -654,7 +949,12 @@ export default {
               message: "上传图片失败"
             });
           }
-          this.prj_design_cert = response.data.data.result;
+          let picture = {
+            name: filename,
+            UpName: response.data.data.result
+          };
+
+          this.prj_design_cert.push(picture);
         });
     },
     afterRead9(file) {

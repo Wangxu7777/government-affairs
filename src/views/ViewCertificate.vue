@@ -20,6 +20,28 @@
         <van-col span="18">产权证</van-col>
       </van-row>
     </div> -->
+    <van-collapse v-model="activeNames">
+      <van-collapse-item title="产权证" name="1">内容</van-collapse-item>
+      <van-collapse-item title="租赁合同" name="2">内容</van-collapse-item>
+      <van-collapse-item title="施工合同" name="3">内容</van-collapse-item>
+      <van-collapse-item title="施工单位营业执照" name="4"
+        >内容</van-collapse-item
+      >
+      <van-collapse-item title="施工单位资质证书" name="5"
+        >内容</van-collapse-item
+      >
+      <van-collapse-item title="项目经理证书" name="6">内容</van-collapse-item>
+      <van-collapse-item title="安全员证书" name="7">内容</van-collapse-item>
+      <van-collapse-item title="项目经理任命文件" name="8"
+        >内容</van-collapse-item
+      >
+      <van-collapse-item title="安全员任命文件" name="9"
+        >内容</van-collapse-item
+      >
+      <van-collapse-item title="设计单位资质文件" name="10"
+        >内容</van-collapse-item
+      >
+    </van-collapse>
     <van-row class="buju" gutter="20">
       <van-col span="12" @click="show_before_img">
         <div class="beijin">
@@ -153,6 +175,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      activeNames: ["1"],
       shigongUserid: "",
       party: "",
       assisStr: "",
