@@ -259,36 +259,7 @@ export default {
       this.form.prj_person_name = dt.prj_person_name;
       this.form.prj_person_phone = dt.prj_person_phone;
       this.form.prj_assist_org = dt.prj_assist_org;
-      if (dt.prj_property) {
-        this.form.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;
-      }
-      if (dt.prj_lease_contract) {
-        this.form.prj_lease_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_lease_contract}`;
-      }
-      if (dt.prj_con_contract) {
-        this.form.prj_con_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_con_contract}`;
-      }
-      if (dt.prj_license) {
-        this.form.prj_license = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_license}`;
-      }
-      if (dt.prj_certifications) {
-        this.form.prj_certifications = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_certifications}`;
-      }
-      if (dt.prj_manager_cert) {
-        this.form.prj_manager_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_cert}`;
-      }
-      if (dt.prj_safe_cert) {
-        this.form.prj_safe_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_cert}`;
-      }
-      if (dt.prj_manager_appiontment) {
-        this.form.prj_manager_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_appiontment}`;
-      }
-      if (dt.prj_safe_appiontment) {
-        this.form.prj_safe_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_appiontment}`;
-      }
-      if (dt.prj_design_cert) {
-        this.form.prj_design_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_design_cert}`;
-      }
+
       this.jianchaList();
     }
   },

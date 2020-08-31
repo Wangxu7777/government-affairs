@@ -337,7 +337,7 @@ export default {
       this.shouliData.lat = dt.location[1];
       this.shouliData.picture = dt.picture;
       if (dt.state != "-100") {
-        this.disabled = true;
+        this.disabled = false;
       }
       if (dt.picture) {
         var imgArr = dt.picture.trim().split(",");

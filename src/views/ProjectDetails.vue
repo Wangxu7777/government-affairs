@@ -101,29 +101,61 @@
     <p>工程文件</p>
     <van-row class="buju" gutter="20">
       <van-col span="6" @click="show_before_img">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_property" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_property.length == 0 ? '' : this.prj_property.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">产权证</p>
       </van-col>
       <van-col span="6" @click="show_before_img1">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_lease_contract" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_lease_contract.length == 0
+                  ? ''
+                  : this.prj_lease_contract.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">租赁合同</p>
       </van-col>
       <van-col span="6" @click="show_before_img2">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_con_contract" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_con_contract.length == 0
+                  ? ''
+                  : this.prj_con_contract.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">施工合同</p>
       </van-col>
       <van-col span="6" @click="show_before_img3">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_license" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_license.length == 0 ? '' : this.prj_license.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">施工单位营业执照</p>
@@ -131,33 +163,63 @@
     </van-row>
     <van-row class="buju" gutter="20">
       <van-col span="6" @click="show_before_img4">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_certifications" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_certifications.length == 0
+                  ? ''
+                  : this.prj_certifications.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">施工单位资质证书</p>
       </van-col>
       <van-col span="6" @click="show_before_img5">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_manager_cert" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_manager_cert.length == 0
+                  ? ''
+                  : this.prj_manager_cert.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">项目经理证书</p>
       </van-col>
       <van-col span="6" @click="show_before_img6">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_safe_cert" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_safe_cert.length == 0 ? '' : this.prj_safe_cert.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">安全员证书</p>
       </van-col>
       <van-col span="6" @click="show_before_img7">
-        <div class="beijin">
-          <van-image
-            width="100%"
-            height="100%"
-            :src="prj_manager_appiontment"
-          />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_manager_appiontment.length == 0
+                  ? ''
+                  : this.prj_manager_appiontment.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">项目经理任命文件</p>
@@ -165,15 +227,33 @@
     </van-row>
     <van-row class="buju" gutter="20">
       <van-col span="6" @click="show_before_img8">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_safe_appiontment" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_safe_appiontment.length == 0
+                  ? ''
+                  : this.prj_safe_appiontment.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">安全员任命文件</p>
       </van-col>
       <van-col span="6" @click="show_before_img9">
-        <div class="beijin">
-          <van-image width="100%" height="100%" :src="prj_design_cert" />
+        <div class="beijinkuai">
+          <div class="beijin">
+            <van-icon
+              name="notes-o"
+              :badge="
+                this.prj_design_cert.length == 0
+                  ? ''
+                  : this.prj_design_cert.length
+              "
+            />
+          </div>
         </div>
 
         <p class="wenjianming">设计单位资质文件</p>
@@ -236,16 +316,16 @@ export default {
       fbi_phone: "",
       prj_person_name: "",
       prj_person_phone: "",
-      prj_property: "",
-      prj_lease_contract: "",
-      prj_con_contract: "",
-      prj_license: "",
-      prj_certifications: "",
-      prj_manager_cert: "",
-      prj_safe_cert: "",
-      prj_manager_appiontment: "",
-      prj_safe_appiontment: "",
-      prj_design_cert: "",
+      prj_property: [],
+      prj_lease_contract: [],
+      prj_con_contract: [],
+      prj_license: [],
+      prj_certifications: [],
+      prj_manager_cert: [],
+      prj_safe_cert: [],
+      prj_manager_appiontment: [],
+      prj_safe_appiontment: [],
+      prj_design_cert: [],
       prj_assist_org: "",
       shigongData: {
         prj_name: ""
@@ -281,61 +361,61 @@ export default {
 
     show_before_img() {
       this.instance_before = ImagePreview({
-        images: [this.prj_property],
+        images: this.prj_property,
         closeable: true
       });
     },
     show_before_img1() {
       this.instance_before = ImagePreview({
-        images: [this.prj_lease_contract],
+        images: this.prj_lease_contract,
         closeable: true
       });
     },
     show_before_img2() {
       this.instance_before = ImagePreview({
-        images: [this.prj_con_contract],
+        images: this.prj_con_contract,
         closeable: true
       });
     },
     show_before_img3() {
       this.instance_before = ImagePreview({
-        images: [this.prj_license],
+        images: this.prj_license,
         closeable: true
       });
     },
     show_before_img4() {
       this.instance_before = ImagePreview({
-        images: [this.prj_certifications],
+        images: this.prj_certifications,
         closeable: true
       });
     },
     show_before_img5() {
       this.instance_before = ImagePreview({
-        images: [this.prj_manager_cert],
+        images: this.prj_manager_cert,
         closeable: true
       });
     },
     show_before_img6() {
       this.instance_before = ImagePreview({
-        images: [this.prj_safe_cert],
+        images: this.prj_safe_cert,
         closeable: true
       });
     },
     show_before_img7() {
       this.instance_before = ImagePreview({
-        images: [this.prj_manager_appiontment],
+        images: this.prj_manager_appiontment,
         closeable: true
       });
     },
     show_before_img8() {
       this.instance_before = ImagePreview({
-        images: [this.prj_safe_appiontment],
+        images: this.prj_safe_appiontment,
         closeable: true
       });
     },
     show_before_img9() {
       this.instance_before = ImagePreview({
-        images: [this.prj_design_cert],
+        images: this.prj_design_cert,
         closeable: true
       });
     },
@@ -428,35 +508,73 @@ export default {
           this.picture5 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[5]}`;
         }
       }
-      if (dt.prj_lease_contract) {
-        this.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;
+      if (dt.prj_property) {
+        this.prj_property = dt.prj_property.split(",");
+        this.prj_property.forEach((e, i) => {
+          this.prj_property[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
+
       if (dt.prj_lease_contract) {
-        this.prj_lease_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_lease_contract}`;
+        this.prj_lease_contract = dt.prj_lease_contract.split(",");
+        this.prj_lease_contract.forEach((e, i) => {
+          this.prj_lease_contract[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_con_contract) {
-        this.prj_con_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_con_contract}`;
+        this.prj_con_contract = dt.prj_con_contract.split(",");
+        this.prj_con_contract.forEach((e, i) => {
+          this.prj_con_contract[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_license) {
-        this.prj_license = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_license}`;
+        this.prj_license = dt.prj_license.split(",");
+        this.prj_license.forEach((e, i) => {
+          this.prj_license[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_certifications) {
-        this.prj_certifications = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_certifications}`;
+        this.prj_certifications = dt.prj_certifications.split(",");
+        this.prj_certifications.forEach((e, i) => {
+          this.prj_certifications[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_manager_cert) {
-        this.prj_manager_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_cert}`;
+        this.prj_manager_cert = dt.prj_manager_cert.split(",");
+        this.prj_manager_cert.forEach((e, i) => {
+          this.prj_manager_cert[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_safe_cert) {
-        this.prj_safe_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_cert}`;
+        this.prj_safe_cert = dt.prj_safe_cert.split(",");
+        this.prj_safe_cert.forEach((e, i) => {
+          this.prj_safe_cert[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_manager_appiontment) {
-        this.prj_manager_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_appiontment}`;
+        this.prj_manager_appiontment = dt.prj_manager_appiontment.split(",");
+        this.prj_manager_appiontment.forEach((e, i) => {
+          this.prj_manager_appiontment[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_safe_appiontment) {
-        this.prj_safe_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_appiontment}`;
+        this.prj_safe_appiontment = dt.prj_safe_appiontment.split(",");
+        this.prj_safe_appiontment.forEach((e, i) => {
+          this.prj_safe_appiontment[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_design_cert) {
-        this.prj_design_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_design_cert}`;
+        this.prj_design_cert = dt.prj_design_cert.split(",");
+        this.prj_design_cert.forEach((e, i) => {
+          this.prj_design_cert[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
     },
     onClickLeft() {
@@ -516,13 +634,13 @@ p {
 .buju {
   padding: 30px;
 }
-.beijin {
-  position: relative;
-  height: 110px;
-  background: rgba(249, 249, 249, 1);
-  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.09);
-  border-radius: 10px;
-}
+// .beijin {
+//   position: relative;
+//   height: 110px;
+//   background: rgba(249, 249, 249, 1);
+//   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.09);
+//   border-radius: 10px;
+// }
 .wenjian_box {
   width: 60px;
   height: 60px;
@@ -558,5 +676,23 @@ p {
   );
   color: #343434ff;
   border: 0;
+}
+.beijinkuai {
+  text-align: center;
+}
+.beijin {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 129, 255, 1);
+  opacity: 0.5;
+  border-radius: 50%;
+  line-height: 60px;
+  text-align: center;
+  .van-icon {
+    color: #fff;
+    font-size: 22px;
+    line-height: 30px;
+  }
 }
 </style>

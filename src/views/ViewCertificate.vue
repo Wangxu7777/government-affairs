@@ -21,36 +21,156 @@
       </van-row>
     </div> -->
     <van-collapse v-model="activeNames">
-      <van-collapse-item title="产权证" name="1">内容</van-collapse-item>
-      <van-collapse-item title="租赁合同" name="2">内容</van-collapse-item>
-      <van-collapse-item title="施工合同" name="3">内容</van-collapse-item>
-      <van-collapse-item title="施工单位营业执照" name="4"
-        >内容</van-collapse-item
-      >
-      <van-collapse-item title="施工单位资质证书" name="5"
-        >内容</van-collapse-item
-      >
-      <van-collapse-item title="项目经理证书" name="6">内容</van-collapse-item>
-      <van-collapse-item title="安全员证书" name="7">内容</van-collapse-item>
-      <van-collapse-item title="项目经理任命文件" name="8"
-        >内容</van-collapse-item
-      >
-      <van-collapse-item title="安全员任命文件" name="9"
-        >内容</van-collapse-item
-      >
-      <van-collapse-item title="设计单位资质文件" name="10"
-        >内容</van-collapse-item
-      >
+      <van-collapse-item title="产权证" name="1">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_property"
+            @click="show_before_img"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="租赁合同" name="2">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_lease_contract"
+            @click="show_before_img1"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="施工合同" name="3">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_con_contract"
+            @click="show_before_img2"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="施工单位营业执照" name="4">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_license"
+            @click="show_before_img3"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="施工单位资质证书" name="5">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_certifications"
+            @click="show_before_img4"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="项目经理证书" name="6">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_manager_cert"
+            @click="show_before_img5"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="安全员证书" name="7">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_safe_cert"
+            @click="show_before_img6"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="项目经理任命文件" name="8">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_manager_appiontment"
+            @click="show_before_img7"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="安全员任命文件" name="9">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_safe_appiontment"
+            @click="show_before_img8"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
+      <van-collapse-item title="设计单位资质文件" name="10">
+        <van-row class="buju" gutter="20">
+          <van-col
+            span="12"
+            :key="index"
+            v-for="(item, index) in prj_design_cert"
+            @click="show_before_img9"
+          >
+            <div class="beijin">
+              <van-image width="100%" height="100%" :src="item" />
+            </div>
+          </van-col>
+        </van-row>
+      </van-collapse-item>
     </van-collapse>
-    <van-row class="buju" gutter="20">
-      <van-col span="12" @click="show_before_img">
+    <!-- <van-row class="buju" gutter="20"> -->
+    <!-- <van-col span="12" @click="show_before_img">
         <div class="beijin">
           <van-image width="100%" height="100%" :src="prj_property" />
         </div>
 
         <p class="wenjianming">产权证</p>
-      </van-col>
-      <van-col span="12" @click="show_before_img1">
+      </van-col> -->
+    <!-- <van-col span="12" @click="show_before_img1">
         <div class="beijin">
           <van-image width="100%" height="100%" :src="prj_lease_contract" />
         </div>
@@ -125,7 +245,7 @@
 
         <p class="wenjianming">设计单位资质文件</p>
       </van-col>
-    </van-row>
+    </van-row> -->
 
     <div style="margin: 16px;margin-bottom: 0;">
       <van-button
@@ -185,16 +305,16 @@ export default {
         "https://img.yzcdn.cn/vant/apple-1.jpg",
         "https://img.yzcdn.cn/vant/apple-2.jpg"
       ],
-      prj_property: "",
-      prj_lease_contract: "",
-      prj_con_contract: "",
-      prj_license: "",
-      prj_certifications: "",
-      prj_manager_cert: "",
-      prj_safe_cert: "",
-      prj_manager_appiontment: "",
-      prj_safe_appiontment: "",
-      prj_design_cert: "",
+      prj_property: [],
+      prj_lease_contract: [],
+      prj_con_contract: [],
+      prj_license: [],
+      prj_certifications: [],
+      prj_manager_cert: [],
+      prj_safe_cert: [],
+      prj_manager_appiontment: [],
+      prj_safe_appiontment: [],
+      prj_design_cert: [],
       prj_assist_org: "",
       shigongData: {
         prj_name: ""
@@ -361,61 +481,61 @@ export default {
     },
     show_before_img() {
       this.instance_before = ImagePreview({
-        images: [this.prj_property],
+        images: this.prj_property,
         closeable: true
       });
     },
     show_before_img1() {
       this.instance_before = ImagePreview({
-        images: [this.prj_lease_contract],
+        images: this.prj_lease_contract,
         closeable: true
       });
     },
     show_before_img2() {
       this.instance_before = ImagePreview({
-        images: [this.prj_con_contract],
+        images: this.prj_con_contract,
         closeable: true
       });
     },
     show_before_img3() {
       this.instance_before = ImagePreview({
-        images: [this.prj_license],
+        images: this.prj_license,
         closeable: true
       });
     },
     show_before_img4() {
       this.instance_before = ImagePreview({
-        images: [this.prj_certifications],
+        images: this.prj_certifications,
         closeable: true
       });
     },
     show_before_img5() {
       this.instance_before = ImagePreview({
-        images: [this.prj_manager_cert],
+        images: this.prj_manager_cert,
         closeable: true
       });
     },
     show_before_img6() {
       this.instance_before = ImagePreview({
-        images: [this.prj_safe_cert],
+        images: this.prj_safe_cert,
         closeable: true
       });
     },
     show_before_img7() {
       this.instance_before = ImagePreview({
-        images: [this.prj_manager_appiontment],
+        images: this.prj_manager_appiontment,
         closeable: true
       });
     },
     show_before_img8() {
       this.instance_before = ImagePreview({
-        images: [this.prj_safe_appiontment],
+        images: this.prj_safe_appiontment,
         closeable: true
       });
     },
     show_before_img9() {
       this.instance_before = ImagePreview({
-        images: [this.prj_design_cert],
+        images: this.prj_design_cert,
         closeable: true
       });
     },
@@ -477,35 +597,73 @@ export default {
         });
       }
 
-      if (dt.prj_lease_contract) {
-        this.prj_property = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_property}`;
+      if (dt.prj_property) {
+        this.prj_property = dt.prj_property.split(",");
+        this.prj_property.forEach((e, i) => {
+          this.prj_property[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
+
       if (dt.prj_lease_contract) {
-        this.prj_lease_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_lease_contract}`;
+        this.prj_lease_contract = dt.prj_lease_contract.split(",");
+        this.prj_lease_contract.forEach((e, i) => {
+          this.prj_lease_contract[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_con_contract) {
-        this.prj_con_contract = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_con_contract}`;
+        this.prj_con_contract = dt.prj_con_contract.split(",");
+        this.prj_con_contract.forEach((e, i) => {
+          this.prj_con_contract[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_license) {
-        this.prj_license = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_license}`;
+        this.prj_license = dt.prj_license.split(",");
+        this.prj_license.forEach((e, i) => {
+          this.prj_license[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_certifications) {
-        this.prj_certifications = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_certifications}`;
+        this.prj_certifications = dt.prj_certifications.split(",");
+        this.prj_certifications.forEach((e, i) => {
+          this.prj_certifications[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_manager_cert) {
-        this.prj_manager_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_cert}`;
+        this.prj_manager_cert = dt.prj_manager_cert.split(",");
+        this.prj_manager_cert.forEach((e, i) => {
+          this.prj_manager_cert[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_safe_cert) {
-        this.prj_safe_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_cert}`;
+        this.prj_safe_cert = dt.prj_safe_cert.split(",");
+        this.prj_safe_cert.forEach((e, i) => {
+          this.prj_safe_cert[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_manager_appiontment) {
-        this.prj_manager_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_manager_appiontment}`;
+        this.prj_manager_appiontment = dt.prj_manager_appiontment.split(",");
+        this.prj_manager_appiontment.forEach((e, i) => {
+          this.prj_manager_appiontment[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_safe_appiontment) {
-        this.prj_safe_appiontment = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_safe_appiontment}`;
+        this.prj_safe_appiontment = dt.prj_safe_appiontment.split(",");
+        this.prj_safe_appiontment.forEach((e, i) => {
+          this.prj_safe_appiontment[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_design_cert) {
-        this.prj_design_cert = `http://hpimage.soyumall.cn/gongdi/file/${dt.prj_design_cert}`;
+        this.prj_design_cert = dt.prj_design_cert.split(",");
+        this.prj_design_cert.forEach((e, i) => {
+          this.prj_design_cert[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
     },
     onChange(index) {
