@@ -22,8 +22,16 @@
         readonly
       />
       <van-field label="设计单位" :value="shigongData.design_rom" readonly />
-      <van-field label="联系人姓名" :value="shigongData.fbi_name" readonly />
-      <van-field label="联系人电话" :value="shigongData.fbi_phone" readonly />
+      <van-field
+        label="联系人姓名"
+        :value="shigongData.prj_person_name"
+        readonly
+      />
+      <van-field
+        label="联系人电话"
+        :value="shigongData.prj_person_phone"
+        readonly
+      />
       <van-field label="工程面积" :value="shigongData.prj_area" readonly />
       <van-field label="合同造价" :value="shigongData.prj_price" readonly />
       <van-field
