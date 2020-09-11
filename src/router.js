@@ -34,6 +34,7 @@ import User from "./views/User.vue";
 import Accept1 from "./views/Accept1.vue";
 import CompletionList from "./views/CompletionList.vue";
 import TestResultDetails from "./views/TestResultDetails.vue";
+import RejectForm from "./views/RejectForm.vue";
 
 Vue.use(Router);
 var router = new Router({
@@ -212,6 +213,11 @@ var router = new Router({
       path: "/testResultDetails",
       name: "TestResultDetails",
       component: TestResultDetails
+    },
+    {
+      path: "/rejectForm",
+      name: "RejectForm",
+      component: RejectForm
     }
   ]
 });

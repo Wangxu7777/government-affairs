@@ -9,59 +9,26 @@
       <van-field label="工程名称" :value="prj_name" readonly />
       <van-field label="工程发现单位" :value="prj_depart" readonly />
       <van-field label="工程类型" :value="prj_type" readonly />
+      <van-field label="工程所属网络" :value="prj_grid" readonly />
       <van-field label="地址信息" :value="prj_addr" readonly />
     </van-cell-group>
     <div class="tupian">
       <h5>工程照片</h5>
       <van-grid :column-num="2" square :gutter="10">
-        <van-grid-item text="工程照片">
+        <van-grid-item text="工程照片" v-for="(item, i) in picture" :key="i">
           <van-image
             @click="show_before_img"
             width="100%"
             height="100%"
-            :src="picture"
+            :src="item"
           />
         </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="picture1"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="picture2"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="picture3"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="picture4"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="picture5"
-          />
-        </van-grid-item>
+        <van-empty
+          style="width:100%"
+          image="error"
+          description="无工程照片"
+          v-if="this.picture.length == 0"
+        />
       </van-grid>
     </div>
     <div style="margin: 16px;">
@@ -94,12 +61,8 @@ export default {
       prj_type: "",
       prj_grid: "",
       prj_addr: "",
-      picture: "",
-      picture1: "",
-      picture2: "",
-      picture3: "",
-      picture4: "",
-      picture5: "",
+      picture: [],
+
       gongchengData: {
         prj_name: ""
       },
@@ -119,14 +82,8 @@ export default {
     },
     show_before_img() {
       this.instance_before = ImagePreview({
-        images: [
-          this.picture,
-          this.picture1,
-          this.picture2,
-          this.picture3,
-          this.picture4,
-          this.picture5
-        ],
+        images: this.picture,
+
         closeable: true
       });
     },
@@ -172,42 +129,11 @@ export default {
       this.shouliData.lng = dt.location[0];
       this.shouliData.lat = dt.location[1];
       this.shouliData.picture = dt.picture;
-      var imgArr = dt.picture.trim().split(",");
-
-      if (imgArr.length == 1) {
-        this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-      }
-      if (imgArr.length == 2) {
-        this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-        this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-      }
-
-      if (imgArr.length == 3) {
-        this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-        this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-        this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-      }
-
-      if (imgArr.length == 4) {
-        this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-        this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-        this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-        this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-      }
-      if (imgArr.length == 5) {
-        this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-        this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-        this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-        this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-        this.picture4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
-      }
-      if (imgArr.length == 6) {
-        this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-        this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-        this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-        this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-        this.picture4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
-        this.picture5 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[5]}`;
+      if (dt.picture) {
+        this.picture = dt.picture.split(",");
+        this.picture.forEach((e, i) => {
+          this.picture[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
     }
   },
@@ -237,8 +163,9 @@ export default {
   color: #fff !important;
 }
 .tupian {
-  padding: 30px;
+  // padding: 30px;
   h5 {
+    padding: 30px;
     font-size: 30px;
     margin: 0;
   }
@@ -267,5 +194,8 @@ export default {
   color: #fff;
   text-align: center;
   font-weight: 400;
+}
+.van-grid {
+  background: #fff;
 }
 </style>

@@ -19,43 +19,7 @@
             <template #title>
               <icon-svg class="touxiang" icon-class="shaixuantiaojian" />
             </template>
-            <!-- <van-radio-group v-model="radio">
-              <van-cell-group>
-                <van-cell title="已受理" clickable @click="radio = '已受理'">
-                  <template #right-icon>
-                    <van-radio name="已受理" />
-                  </template>
-                </van-cell>
-                <van-cell title="检查合格" clickable @click="radio = '已督察'">
-                  <template #right-icon>
-                    <van-radio name="已督察" />
-                  </template>
-                </van-cell>
-                <van-cell
-                  title="检查未合格"
-                  clickable
-                  @click="radio = '督察不合格'"
-                >
-                  <template #right-icon>
-                    <van-radio name="督察不合格" />
-                  </template>
-                </van-cell>
-                <van-cell title="已竣工" clickable @click="radio = '已竣工'">
-                  <template #right-icon>
-                    <van-radio name="已竣工" />
-                  </template>
-                </van-cell>
-                <van-cell
-                  title="非小型工程，已移交"
-                  clickable
-                  @click="radio = '非小型工程 已移送'"
-                >
-                  <template #right-icon>
-                    <van-radio name="非小型工程 已移送" />
-                  </template>
-                </van-cell>
-              </van-cell-group>
-            </van-radio-group> -->
+
             <van-checkbox-group v-model="result">
               <van-cell-group>
                 <van-cell
@@ -168,7 +132,11 @@ export default {
       var w = e.currentTarget.innerText;
       var a = w.trim().split("\n");
 
-      if (a[a.length - 1] == "发现工程" || a[a.length - 1] == "待移交") {
+      if (
+        a[a.length - 1] == "发现工程" ||
+        a[a.length - 1] == "待移交" ||
+        a[a.length - 1] == "一般工程"
+      ) {
         this.$router.push({
           path: "/projectReporting1",
           query: {
@@ -221,13 +189,13 @@ export default {
           e.data.prj_state = "发现工程";
         }
         if (e.data.prj_state == "-4") {
-          e.data.prj_state = "待移交";
+          e.data.prj_state = "一般工程";
         }
         if (e.data.prj_state == "-3") {
           e.data.prj_state = "待移交";
         }
         if (e.data.prj_state == "-2") {
-          e.data.prj_state = "已受理，待审核";
+          e.data.prj_state = "发现工程";
         }
         if (e.data.prj_state == "-22") {
           e.data.prj_state = "已受理，待审核";
@@ -290,13 +258,13 @@ export default {
           e.data.prj_state = "发现工程";
         }
         if (e.data.prj_state == "-4") {
-          e.data.prj_state = "待移交";
+          e.data.prj_state = "一般工程";
         }
         if (e.data.prj_state == "-3") {
           e.data.prj_state = "待移交";
         }
         if (e.data.prj_state == "-2") {
-          e.data.prj_state = "已受理，待审核";
+          e.data.prj_state = "发现工程";
         }
         if (e.data.prj_state == "-22") {
           e.data.prj_state = "已受理，待审核";
@@ -401,13 +369,13 @@ export default {
           e.data.prj_state = "发现工程";
         }
         if (e.data.prj_state == "-4") {
-          e.data.prj_state = "待移交";
+          e.data.prj_state = "一般工程";
         }
         if (e.data.prj_state == "-3") {
           e.data.prj_state = "待移交";
         }
         if (e.data.prj_state == "-2") {
-          e.data.prj_state = "已受理，待审核";
+          e.data.prj_state = "发现工程";
         }
         if (e.data.prj_state == "-22") {
           e.data.prj_state = "已受理，待审核";

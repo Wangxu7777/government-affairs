@@ -71,6 +71,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      xiaoxirenyuan: "",
       radio: "",
       shigongData: {},
       list: [
@@ -87,7 +88,7 @@ export default {
 
         // toparty: "6899",
         msgtype: "news",
-        agentid: "1000201",
+        agentid: this.$store.state.agentid,
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
         news: {
           articles: [
@@ -114,7 +115,8 @@ export default {
     },
     //发送信息
     async fasong() {
-      this.fasongData.touser = "13671711858";
+      // this.fasongData.touser = "13671711858";
+      this.fasongData.touser = this.xiaoxirenyuan;
       this.fasongData.news.articles[0].title = `已受理小型工程，待审核`;
 
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/details1?prj_name=${this.shigongData.prj_name}&du_msg=1`;
@@ -165,10 +167,30 @@ export default {
     RouterData() {
       const shigongData = localStorage.getItem("shigongData");
       this.shigongData = JSON.parse(shigongData);
+    },
+    //发送消息人员查询
+    async fasongUser() {
+      let step = { step: "工程受理审核" };
+      const { data: dt } = await this.$http.get(
+        "user/query_msgUserByUserStep",
+        { params: step }
+      );
+      if (dt.retcode != "0") {
+        return this.$toast.fail({
+          message: "获取发送消息人员失败"
+        });
+      }
+
+      this.xiaoxirenyuan = dt.data
+        .map(obj => {
+          return obj.userid;
+        })
+        .join("|");
     }
   },
   created() {
     this.RouterData();
+    this.fasongUser();
   }
 };
 </script>

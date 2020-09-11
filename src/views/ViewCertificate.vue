@@ -295,6 +295,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      feixiaoxingrenyuan: "",
       activeNames: ["1"],
       shigongUserid: "",
       party: "",
@@ -325,7 +326,7 @@ export default {
         // touser: "18632397636",
         // toparty: "",
         msgtype: "news",
-        agentid: "1000201",
+        agentid: this.$store.state.agentid,
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
         news: {
           articles: [
@@ -350,7 +351,8 @@ export default {
     },
     //发送信息
     async fasong() {
-      this.fasongData.touser = "18017569958";
+      // this.fasongData.touser = "18017569958";
+      this.fasongData.touser = this.feixiaoxingrenyuan;
       this.fasongData.news.articles[0].title = `非小型工程，请移交`;
 
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/transferForm?prj_name=${this.shigongData.prj_name}&du_msg=1`;
@@ -368,7 +370,12 @@ export default {
       }
 
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
-      this.$router.push({ name: "success2" });
+      this.$router.push({
+        name: "success2",
+        query: {
+          prj_name: this.shigongData.prj_name
+        }
+      });
     },
     async feixiaoxing() {
       this.shigongData1.prj_state = "1";
@@ -391,9 +398,9 @@ export default {
     },
     //发送信息
     async fasong1() {
-      if (this.party) {
-        this.fasongData.toparty = this.party;
-      }
+      // if (this.party) {
+      //   this.fasongData.toparty = this.party;
+      // }
       let assis;
       if (this.assisStr) {
         assis = this.assisStr + "|";
@@ -417,7 +424,12 @@ export default {
       }
 
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
-      this.$router.push({ name: "success2" });
+      this.$router.push({
+        name: "success2",
+        query: {
+          prj_name: this.shigongData.prj_name
+        }
+      });
     },
     async tongguo() {
       this.shigongData1.prj_state = "0";
@@ -458,7 +470,12 @@ export default {
       }
 
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData1));
-      this.$router.push({ name: "success2" });
+      this.$router.push({
+        name: "success2",
+        query: {
+          prj_name: this.shigongData.prj_name
+        }
+      });
     },
     async weitongguo() {
       this.shigongData1.prj_state = "-1";
@@ -578,23 +595,26 @@ export default {
         sessionStorage.setItem("user_id", this.$route.query.userid);
       }
 
-      //判断协同人员
+      // if (dt.prj_assist_org) {
+      //   let assisMap = new Map();
+      //   assisMap.set("社区平安办", "13795357839");
+      //   // assisMap.set("城管中队", "202326262");
+      //   assisMap.set("街道社区管理办", "18017569958");
+      //   assisMap.set("第三方机构", "18616582881");
+      //   // assisMap.set("灯光景观所", "");
+      //   let mapArr = [];
+      //   let assistArr = dt.prj_assist_org.trim().split(",");
+      //   assistArr.forEach(e => {
+      //     if (e === "城管中队") {
+      //       this.party = "202326262";
+      //     }
+      //     mapArr.push(assisMap.get(e));
+      //     this.assisStr = mapArr.join("|");
+      //   });
+      // }
+      //判断是否有协同人员
       if (dt.prj_assist_org) {
-        let assisMap = new Map();
-        assisMap.set("社区平安办", "13795357839");
-        // assisMap.set("城管中队", "202326262");
-        assisMap.set("街道社区管理办", "18017569958");
-        assisMap.set("第三方机构", "18616582881");
-        // assisMap.set("灯光景观所", "");
-        let mapArr = [];
-        let assistArr = dt.prj_assist_org.trim().split(",");
-        assistArr.forEach(e => {
-          if (e === "城管中队") {
-            this.party = "202326262";
-          }
-          mapArr.push(assisMap.get(e));
-          this.assisStr = mapArr.join("|");
-        });
+        this.xietongFasongUser(dt.prj_assist_org);
       }
 
       if (dt.prj_property) {
@@ -668,10 +688,59 @@ export default {
     },
     onChange(index) {
       this.index = index;
+    },
+    //发送消息人员查询
+    async feixiaoxingFasongUser() {
+      let step = { step: "非小型工程移交" };
+      const { data: dt } = await this.$http.get(
+        "user/query_msgUserByUserStep",
+        { params: step }
+      );
+      if (dt.retcode != "0") {
+        return this.$toast.fail({
+          message: "获取发送消息人员失败"
+        });
+      }
+
+      let feixiaoxing = dt.data.filter(item => {
+        return item.depart == "管理办";
+      });
+      this.feixiaoxingrenyuan = feixiaoxing
+        .map(obj => {
+          return obj.userid;
+        })
+        .join("|");
+    },
+    //发送消息人员查询
+    async xietongFasongUser(prj_assist_org) {
+      let step = { step: "协管单位" };
+      const { data: dt } = await this.$http.get(
+        "user/query_msgUserByUserStep",
+        { params: step }
+      );
+      if (dt.retcode != "0") {
+        return this.$toast.fail({
+          message: "获取发送消息人员失败"
+        });
+      }
+      //判断协同人员
+
+      let xietong = [];
+      let assistArr = prj_assist_org.trim().split(",");
+
+      dt.data.forEach(e => {
+        if (assistArr.indexOf(e.depart)) {
+          console.log(e);
+          xietong.push(e.userid);
+        }
+      });
+
+      this.assisStr = xietong.join("|");
     }
   },
   created() {
     this.content();
+    this.feixiaoxingFasongUser();
   }
 };
 </script>

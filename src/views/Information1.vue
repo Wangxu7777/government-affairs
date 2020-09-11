@@ -113,12 +113,14 @@
         name="姓名"
         label="姓名"
         placeholder="姓名"
+        :rules="[{ required: true, message: '请填写负责人姓名' }]"
       />
       <van-field
         v-model="shigongData.prj_person_phone"
         name="负责人电话"
         label="负责人电话"
         placeholder="负责人电话"
+        :rules="[{ required: true, message: '请填写负责人电话' }]"
       />
       <div style="margin: 16px;">
         <van-button
@@ -184,12 +186,22 @@ export default {
       }
 
       this.gongchengData.prj_name = this.$route.query.prj_name;
-      var { data: dt } = await this.$http.get("wx/getGongdi", {
+      var { data: dt } = await this.$http.get("wx/getGongdi_AllBySortDate", {
         params: this.gongchengData
       });
-      this.shigongData.prj_name = dt.prj_name;
-      this.shigongData.prj_addr = dt.prj_addr;
-      this.shigongData.prj_type = dt.prj_type;
+      let gongdiData = dt[0].data;
+
+      this.shigongData = gongdiData;
+      delete this.shigongData.updateTime;
+      delete this.shigongData.__v;
+      delete this.shigongData._id;
+      // this.shigongData.prj_name = gongdiData.prj_name;
+      // this.shigongData.prj_addr = gongdiData.prj_addr;
+      // this.shigongData.prj_type = gongdiData.prj_type;
+      // this.shigongData.prj_area = gongdiData.prj_area;
+      // this.shigongData.prj_price = gongdiData.prj_price;
+      // this.shigongData.prj_person_name = gongdiData.prj_person_name;
+      // this.shigongData.prj_person_phone = gongdiData.prj_person_phone;
     },
     onSubmit() {
       localStorage.setItem("shigongData", JSON.stringify(this.shigongData));

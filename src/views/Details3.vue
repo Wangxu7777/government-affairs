@@ -59,54 +59,24 @@
     <div class="tupian">
       <h5>现场照片</h5>
       <van-grid :column-num="2" square :gutter="10">
-        <van-grid-item text="工程照片">
+        <van-grid-item
+          text="现场照片"
+          v-for="(item, i) in change_pictures"
+          :key="i"
+        >
           <van-image
             @click="show_before_img"
             width="100%"
             height="100%"
-            :src="change_pictures"
+            :src="item"
           />
         </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="change_pictures1"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="change_pictures2"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="change_pictures3"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="change_pictures4"
-          />
-        </van-grid-item>
-        <van-grid-item text="工程照片">
-          <van-image
-            @click="show_before_img"
-            width="100%"
-            height="100%"
-            :src="change_pictures5"
-          />
-        </van-grid-item>
+        <van-empty
+          style="width:100%"
+          image="error"
+          description="无工程照片"
+          v-if="this.change_pictures.length == 0"
+        />
       </van-grid>
     </div>
     <div style="margin: 16px;">
@@ -132,12 +102,8 @@ export default {
       check_question: "",
       change_desp: "",
 
-      change_pictures: "",
-      change_pictures1: "",
-      change_pictures2: "",
-      change_pictures3: "",
-      change_pictures4: "",
-      change_pictures5: "",
+      change_pictures: [],
+
       auth: {}
     };
   },
@@ -145,14 +111,8 @@ export default {
   methods: {
     show_before_img() {
       this.instance_before = ImagePreview({
-        images: [
-          this.change_pictures,
-          this.change_pictures1,
-          this.change_pictures2,
-          this.change_pictures3,
-          this.change_pictures4,
-          this.change_pictures5
-        ],
+        images: this.change_pictures,
+
         closeable: true
       });
     },
@@ -181,42 +141,11 @@ export default {
         localStorage.setItem("jianchaData", JSON.stringify(this.jianchaData));
       }
       if (this.jianchaData.change_pictures) {
-        var imgArr = this.jianchaData.change_pictures.trim().split(",");
-        if (imgArr.length == 1) {
-          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-        }
-        if (imgArr.length == 2) {
-          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-        }
-
-        if (imgArr.length == 3) {
-          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-        }
-
-        if (imgArr.length == 4) {
-          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-          this.change_pictures3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-        }
-        if (imgArr.length == 5) {
-          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-          this.change_pictures3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-          this.change_pictures4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
-        }
-        if (imgArr.length == 6) {
-          this.change_pictures = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.change_pictures1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.change_pictures2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-          this.change_pictures3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-          this.change_pictures4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
-          this.change_pictures5 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[5]}`;
-        }
+        this.change_pictures = this.jianchaData.change_pictures.split(",");
+        this.change_pictures.forEach((e, i) => {
+          this.change_pictures[i] =
+            `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
     },
     onClickLeft() {

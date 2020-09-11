@@ -286,104 +286,204 @@ export default {
   methods: {
     //删除图片
     pictureDelete(file) {
-      this.prj_property.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_property.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_property.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_property.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_property.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_property.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete1(file) {
-      this.prj_lease_contract.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_lease_contract.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_lease_contract.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_lease_contract.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_lease_contract.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_lease_contract.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete2(file) {
-      this.prj_con_contract.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_con_contract.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_con_contract.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_con_contract.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_con_contract.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_con_contract.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete3(file) {
-      this.prj_license.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_license.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_license.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_license.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_license.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_license.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete4(file) {
-      this.prj_certifications.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_certifications.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_certifications.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_certifications.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_certifications.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_certifications.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete5(file) {
-      this.prj_manager_cert.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_manager_cert.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_manager_cert.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_manager_cert.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_manager_cert.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_manager_cert.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete6(file) {
-      this.prj_safe_cert.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_safe_cert.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_safe_cert.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_safe_cert.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_safe_cert.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_safe_cert.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete7(file) {
-      this.prj_manager_appiontment.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_manager_appiontment.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_manager_appiontment.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_manager_appiontment.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_manager_appiontment.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_manager_appiontment.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
 
     //删除图片
     pictureDelete8(file) {
-      this.prj_safe_appiontment.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_safe_appiontment.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_safe_appiontment.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_safe_appiontment.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_safe_appiontment.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_safe_appiontment.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     //删除图片
     pictureDelete9(file) {
-      this.prj_design_cert.forEach(e => {
-        if (e.name === file.file.name) {
-          this.prj_design_cert.splice(e, 1);
-        }
-      });
+      if (file.file) {
+        this.prj_design_cert.forEach(e => {
+          if (e.name === file.file.name) {
+            this.prj_design_cert.splice(e, 1);
+          }
+        });
 
-      return true;
+        return true;
+      } else {
+        this.prj_design_cert.forEach(e => {
+          if (e.name === file.url) {
+            this.prj_design_cert.splice(e, 1);
+          }
+        });
+
+        return true;
+      }
     },
     beforeRead(file) {
       if (
@@ -473,6 +573,146 @@ export default {
       const shigongData = localStorage.getItem("shigongData");
       this.shigongData = JSON.parse(shigongData);
       // console.log(this.shigongData);
+      if (this.shigongData.prj_property) {
+        let imgArr = this.shigongData.prj_property.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.fileList.push(picture);
+        });
+      }
+      if (this.shigongData.prj_lease_contract) {
+        let imgArr = this.shigongData.prj_lease_contract.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList1.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.fileList1.push(picture);
+        });
+      }
+      if (this.shigongData.prj_con_contract) {
+        let imgArr = this.shigongData.prj_con_contract.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList2.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_con_contract.push(picture);
+        });
+      }
+      if (this.shigongData.prj_license) {
+        let imgArr = this.shigongData.prj_license.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList3.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_license.push(picture);
+        });
+      }
+      if (this.shigongData.prj_certifications) {
+        let imgArr = this.shigongData.prj_certifications.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList4.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_certifications.push(picture);
+        });
+      }
+      if (this.shigongData.prj_manager_cert) {
+        let imgArr = this.shigongData.prj_manager_cert.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList5.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_manager_cert.push(picture);
+        });
+      }
+      if (this.shigongData.prj_safe_cert) {
+        let imgArr = this.shigongData.prj_safe_cert.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList6.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_safe_cert.push(picture);
+        });
+      }
+      if (this.shigongData.prj_manager_appiontment) {
+        let imgArr = this.shigongData.prj_manager_appiontment.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList7.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_manager_appiontment.push(picture);
+        });
+      }
+      if (this.shigongData.prj_safe_appiontment) {
+        let imgArr = this.shigongData.prj_safe_appiontment.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList8.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_safe_appiontment.push(picture);
+        });
+      }
+      if (this.shigongData.prj_design_cert) {
+        let imgArr = this.shigongData.prj_design_cert.trim().split(",");
+
+        imgArr.forEach(e => {
+          this.fileList9.push({
+            url: `http://hpimage.soyumall.cn/gongdi/file/${e}`
+          });
+          let picture = {
+            name: `http://hpimage.soyumall.cn/gongdi/file/${e}`,
+            UpName: e
+          };
+          this.prj_design_cert.push(picture);
+        });
+      }
     },
     //压缩图片上传
     _compressAndUploadFile(file) {

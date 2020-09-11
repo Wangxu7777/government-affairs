@@ -21,9 +21,9 @@ export function convertBase64UrlToBlob(urlData) {
 // 压缩图片
 export function compressImage(path) {
   //最大高度
-  const maxHeight = 500;
+  const maxHeight = 600;
   //最大宽度
-  const maxWidth = 500;
+  const maxWidth = 600;
 
   return new Promise(resolve => {
     let img = new Image();
@@ -60,9 +60,10 @@ export function compressImage(path) {
       let context = canvas.getContext("2d");
       canvas.height = compressedHeight;
       canvas.width = compressedWidth;
+
       context.clearRect(0, 0, compressedWidth, compressedHeight);
       context.drawImage(img, 0, 0, compressedWidth, compressedHeight);
-      let base64 = canvas.toDataURL("image/*", 0.8);
+      let base64 = canvas.toDataURL("image/*", 0.9);
       let blob = convertBase64UrlToBlob(base64);
       // 回调函数返回blob的值。也可根据自己的需求返回base64的值
       resolve(blob);

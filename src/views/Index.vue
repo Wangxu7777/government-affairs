@@ -148,6 +148,7 @@ export default {
       //     message: "无权限进入如有需要请联系房管办更改"
       //   });
       // }
+
       //获取用户id
       const userid = sessionStorage.getItem("user_id");
 
@@ -160,6 +161,7 @@ export default {
           sessionStorage.setItem("user_id", this.$route.query.userid);
         }
       }
+
       //获取用户权限状态
       const auth = sessionStorage.getItem("auth");
 

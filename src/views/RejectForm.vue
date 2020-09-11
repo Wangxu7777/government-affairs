@@ -3,17 +3,12 @@
   <div>
     <van-nav-bar
       id="reset"
-      title="查看小型工程移送单"
+      title="小型工程移送单"
       left-arrow
       @click-left="onClickLeft"
     />
-    <p>非小型建设工程移送单</p>
+    <!-- <p>非小型建设工程移送单</p> -->
     <div class="biaoti">
-      <icon-svg
-        class="icn_box"
-        icon-class="chuanshuliebiao"
-        style="margin-right:10px"
-      />
       <span v-if="this.prj_state == '-1' || this.prj_state == '1'"
         >正在移交</span
       >
@@ -70,14 +65,14 @@
           style="width:100%"
           image="error"
           description="无工程照片"
-          v-if="this.pictures.length == 0"
+          v-if="this.change_pictures.length == 0"
         />
       </van-grid>
     </van-cell-group>
 
     <div style="margin: 16px;">
       <van-button @click="shouye" round block type="info" native-type="submit">
-        返回首页
+        下一步
       </van-button>
     </div>
   </div>
@@ -127,7 +122,12 @@ export default {
       this.$router.go(-1);
     },
     shouye() {
-      this.$router.push({ name: "Index" });
+      this.$router.push({
+        name: "Information1",
+        query: {
+          prj_name: this.prj_name
+        }
+      });
     },
     async content() {
       //获取用户权限状态
@@ -263,13 +263,13 @@ p {
   background-color: #fff;
   text-align: center;
 }
-.van-button {
-  background: linear-gradient(
-    -90deg,
-    rgba(253, 204, 2, 1) 0%,
-    rgba(255, 235, 0, 1) 100%
-  );
-  color: #343434ff;
-  border: 0;
-}
+// .van-button {
+//   background: linear-gradient(
+//     -90deg,
+//     rgba(253, 204, 2, 1) 0%,
+//     rgba(255, 235, 0, 1) 100%
+//   );
+//   color: #343434ff;
+//   border: 0;
+// }
 </style>

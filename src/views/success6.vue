@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div>
-    <van-nav-bar id="reset" title="接收结果页" />
+    <van-nav-bar id="reset" title="竣工结果" />
     <div class="chenggong">
       <div class="icn">
         <icon-svg class="touxiang" icon-class="chenggong" />

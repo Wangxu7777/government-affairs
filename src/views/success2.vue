@@ -43,18 +43,28 @@ export default {
   components: {},
   data() {
     //这里存放数据
-    return {};
+    return { shigongData: { prj_name: "" } };
   },
   //方法集合
   methods: {
     xiangqin() {
-      this.$router.push({ name: "Details" });
+      this.$router.push({
+        name: "Details",
+        query: {
+          prj_name: this.shigongData.prj_name
+        }
+      });
     },
     shouye() {
       this.$router.push({ name: "Index" });
+    },
+    RouterData() {
+      this.shigongData.prj_name = this.$route.query.prj_name;
     }
   },
-  created() {}
+  created() {
+    this.RouterData();
+  }
 };
 </script>
 <style lang="less" scoped>

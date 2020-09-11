@@ -169,6 +169,9 @@ export default {
   data() {
     //这里存放数据
     return {
+      str701: "",
+      str702: "",
+      str703: "",
       prj_name: { prj_name: "" },
       user: {
         user_id: ""
@@ -182,7 +185,7 @@ export default {
         prj_grid: "",
         lng: 0,
         lat: 0,
-        prj_addr: "上海市黄浦区大吉路71号",
+        prj_addr: "",
         picture: [],
         userid: ""
       },
@@ -218,7 +221,7 @@ export default {
         // touser: "18632397636|15810457862",
         // toparty: "6899",
         msgtype: "news",
-        agentid: "1000201",
+        agentid: this.$store.state.agentid,
         // image: { medis_id: "http://47.104.29.235:8080/flower.jpeg" }
         news: {
           articles: [
@@ -294,7 +297,7 @@ export default {
       };
       axios
         .post(
-          // `${this.$http.defaults.baseURL}:8085/gongdi/general/upload`,
+          // `${this.$http.defaults.baseURL}/upload/addimg`,
           `http://hpimage.soyumall.cn/gongdi/general/upload`,
           params,
           config
@@ -391,16 +394,24 @@ export default {
     },
     //发送信息
     async fasong() {
+      // if (this.gongchengData.prj_grid === "0701") {
+      //   this.fasongData.touser = "13701729933|13917049911|13301608675";
+      // }
+      // if (this.gongchengData.prj_grid === "0702") {
+      //   this.fasongData.touser = "13917049911|13918853364|13301608675";
+      // }
+      // if (this.gongchengData.prj_grid === "0703") {
+      //   this.fasongData.touser = "13795300984";
+      // }
       if (this.gongchengData.prj_grid === "0701") {
-        this.fasongData.touser = "13701729933|13917049911|13301608675";
+        this.fasongData.touser = this.str701;
       }
       if (this.gongchengData.prj_grid === "0702") {
-        this.fasongData.touser = "13795300984";
+        this.fasongData.touser = this.str702;
       }
       if (this.gongchengData.prj_grid === "0703") {
-        this.fasongData.touser = "13917049911|13918853364|13301608675";
+        this.fasongData.touser = this.str703;
       }
-
       this.fasongData.news.articles[0].url = `${this.$store.state.articlesUrl}${this.$store.state.qingqiuUrl}/accept?prj_name=${this.gongchengData.prj_name}&du_msg=1`;
       this.fasongData.news.articles[0].description = this.gongchengData.prj_name;
       var { data: dt } = await this.$http.post("/sendMsg", this.fasongData);
@@ -551,11 +562,50 @@ export default {
           });
         }
       }
+    },
+    //发送消息人员查询
+    async fasongUser() {
+      let step = { step: "发现工程" };
+      const { data: dt } = await this.$http.get(
+        "user/query_msgUserByUserStep",
+        { params: step }
+      );
+      if (dt.retcode != "0") {
+        return this.$toast.fail({
+          message: "获取发送消息人员失败"
+        });
+      }
+      let faxian701 = dt.data.filter(item => {
+        return item.grid == "701";
+      });
+      this.str701 = faxian701
+        .map(obj => {
+          return obj.userid;
+        })
+        .join("|");
+      let faxian702 = dt.data.filter(item => {
+        return item.grid == "702";
+      });
+      this.str702 = faxian702
+        .map(obj => {
+          return obj.userid;
+        })
+        .join("|");
+      let faxian703 = dt.data.filter(item => {
+        return item.grid == "703";
+      });
+
+      this.str703 = faxian703
+        .map(obj => {
+          return obj.userid;
+        })
+        .join("|");
     }
   },
   created() {
     // this.tokenData();
     this.content();
+    this.fasongUser();
   },
   beforeCreate() {
     document

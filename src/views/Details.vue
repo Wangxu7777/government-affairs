@@ -49,54 +49,15 @@
     </van-cell-group>
     <p>工程照片</p>
     <van-grid :column-num="2" square :gutter="10">
-      <van-grid-item text="工程照片">
-        <van-image
-          @click="show_img"
-          width="100%"
-          height="100%"
-          :src="picture"
-        />
+      <van-grid-item text="工程照片" v-for="(item, i) in picture" :key="i">
+        <van-image @click="show_img" width="100%" height="100%" :src="item" />
       </van-grid-item>
-      <van-grid-item text="工程照片">
-        <van-image
-          @click="show_img"
-          width="100%"
-          height="100%"
-          :src="picture1"
-        />
-      </van-grid-item>
-      <van-grid-item text="工程照片">
-        <van-image
-          @click="show_img"
-          width="100%"
-          height="100%"
-          :src="picture2"
-        />
-      </van-grid-item>
-      <van-grid-item text="工程照片">
-        <van-image
-          @click="show_img"
-          width="100%"
-          height="100%"
-          :src="picture3"
-        />
-      </van-grid-item>
-      <van-grid-item text="工程照片">
-        <van-image
-          @click="show_img"
-          width="100%"
-          height="100%"
-          :src="picture4"
-        />
-      </van-grid-item>
-      <van-grid-item text="工程照片">
-        <van-image
-          @click="show_img"
-          width="100%"
-          height="100%"
-          :src="picture5"
-        />
-      </van-grid-item>
+      <van-empty
+        style="width:100%"
+        image="error"
+        description="无工程照片"
+        v-if="this.change_pictures.length == 0"
+      />
     </van-grid>
     <p>工程文件</p>
     <van-row class="buju" gutter="20">
@@ -293,12 +254,7 @@ export default {
   data() {
     //这里存放数据
     return {
-      picture: "",
-      picture1: "",
-      picture2: "",
-      picture3: "",
-      picture4: "",
-      picture5: "",
+      picture: [],
       auth: {},
       userid: "",
       prj_name: "",
@@ -347,14 +303,8 @@ export default {
     },
     show_img() {
       this.instance_before = ImagePreview({
-        images: [
-          this.picture,
-          this.picture1,
-          this.picture2,
-          this.picture3,
-          this.picture4,
-          this.picture5
-        ],
+        images: this.picture,
+
         closeable: true
       });
     },
@@ -471,43 +421,10 @@ export default {
       this.prj_person_phone = dt.prj_person_phone;
       this.prj_assist_org = dt.prj_assist_org;
       if (dt.picture) {
-        var imgArr = dt.picture.trim().split(",");
-
-        if (imgArr.length == 1) {
-          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-        }
-        if (imgArr.length == 2) {
-          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-        }
-
-        if (imgArr.length == 3) {
-          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-        }
-
-        if (imgArr.length == 4) {
-          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-          this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-        }
-        if (imgArr.length == 5) {
-          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-          this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-          this.picture4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
-        }
-        if (imgArr.length == 6) {
-          this.picture = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[0]}`;
-          this.picture1 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[1]}`;
-          this.picture2 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[2]}`;
-          this.picture3 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[3]}`;
-          this.picture4 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[4]}`;
-          this.picture5 = `http://hpimage.soyumall.cn/gongdi/file/${imgArr[5]}`;
-        }
+        this.picture = dt.picture.split(",");
+        this.picture.forEach((e, i) => {
+          this.picture[i] = `http://hpimage.soyumall.cn/gongdi/file/` + e;
+        });
       }
       if (dt.prj_property) {
         this.prj_property = dt.prj_property.split(",");
