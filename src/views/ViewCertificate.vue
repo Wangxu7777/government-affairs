@@ -730,7 +730,6 @@ export default {
 
       dt.data.forEach(e => {
         if (assistArr.indexOf(e.depart)) {
-          console.log(e);
           xietong.push(e.userid);
         }
       });

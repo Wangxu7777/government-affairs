@@ -157,7 +157,7 @@ export default {
 
     xiangxi() {
       this.$router.push({
-        path: "/details",
+        path: "/projectDetails",
         query: {
           prj_name: this.gongchengData.prj_name
         }
