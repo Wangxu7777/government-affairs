@@ -32,7 +32,7 @@
           style="width:100%"
           image="error"
           description="无工程照片"
-          v-if="this.change_pictures.length == 0"
+          v-if="this.picture.length == 0"
         />
       </van-grid>
     </div>
